@@ -18,11 +18,3 @@
 //     justifyContent: 'center',
 //   },
 // });
-
-import { Redirect } from 'expo-router';
-
-const StartPage = () => {
-  return <Redirect href="/app/home" />;
-};
-
-export default StartPage;
