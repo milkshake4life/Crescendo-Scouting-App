@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>589 Scouting App</Text>
+      <Text>589 Scouting App!</Text>
       <StatusBar style="auto" />
       <Link href = "/page1">Page 1</Link>
     </View>
