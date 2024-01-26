@@ -4,9 +4,16 @@ const RootLayout = () => {
     return (
         <Stack>
             <Stack.Screen 
-                name = "(tabs)" 
+                name = "index" 
                 options = {{
-                    headerShown: false,
+                    headerShown: true,
+                    headerTitle: "Welcome Page"
+                }}
+            />
+            <Stack.Screen 
+                name = "regionals" 
+                options = {{
+                    headerShown: true,
                 }}
             />
         </Stack>
