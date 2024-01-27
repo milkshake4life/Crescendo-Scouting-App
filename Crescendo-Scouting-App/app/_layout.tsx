@@ -11,9 +11,10 @@ const RootLayout = () => {
                 }}
             />
             <Stack.Screen 
-                name = "regionals" 
+                name = "(regionals)/[regional]" 
                 options = {{
                     headerShown: true,
+                    headerTitle: "Regional"
                 }}
             />
         </Stack>
