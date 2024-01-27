@@ -4,17 +4,24 @@ const ScoutLayout = () => {
     return (
         <Stack>
             <Stack.Screen 
-                name = "scout" 
+                name = "(scout)" 
                 options = {{
-                    headerShown: false,
+                    headerShown: true,
                     headerTitle: "Scouting"
                 }}
             />
             <Stack.Screen 
-                name = "scoutInfo" 
+                name = "(Input)" 
                 options = {{
                     headerShown: false,
-                    headerTitle: "Scouting Information"
+                    headerTitle: "Input"
+                }}
+            />
+            <Stack.Screen 
+                name = "(ScoutingDisplay)" 
+                options = {{
+                    headerShown: false,
+                    headerTitle: "Input"
                 }}
             />
         </Stack>

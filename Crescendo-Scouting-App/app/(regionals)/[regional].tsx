@@ -8,8 +8,8 @@ const RegionalPage = () => {
     return (
         <View>
             <Text>{regional} regional!</Text>
-            <Button onPress = {() => router.push("/(regionals)/(scout)/scout")} title = "Scouting" />
-            <Button onPress = {() => router.push("/(regionals)/(scout)/scoutInfo")} title = "Scouting Information" />
+            <Button onPress = {() => router.push("/(scout)/scout")} title = "Scouting" />
+            <Button onPress = {() => router.push("/(scout)/scoutInfo")} title = "Scouting Information" />
         </View>
     );
 };

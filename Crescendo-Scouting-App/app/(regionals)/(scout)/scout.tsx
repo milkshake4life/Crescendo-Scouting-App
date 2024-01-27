@@ -6,6 +6,8 @@ const Scout = () => {
   return (
     <View>
       <Text>Scout!</Text>
+      <Button onPress = {() => router.push("/(Input)/robotInfo")} title = "Robot Information" />
+      <Button onPress = {() => router.push("/(Input)/matchInfo")} title = "Match Information" />
     </View>
   );
 };

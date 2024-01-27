@@ -6,8 +6,8 @@ const HomePage = () => {
   return (
     <View>
       <Text>Welcome to 589 Scouting App!</Text>
-      <Button onPress = {() => router.push("/regionals/Ventura")} title = "Ventura" />
-      <Button onPress = {() => router.push("/regionals/Orange County")} title = "Orange County" />
+      <Button onPress = {() => router.push("/(regionals)/Ventura")} title = "Ventura" />
+      <Button onPress = {() => router.push("/(regionals)/Orange County")} title = "Orange County" />
     </View>
   );
 };
