@@ -9,7 +9,7 @@ const RegionalPage = () => {
         <View>
             <Text>{regional} regional!</Text>
             <Button onPress = {() => router.push("/(scout)/scout")} title = "Scouting" />
-            <Button onPress = {() => router.push("/(scout)/scoutInfo")} title = "Scouting Information" />
+            <Button onPress = {() => router.push("/(scout)/(ScoutingDisplay)/robotDisplay")} title = "Scouting Information" />
         </View>
     );
 };
