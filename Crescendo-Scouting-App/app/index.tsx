@@ -1,5 +1,5 @@
 import { Link, router } from "expo-router";
-import { Pressable, Button, Text, View, StyleSheet } from "react-native";
+import { Pressable, Button, Image, Text, View, StyleSheet } from "react-native";
 import { useFonts } from 'expo-font';
 
 
@@ -15,20 +15,22 @@ const HomePage = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to 589 Scouting App!</Text>
+      <Image source={require('../assets/images/589Logo.png')} style={styles.logo} />
+      <Text style={styles.title}>Hello!</Text>
+      <Text style={styles.subtitle}>Welcome to 589 Scouting App!</Text>
 
       <Pressable 
-        style={styles.button}
+        style={styles.buttonOne}
         onPress={() => router.push("/(regionals)/Ventura")}
       >
-        <Text style={styles.buttonText}>Ventura</Text>
+        <Text style={styles.buttonOneText}>Ventura</Text>
       </Pressable>
 
       <Pressable 
-        style={styles.button}
+        style={styles.buttonTwo}
         onPress={() => router.push("/(regionals)/Orange County")}
       >
-        <Text style={styles.buttonText}>Orange County</Text>
+        <Text style={styles.buttonTwoText}>Orange County</Text>
       </Pressable>
 
     </View>
@@ -46,26 +48,59 @@ const styles = StyleSheet.create({
   },
   title:{
     fontFamily: 'BPoppins',
-    fontSize: 20,
+    fontSize: 32,
+    marginBottom: 30,
   },
-  button: {
+  subtitle:{
+    fontFamily: 'BPoppins',
+    fontSize: 15,
+    color: 'rgba(127, 127, 127, 255)',
+    marginBottom: 30,
+  },
+  logo: {
+    width: 270,  // specify a width
+    height: 270, // and a height for your image
+    marginBottom: 60,
+    // add other styling as needed
+  },
+  buttonOne: {
+    marginTop: 0,
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 12,
-    paddingHorizontal: 32,
+    paddingHorizontal: 82,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: 'rgba(0, 130, 190, 255)',
+    borderWidth: 1,
+    borderColor: 'white',
+  },
+  buttonTwo: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 52,
     borderRadius: 4,
     elevation: 3,
     backgroundColor: 'white',
     borderWidth: 1,
-    borderColor: 'black',
+    borderColor: 'rgba(0, 130, 190, 255)',
     marginTop: 10, // Adds space between buttons
   },
-  buttonText: {
+  buttonOneText: {
     fontSize: 16,
     lineHeight: 21,
     fontWeight: 'bold',
     letterSpacing: 0.25,
-    color: 'black',
+    color: 'white',
+    fontFamily: 'BPoppins',
+  },
+  buttonTwoText: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'rgba(0, 130, 190, 255)',
     fontFamily: 'BPoppins',
   },
 });
