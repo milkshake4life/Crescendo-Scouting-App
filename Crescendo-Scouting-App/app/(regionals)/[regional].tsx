@@ -1,18 +1,19 @@
-import { Link, router } from "expo-router";
+import { Link, router, useLocalSearchParams } from "expo-router";
 import { Pressable, Button, Image, Text, View, StyleSheet } from "react-native";
 import { useFonts } from 'expo-font';
 
 
 const RegionalPage = () => {
-    const [fontLoaded] = useFonts({
-        'BPoppins': require('../../assets/fonts/Poppins-SemiBold.ttf'),
-    });
-    if (!fontLoaded) {
-        return <View style={styles.container}><Text>Loading...</Text></View>; // Or some other loading indicator
-    }
+  const {regional} = useLocalSearchParams<{ regional:string } > ();
+    // const [fontLoaded] = useFonts({
+    //     'BPoppins': require('../../assets/fonts/Poppins-SemiBold.ttf'),
+    // });
+    // if (!fontLoaded) {
+    //     return <View style={styles.container}><Text>Loading...</Text></View>; // Or some other loading indicator
+    // }
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Tidal Tumble!</Text>
+            <Text style={styles.title}>{regional} regional! </Text>
             <Pressable
             style={styles.buttonOne}
             onPress={() => router.push("/(scout)/scout")}
