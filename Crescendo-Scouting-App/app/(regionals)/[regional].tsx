@@ -6,14 +6,15 @@ import { useFonts } from 'expo-font';
 
 const RegionalPage = () => {
   const {regional} = useLocalSearchParams<{ regional:string } > ();
-    // const [fontLoaded] = useFonts({
-    //     'BPoppins': require('../../assets/fonts/Poppins-SemiBold.ttf'),
-    // });
-    // if (!fontLoaded) {
-    //     return <View style={styles.container}><Text>Loading...</Text></View>; // Or some other loading indicator
-    // numberOfLines={ 1 } adjustsFontSizeToFit}
+
     return (
         <View style={styles.container}>
+            <Pressable 
+              style={styles.backButton}
+              onPress={() => router.back()}
+            >
+              <Text style={styles.backButtonText}>Home Page</Text>
+            </Pressable>
             <Text style={styles.title} >{regional} regional! </Text>
             <Pressable
             style={styles.buttonOne}
@@ -36,7 +37,7 @@ const RegionalPage = () => {
 const styles = StyleSheet.create({
     container: {
       flex: 1, // Makes sure the container takes up the whole screen
-      justifyContent: 'flex-start', // Centers content vertically in the container
+      justifyContent: 'center', // Centers content to the top of the page
       alignItems: 'center', // Centers content horizontally in the container
       padding: 20, // Optional: Adds padding to the container
     },
@@ -96,6 +97,24 @@ const styles = StyleSheet.create({
       letterSpacing: 0.25,
       color: 'rgba(0, 130, 190, 255)',
       fontFamily: 'BPoppins',
+    },
+    backButtonText:{
+      fontFamily: 'BPoppins',
+      fontSize: 15,
+      color: 'white',
+      marginBottom: 30,
+    },
+    backButton: {
+      marginTop: 0,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: 12,
+      paddingHorizontal: 82,
+      borderRadius: 4,
+      elevation: 3,
+      backgroundColor: 'rgba(0, 130, 190, 255)',
+      borderWidth: 1,
+      borderColor: 'white',
     },
   });
 

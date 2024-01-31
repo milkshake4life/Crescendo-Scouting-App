@@ -4,14 +4,15 @@ import { useFonts } from 'expo-font';
 
 
 const Scout = () => {
-    // const [fontLoaded] = useFonts({
-    //     'BPoppins': require('../../assets/fonts/Poppins-SemiBold.ttf'),
-    // });
-    // if (!fontLoaded) {
-    //     return <View style={styles.container}><Text>Loading...</Text></View>; // Or some other loading indicator
-    // }
+
     return (
         <View style={styles.container}>
+            <Pressable 
+              style={styles.buttonOne}
+              onPress={() => router.back()}
+            >
+              <Text style={styles.backButtonText}>Regional Page</Text>
+            </Pressable>
             <Text style={styles.title}> Scouting! </Text>
             <Pressable
             style={styles.buttonOne}
@@ -34,7 +35,7 @@ const Scout = () => {
 const styles = StyleSheet.create({
     container: {
       flex: 1, // Makes sure the container takes up the whole screen
-      justifyContent: 'flex-start', // Centers content vertically in the container
+      justifyContent: 'center', // Centers content vertically in the container
       alignItems: 'center', // Centers content horizontally in the container
       padding: 20, // Optional: Adds padding to the container
     },
@@ -95,15 +96,24 @@ const styles = StyleSheet.create({
       color: 'rgba(0, 130, 190, 255)',
       fontFamily: 'BPoppins',
     },
+    backButtonText:{
+      fontFamily: 'BPoppins',
+      fontSize: 15,
+      color: 'white',
+      marginBottom: 30,
+    },
+    backButton: {
+      marginTop: 0,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: 12,
+      paddingHorizontal: 82,
+      borderRadius: 4,
+      elevation: 3,
+      backgroundColor: 'rgba(0, 130, 190, 255)',
+      borderWidth: 1,
+      borderColor: 'white',
+    },
   });
-// const Scout = () => {
-//   return (
-//     <View>
-//       <Text>Scout!</Text>
-//       <Button onPress = {() => router.push("/(Input)/robotInfo")} title = "Robot Information" />
-//       <Button onPress = {() => router.push("/(Input)/matchInfo")} title = "Match Information" />
-//     </View>
-//   );
-// };
 
 export default Scout;

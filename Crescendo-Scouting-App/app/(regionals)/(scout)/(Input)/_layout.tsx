@@ -2,7 +2,7 @@ import { Stack, Tabs } from "expo-router";
 
 const InputLayout = () => {
     return (
-        <Stack>
+        <Stack screenOptions = {{headerShown: false,}}>
             <Stack.Screen
                 name = "robotInfo"
             />

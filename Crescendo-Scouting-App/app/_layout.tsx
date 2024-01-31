@@ -2,7 +2,7 @@ import { Stack } from "expo-router";
 
 const RootLayout = () => {
     return (
-        <Stack>
+        <Stack screenOptions = {{headerShown: false,}}>
             <Stack.Screen 
                 name = "index" 
                 options = {{
@@ -13,7 +13,6 @@ const RootLayout = () => {
             <Stack.Screen 
                 name = "(regionals)/[regional]" 
                 options = {{
-                    headerShown: true,
                     headerTitle: "Regional"
                 }}
             />

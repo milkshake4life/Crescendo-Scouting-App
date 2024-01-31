@@ -30,6 +30,12 @@ const robotInfo = () => {
     >
       <ScrollView>
         <View style={ styles.container }>
+          <Pressable 
+            style={styles.backButton}
+            onPress={() => router.back()}
+          >
+            <Text style={styles.backButtonText}>Home Page</Text>
+          </Pressable>
           <Text style={ styles.title }>Robot Scouting!</Text>
           <Text style={ styles.subtitle }>Input team's data!</Text>
 
@@ -175,6 +181,24 @@ const styles = StyleSheet.create({
     backgroundColor: '#007bff',
     borderColor: '#0056b3',
     color: '#fff',
+  },
+  backButtonText:{
+    fontFamily: 'BPoppins',
+    fontSize: 15,
+    color: 'white',
+    marginBottom: 30,
+  },
+  backButton: {
+    marginTop: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 82,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: 'rgba(0, 130, 190, 255)',
+    borderWidth: 1,
+    borderColor: 'white',
   },
 });
 

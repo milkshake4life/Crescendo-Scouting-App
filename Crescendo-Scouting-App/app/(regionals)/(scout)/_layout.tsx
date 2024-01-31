@@ -2,7 +2,7 @@ import { Stack } from "expo-router";
 
 const ScoutLayout = () => {
     return (
-        <Stack>
+        <Stack screenOptions = {{headerShown: false,}}>
             <Stack.Screen 
                 name = "(scout)" 
                 options = {{
