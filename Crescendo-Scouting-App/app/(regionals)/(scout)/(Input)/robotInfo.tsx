@@ -9,11 +9,13 @@ const robotInfo = () => {
   const ClimberOptions = ['No Climb', 'Single Climb', 'Harmony Climb'];
   const ScoringOptions = ['No Scoring', 'Amp Only', 'Speaker Only', 'Both'];
   const IntakeOptions = ['No Intake', 'Ground Only', 'Source Only', 'Both'];
+  const DrivingOptions = ['N/A', 'Drive Over Notes', 'Drive Under Stage', 'Both'];
 
   //selects one option
   const [selectedClimberOption, setSelectedClimberOption] = useState<string | null>(null);
   const [selectedScoringOption, setSelectedScoringOption] = useState<string | null>(null);
   const [selectedIntakeOption, setSelectedIntakeOption] = useState<string | null>(null);
+  const [selectedDrivingOption, setSelectedDrivingOption] = useState<string | null>(null);
 
   // function that does a one choice selection
   const handleSelection = (option: string, setSelection: React.Dispatch<React.SetStateAction<string | null>>) => {
@@ -89,6 +91,22 @@ const robotInfo = () => {
             ))}
           </View>
 
+          <Text style={ styles.questiontitle }>Driving data!</Text>
+
+          <View style={styles.optionsContainer}>
+            {DrivingOptions.map((option, index) => (
+              <Pressable
+                key={index}
+                style={[styles.option, selectedDrivingOption === option ? styles.optionSelected : {}]}
+                onPress={() => handleSelection(option, setSelectedDrivingOption)}
+              >
+                <Text style={styles.optionText}>{option}</Text>
+              </Pressable>
+            ))}
+          </View>
+
+          <Text style={ styles.questiontitle }>Visionary data!</Text>
+          
           <TextInput
             style={styles.input}
             value={vision}
