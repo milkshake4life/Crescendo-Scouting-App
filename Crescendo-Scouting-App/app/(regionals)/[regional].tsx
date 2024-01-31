@@ -3,6 +3,7 @@ import { Pressable, Button, Image, Text, View, StyleSheet } from "react-native";
 import { useFonts } from 'expo-font';
 
 
+
 const RegionalPage = () => {
   const {regional} = useLocalSearchParams<{ regional:string } > ();
     // const [fontLoaded] = useFonts({
@@ -10,10 +11,10 @@ const RegionalPage = () => {
     // });
     // if (!fontLoaded) {
     //     return <View style={styles.container}><Text>Loading...</Text></View>; // Or some other loading indicator
-    // }
+    // numberOfLines={ 1 } adjustsFontSizeToFit}
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>{regional} regional! </Text>
+            <Text style={styles.title} >{regional} regional! </Text>
             <Pressable
             style={styles.buttonOne}
             onPress={() => router.push("/(scout)/scout")}
@@ -41,7 +42,7 @@ const styles = StyleSheet.create({
     },
     title:{
       fontFamily: 'BPoppins',
-      fontSize: 32,
+      fontSize: 25,
       marginBottom: 110,
     },
     subtitle:{
