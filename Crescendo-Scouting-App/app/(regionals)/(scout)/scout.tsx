@@ -1,18 +1,14 @@
 import { Link, router, useLocalSearchParams } from "expo-router";
 import { Pressable, Button, Image, Text, View, StyleSheet } from "react-native";
 import { useFonts } from 'expo-font';
+import BackButton from "../../backButton";
 
 
 const Scout = () => {
 
     return (
         <View style={styles.container}>
-            <Pressable 
-              style={styles.buttonOne}
-              onPress={() => router.back()}
-            >
-              <Text style={styles.backButtonText}>Regional Page</Text>
-            </Pressable>
+            <BackButton buttonName='Regional Page' />
             <Text style={styles.title}> Scouting! </Text>
             <Pressable
             style={styles.buttonOne}

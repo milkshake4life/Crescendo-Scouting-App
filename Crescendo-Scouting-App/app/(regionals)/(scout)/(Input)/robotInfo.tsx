@@ -1,6 +1,7 @@
 import { Link, router } from "expo-router";
 import { Platform, KeyboardAvoidingView, ScrollView, Pressable, Button, Text, View, StyleSheet, TextInput } from "react-native";
 import React, { useState } from 'react';
+import BackButton from "../../../backButton";
 
 const robotInfo = () => {
   const [teamNumber, setTeamNumber] = useState<string>('');
@@ -30,12 +31,7 @@ const robotInfo = () => {
     >
       <ScrollView>
         <View style={ styles.container }>
-          <Pressable 
-            style={styles.backButton}
-            onPress={() => router.back()}
-          >
-            <Text style={styles.backButtonText}>Home Page</Text>
-          </Pressable>
+          <BackButton buttonName="Home Page" />
           <Text style={ styles.title }>Robot Scouting!</Text>
           <Text style={ styles.subtitle }>Input team's data!</Text>
 
