@@ -1,7 +1,12 @@
 import { Link, router, useLocalSearchParams } from "expo-router";
 import { Pressable, Button, Image, Text, View, StyleSheet } from "react-native";
 import { useFonts } from 'expo-font';
+//importing the back-button component from the filee
+import BackButton from '../backButton';
 
+
+//Creating a back-button component for easier implementation. 
+//props list for the back button component
 
 
 const RegionalPage = () => {
@@ -9,12 +14,14 @@ const RegionalPage = () => {
 
     return (
         <View style={styles.container}>
-            <Pressable 
+            {/* <Pressable 
               style={styles.backButton}
               onPress={() => router.back()}
             >
               <Text style={styles.backButtonText}>Home Page</Text>
-            </Pressable>
+              <Image style = {styles.backButtonIcon} source={require('../../assets/images/back_arrow.png')} />
+            </Pressable> */}
+            <BackButton buttonName='Home Page'/>
             <Text style={styles.title} >{regional} regional! </Text>
             <Pressable
             style={styles.buttonOne}
@@ -34,10 +41,12 @@ const RegionalPage = () => {
     );
 };
 
+
+
 const styles = StyleSheet.create({
     container: {
       flex: 1, // Makes sure the container takes up the whole screen
-      justifyContent: 'center', // Centers content to the top of the page
+      justifyContent: 'flex-start', // Centers content to the top of the page
       alignItems: 'center', // Centers content horizontally in the container
       padding: 20, // Optional: Adds padding to the container
     },
@@ -45,6 +54,7 @@ const styles = StyleSheet.create({
       fontFamily: 'BPoppins',
       fontSize: 25,
       marginBottom: 110,
+      marginTop: 30, 
     },
     subtitle:{
       fontFamily: 'BPoppins',
@@ -106,16 +116,25 @@ const styles = StyleSheet.create({
     },
     backButton: {
       marginTop: 0,
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingVertical: 12,
-      paddingHorizontal: 82,
+      marginBottom: 50, //adding bottom margins to avoid changing the title style
+      //alignItems: 'center',
+      //justifyContent: 'center',
+      //paddingVertical: 12,
+      //paddingHorizontal: 82,
+      paddingRight: 350,
       borderRadius: 4,
       elevation: 3,
-      backgroundColor: 'rgba(0, 130, 190, 255)',
-      borderWidth: 1,
+      //backgroundColor: 'rgba(0, 130, 190, 255)', //removing background color so we can use an image. 
+      //borderWidth: 1,                            //removing border for same reason as above
       borderColor: 'white',
+      width: 20,
+      height: 20,
     },
+    backButtonIcon: {
+      width: 20,
+      height: 20,
+
+    }
   });
 
 export default RegionalPage;
