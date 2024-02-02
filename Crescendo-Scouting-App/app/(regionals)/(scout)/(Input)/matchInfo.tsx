@@ -1,16 +1,12 @@
 import { Link, router } from "expo-router";
 import { Pressable, Button, Text, View, StyleSheet } from "react-native";
+import BackButton from "../../../backButton";
 
 
 const matchInfo = () => {
   return (
     <View>
-      <Pressable 
-        style={styles.backButton}
-        onPress={() => router.back()}
-      >
-        <Text style={styles.backButtonText}>Home Page</Text>
-      </Pressable>
+      <BackButton buttonName="Home Page" />
       <Text>Plese Input the Match Information!</Text>
     </View>
   );
