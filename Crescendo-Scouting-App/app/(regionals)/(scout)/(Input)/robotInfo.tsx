@@ -204,17 +204,6 @@ const styles = StyleSheet.create({
     borderColor: '#0056b3',
     color: '#fff',
   },
-  sendButtonText:{
-    fontFamily: 'BPoppins',
-    fontSize: 15,
-    color: 'rgba(127, 127, 127, 255)',
-    marginBottom: 30,
-  },
-  sendButton: {
-    backgroundColor: '#007bff',
-    borderColor: '#0056b3',
-    color: '#fff',
-  },
 });
 
 export default robotInfo;

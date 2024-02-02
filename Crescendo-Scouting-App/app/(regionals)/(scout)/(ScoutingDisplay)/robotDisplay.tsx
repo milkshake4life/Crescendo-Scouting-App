@@ -3,33 +3,27 @@ import { Pressable, Button, Text, View, StyleSheet } from "react-native";
 import BackButton from "../../../backButton";
 
 
-const robotDisplay = () => {
+const robotDisplay = () => { 
   return (
-    <View>
+    <View style={styles.container}>
       <BackButton buttonName="Home Page" />
-      <Text>Robot Display!</Text>
+      <Text style={styles.title}> Robot Display! </Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  backButtonText:{
-    fontFamily: 'BPoppins',
-    fontSize: 15,
-    color: 'white',
-    marginBottom: 30,
+  container: {
+    flex: 1, // Makes sure the container takes up the whole screen
+    justifyContent: 'flex-start', // Aligns content to the top of the page
+    alignItems: 'center', // Centers content horizontally in the container
+    padding: 20, // Optional: Adds padding to the container
   },
-  backButton: {
-    marginTop: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 82,
-    borderRadius: 4,
-    elevation: 3,
-    backgroundColor: 'rgba(0, 130, 190, 255)',
-    borderWidth: 1,
-    borderColor: 'white',
+  title:{
+    fontFamily: 'BPoppins',
+    fontSize: 32,  //font size differs from regional page. Regional = 25. 
+    marginBottom: 110,
+    marginTop: 30, //adding top margin to move down the page. 
   },
 });
 
