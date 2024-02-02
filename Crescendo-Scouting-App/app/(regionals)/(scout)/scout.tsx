@@ -31,14 +31,15 @@ const Scout = () => {
 const styles = StyleSheet.create({
     container: {
       flex: 1, // Makes sure the container takes up the whole screen
-      justifyContent: 'center', // Centers content vertically in the container
+      justifyContent: 'flex-start', // Aligns content to the top of the page
       alignItems: 'center', // Centers content horizontally in the container
       padding: 20, // Optional: Adds padding to the container
     },
     title:{
       fontFamily: 'BPoppins',
-      fontSize: 32,
+      fontSize: 32,  //font size differs from regional page. Regional = 25. 
       marginBottom: 110,
+      marginTop: 30, //adding top margin to move down the page. 
     },
     subtitle:{
       fontFamily: 'BPoppins',
@@ -98,18 +99,34 @@ const styles = StyleSheet.create({
       color: 'white',
       marginBottom: 30,
     },
+    // backButton: {
+    //   marginTop: 0,
+    //   alignItems: 'center',
+    //   justifyContent: 'center',
+    //   paddingVertical: 12,
+    //   paddingHorizontal: 82,
+    //   borderRadius: 4,
+    //   elevation: 3,
+    //   backgroundColor: 'rgba(0, 130, 190, 255)',
+    //   borderWidth: 1,
+    //   borderColor: 'white',
+    // },
     backButton: {
       marginTop: 0,
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingVertical: 12,
-      paddingHorizontal: 82,
+      marginBottom: 50, //adding bottom margins to avoid changing the title style
+      //alignItems: 'center',
+      //justifyContent: 'center',
+      //paddingVertical: 12,
+      //paddingHorizontal: 82,
+      paddingRight: 350,
       borderRadius: 4,
       elevation: 3,
-      backgroundColor: 'rgba(0, 130, 190, 255)',
-      borderWidth: 1,
+      //backgroundColor: 'rgba(0, 130, 190, 255)', //removing background color so we can use an image. 
+      //borderWidth: 1,                            //removing border for same reason as above
       borderColor: 'white',
-    },
+      width: 20,
+      height: 20,
+    }
   });
 
 export default Scout;

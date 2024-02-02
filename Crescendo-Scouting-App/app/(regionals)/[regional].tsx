@@ -32,13 +32,13 @@ const RegionalPage = () => {
 
             <Pressable
             style={styles.buttonTwo}
-            onPress={() => router.push("/(scout)/(ScoutingDisplay)/robotDisplay")}
+            onPress={() => router.push("/(scout)/(ScoutingDisplay)/matchDisplay")}
             >
                 <Text style={styles.buttonTwoText}>Scouting Information</Text>
             </Pressable>
 
         </View>
-    );
+    ); //swapped '(ScoutingDisplay)/robotDisplay' to '(ScoutingDsplay)/matchDisplay' to match the tabs. 
 };
 
 
