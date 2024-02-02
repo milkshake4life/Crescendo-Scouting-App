@@ -1,7 +1,7 @@
-import { Link, router } from "expo-router";
 import { Platform, KeyboardAvoidingView, ScrollView, Pressable, Button, Text, View, StyleSheet, TextInput } from "react-native";
 import React, { useState } from 'react';
-import BackButton from "../../../backButton";
+import { database } from '../../../.././firebaseConfig';
+import { ref, set, push } from 'firebase/database';
 
 const robotInfo = () => {
   const [teamNumber, setTeamNumber] = useState<string>('');
@@ -23,6 +23,27 @@ const robotInfo = () => {
     setSelection(option);
   };
 
+  const handleSendData = () => {
+    const sanitizedTimestamp = new Date().toISOString().replace(/[.:]/g, '-');
+    const teamNumberPath = `teams/${sanitizedTimestamp}`;
+
+    set(ref(database, teamNumberPath), {
+      teamNumber: teamNumber,
+      driveTrain: driveTrain,
+      vision: vision,
+      climberOption: selectedClimberOption,
+      scoringOption: selectedScoringOption,
+      intakeOption: selectedIntakeOption,
+      drivingOption: selectedDrivingOption,
+      // ... any other fields ...
+    }).then(() => {
+      console.log('Data saved successfully!');
+      // ... handle success ...
+    }).catch((error) => {
+      console.error('Failed to write data: ', error);
+    });
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -31,7 +52,6 @@ const robotInfo = () => {
     >
       <ScrollView>
         <View style={ styles.container }>
-          <BackButton buttonName="Home Page" />
           <Text style={ styles.title }>Robot Scouting!</Text>
           <Text style={ styles.subtitle }>Input team's data!</Text>
 
@@ -115,6 +135,12 @@ const robotInfo = () => {
             onChangeText={setVision}
             placeholder="Visionary System"
           />
+          <Pressable
+            style={styles.sendButton}
+            onPress={handleSendData}
+          >
+            <Text style={styles.sendButtonText}>Send Data</Text>
+          </Pressable>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -178,23 +204,16 @@ const styles = StyleSheet.create({
     borderColor: '#0056b3',
     color: '#fff',
   },
-  backButtonText:{
+  sendButtonText:{
     fontFamily: 'BPoppins',
     fontSize: 15,
-    color: 'white',
+    color: 'rgba(127, 127, 127, 255)',
     marginBottom: 30,
   },
-  backButton: {
-    marginTop: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 82,
-    borderRadius: 4,
-    elevation: 3,
-    backgroundColor: 'rgba(0, 130, 190, 255)',
-    borderWidth: 1,
-    borderColor: 'white',
+  sendButton: {
+    backgroundColor: '#007bff',
+    borderColor: '#0056b3',
+    color: '#fff',
   },
 });
 
