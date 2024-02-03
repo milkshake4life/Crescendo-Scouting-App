@@ -4,6 +4,7 @@ import BackButton from "../../../backButton";
 
 
 const robotDisplay = () => { 
+  
   return (
     <View style={styles.container}>
       <BackButton buttonName="Home Page" />
