@@ -24,11 +24,10 @@ const robotInfo = () => {
   };
 
   const handleSendData = () => {
-    const sanitizedTimestamp = new Date().toISOString().replace(/[.:]/g, '-');
-    const teamNumberPath = `teams/${sanitizedTimestamp}`;
+    const sanitizedTeamNumber = String(teamNumber).trim().replace(/[.#$[\]]/g, '-');
+    const teamNumberPath = `teams/${sanitizedTeamNumber}/robotInfo`;
 
     set(ref(database, teamNumberPath), {
-      teamNumber: teamNumber,
       driveTrain: driveTrain,
       vision: vision,
       climberOption: selectedClimberOption,
@@ -204,6 +203,8 @@ const styles = StyleSheet.create({
     borderColor: '#0056b3',
     color: '#fff',
   },
+  sendButton: {},
+  sendButtonText: {},
 });
 
 export default robotInfo;
