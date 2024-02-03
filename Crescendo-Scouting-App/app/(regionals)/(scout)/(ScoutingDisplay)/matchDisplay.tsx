@@ -25,6 +25,12 @@ const styles = StyleSheet.create({
     marginBottom: 110,
     marginTop: 30, //adding top margin to move down the page. 
   },
+  subtitle:{
+    fontFamily: 'BPoppins',
+    fontSize: 32,  //font size differs from regional page. Regional = 25. 
+    marginBottom: 110,
+    marginTop: 30, //adding top margin to move down the page. 
+  },
 });
 
 export default matchDisplay;

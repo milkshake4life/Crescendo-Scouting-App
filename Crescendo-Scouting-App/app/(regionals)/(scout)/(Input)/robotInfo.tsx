@@ -2,6 +2,7 @@ import { Platform, KeyboardAvoidingView, ScrollView, Pressable, Button, Text, Vi
 import React, { useState } from 'react';
 import { database } from '../../../.././firebaseConfig';
 import { ref, set, push } from 'firebase/database';
+import BackButton from "../../../backButton";
 
 const robotInfo = () => {
   const [teamNumber, setTeamNumber] = useState<string>('');
@@ -51,6 +52,8 @@ const robotInfo = () => {
     >
       <ScrollView>
         <View style={ styles.container }>
+          <BackButton buttonName="Home Page" />
+          <Text style={styles.title}> Robot Display! </Text>
           <Text style={ styles.title }>Robot Scouting!</Text>
           <Text style={ styles.subtitle }>Input team's data!</Text>
 
