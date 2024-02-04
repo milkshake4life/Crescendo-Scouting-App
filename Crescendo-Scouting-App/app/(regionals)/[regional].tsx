@@ -3,40 +3,86 @@ import { Pressable, Button, Image, Text, View, StyleSheet } from "react-native";
 import { useFonts } from 'expo-font';
 //importing the back-button component from the filee
 import BackButton from '../backButton';
-
+import { Dropdown } from 'react-native-element-dropdown';
+import React, { useEffect, useState } from "react";
+import { database } from "../../firebaseConfig";
+import { onValue, ref } from "firebase/database";
 
 //Creating a back-button component for easier implementation. 
 //props list for the back button component
 
+interface DropdownItem {
+  label: string;
+  value: string;
+}
 
 const RegionalPage = () => {
   const {regional} = useLocalSearchParams<{ regional:string } > ();
+  const [selectedValue, setSelectedValue] = useState<string | null>(null);
+  const [isFocus, setIsFocus] = useState(false);
+  const [dropdownData, setDropdownData] = useState<DropdownItem[]>([]);
+
+  const fetchTeams = () => {
+    const teamsRef = ref(database, 'Ventura/teams'); // Adjusted path
+    onValue(teamsRef, (snapshot) => {
+      const teams = snapshot.val();
+      if (teams) {
+        const processedData = Object.keys(teams).map((teamNumber) => {
+          return {
+            label: teamNumber,  // Using the team number as the label
+            value: teamNumber,  // Also using the team number as the value
+          };
+        });
+        setDropdownData(processedData);
+      } else {
+        setDropdownData([]);
+      }
+    });
+  };
+  
+  useEffect(() => {
+    fetchTeams();
+  }, []);
 
     return (
         <View style={styles.container}>
-            {/* <Pressable 
-              style={styles.backButton}
-              onPress={() => router.back()}
-            >
-              <Text style={styles.backButtonText}>Home Page</Text>
-              <Image style = {styles.backButtonIcon} source={require('../../assets/images/back_arrow.png')} />
-            </Pressable> */}
-            <BackButton buttonName='Home Page'/>
-            <Text style={styles.title} >{regional} regional! </Text>
-            <Pressable
+          <BackButton buttonName='Home Page'/>
+          <Text style={styles.title} >{regional} regional! </Text>
+          <Pressable
             style={styles.buttonOne}
             onPress={() => router.push("/(scout)/scout")}
-            >
-                <Text style={styles.buttonOneText}>Scouting</Text>
-            </Pressable>
+          >
+            <Text style={styles.buttonOneText}>Scouting</Text>
+          </Pressable>
 
-            <Pressable
-            style={styles.buttonTwo}
-            onPress={() => router.push("/(scout)/(ScoutingDisplay)/matchDisplay")}
-            >
-                <Text style={styles.buttonTwoText}>Scouting Information</Text>
-            </Pressable>
+          <Pressable
+          style={styles.buttonTwo}
+          onPress={() => router.push("/(scout)/(ScoutingDisplay)/matchDisplay")}
+          >
+            <Text style={styles.buttonTwoText}>Scouting Information</Text>
+          </Pressable>
 
+          <Text style={styles.subtitle}>Select a Team</Text>
+          <Dropdown
+              style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              inputSearchStyle={styles.inputSearchStyle}
+              iconStyle={styles.iconStyle}
+              data={dropdownData}
+              search
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder={!isFocus ? 'Select item' : '...'}
+              searchPlaceholder="Search..."
+              onFocus={() => setIsFocus(true)}
+              onBlur={() => setIsFocus(false)}
+              onChange={item => {
+                setSelectedValue(item.value);  // Update the state to the new value
+                setIsFocus(false);  // Assuming you want to unfocus the dropdown after selection
+              }}
+            />
         </View>
     ); //swapped '(ScoutingDisplay)/robotDisplay' to '(ScoutingDsplay)/matchDisplay' to match the tabs. 
 };
@@ -114,27 +160,40 @@ const styles = StyleSheet.create({
       color: 'white',
       marginBottom: 30,
     },
-    backButton: {
-      marginTop: 0,
-      marginBottom: 50, //adding bottom margins to avoid changing the title style
-      //alignItems: 'center',
-      //justifyContent: 'center',
-      //paddingVertical: 12,
-      //paddingHorizontal: 82,
-      paddingRight: 350,
-      borderRadius: 4,
-      elevation: 3,
-      //backgroundColor: 'rgba(0, 130, 190, 255)', //removing background color so we can use an image. 
-      //borderWidth: 1,                            //removing border for same reason as above
-      borderColor: 'white',
+    dropdown: {
+      height: 50,
+      width: '80%', // or some other appropriate width
+      borderColor: 'gray',
+      borderWidth: 0.5,
+      borderRadius: 8,
+      paddingHorizontal: 8,
+      // Add margin for some spacing if needed
+      marginTop: 10,
+      marginBottom: 10,
+    },
+    label: {
+      position: 'absolute',
+      backgroundColor: 'white',
+      left: 22,
+      top: 8,
+      zIndex: 999,
+      paddingHorizontal: 8,
+      fontSize: 14,
+    },
+    placeholderStyle: {
+      fontSize: 16,
+    },
+    selectedTextStyle: {
+      fontSize: 16,
+    },
+    iconStyle: {
       width: 20,
       height: 20,
     },
-    backButtonIcon: {
-      width: 20,
-      height: 20,
-
-    }
+    inputSearchStyle: {
+      height: 40,
+      fontSize: 16,
+    },
   });
 
 export default RegionalPage;
