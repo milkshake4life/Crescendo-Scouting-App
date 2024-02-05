@@ -1,25 +1,26 @@
-import { Link, router, useLocalSearchParams } from "expo-router";
+import { Link, router, useGlobalSearchParams, useLocalSearchParams } from "expo-router";
 import { Pressable, Button, Image, Text, View, StyleSheet } from "react-native";
 import { useFonts } from 'expo-font';
 import BackButton from "../../backButton";
 
 
 const Scout = () => {
-
+  const {regional} = useGlobalSearchParams<{ regional:string } > ();
+  const {teamNumber} = useGlobalSearchParams<{ teamNumber:string } > ();
     return (
         <View style={styles.container}>
             <BackButton buttonName='Regional Page' />
             <Text style={styles.title}> Scouting! </Text>
             <Pressable
             style={styles.buttonOne}
-            onPress={() => router.push("/(Input)/robotInfo")}
+            onPress={() => router.push(`/(Input)/robotInfo?regional=${regional}&teamNumber=${teamNumber}`)}
             >
                 <Text style={styles.buttonOneText}>Robot Information</Text>
             </Pressable>
 
             <Pressable
             style={styles.buttonTwo}
-            onPress={() => router.push("/(Input)/matchInfo")}
+            onPress={() => router.push(`/(Input)/matchInfo?teamNumber=${regional}`)}
             >
                 <Text style={styles.buttonTwoText}>Match Information</Text>
             </Pressable>

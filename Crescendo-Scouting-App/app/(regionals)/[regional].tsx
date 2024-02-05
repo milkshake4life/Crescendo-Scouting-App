@@ -1,4 +1,4 @@
-import { Link, router, useLocalSearchParams } from "expo-router";
+import { Link, router, useGlobalSearchParams, useLocalSearchParams } from "expo-router";
 import { Pressable, Button, Image, Text, View, StyleSheet } from "react-native";
 import { useFonts } from 'expo-font';
 //importing the back-button component from the filee
@@ -17,13 +17,18 @@ interface DropdownItem {
 }
 
 const RegionalPage = () => {
-  const {regional} = useLocalSearchParams<{ regional:string } > ();
+  const {regional} = useGlobalSearchParams<{ regional:string } > ();
+  let modifiedRegional = regional
+  if(regional === 'Orange County'){
+    modifiedRegional = 'Orange-County'
+  }
+
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const [isFocus, setIsFocus] = useState(false);
   const [dropdownData, setDropdownData] = useState<DropdownItem[]>([]);
 
   const fetchTeams = () => {
-    const teamsRef = ref(database, 'Ventura/teams'); // Adjusted path
+    const teamsRef = ref(database, modifiedRegional + '/teams'); // Adjusted path
     onValue(teamsRef, (snapshot) => {
       const teams = snapshot.val();
       if (teams) {
@@ -48,41 +53,50 @@ const RegionalPage = () => {
         <View style={styles.container}>
           <BackButton buttonName='Home Page'/>
           <Text style={styles.title} >{regional} regional! </Text>
+
+          <Text style={styles.subtitle}>Select a Team</Text>
+          <Dropdown
+            style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            data={dropdownData}
+            search
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder={!isFocus ? 'Select item' : '...'}
+            searchPlaceholder="Search..."
+            onFocus={() => setIsFocus(true)}
+            onBlur={() => setIsFocus(false)}
+            onChange={item => {
+              setSelectedValue(item.value);  // Update the state to the new value
+              setIsFocus(false);  // Assuming you want to unfocus the dropdown after selection
+            }}
+          />
+
           <Pressable
             style={styles.buttonOne}
-            onPress={() => router.push("/(scout)/scout")}
+            onPress={() => {
+              if (selectedValue) {
+                router.push(`/(scout)/scout?regional=${regional}&teamNumber=${selectedValue}`);
+                console.log(selectedValue)
+              } else {
+                // Handle case where no team is selected
+                alert('Please select a team number.');
+              }
+            }}
           >
             <Text style={styles.buttonOneText}>Scouting</Text>
           </Pressable>
 
           <Pressable
-          style={styles.buttonTwo}
-          onPress={() => router.push("/(scout)/(ScoutingDisplay)/matchDisplay")}
-          >
+            style={styles.buttonTwo}
+            onPress={() => router.push("/(scout)/(ScoutingDisplay)/matchDisplay")}
+            >
             <Text style={styles.buttonTwoText}>Scouting Information</Text>
           </Pressable>
-
-          <Text style={styles.subtitle}>Select a Team</Text>
-          <Dropdown
-              style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
-              placeholderStyle={styles.placeholderStyle}
-              selectedTextStyle={styles.selectedTextStyle}
-              inputSearchStyle={styles.inputSearchStyle}
-              iconStyle={styles.iconStyle}
-              data={dropdownData}
-              search
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder={!isFocus ? 'Select item' : '...'}
-              searchPlaceholder="Search..."
-              onFocus={() => setIsFocus(true)}
-              onBlur={() => setIsFocus(false)}
-              onChange={item => {
-                setSelectedValue(item.value);  // Update the state to the new value
-                setIsFocus(false);  // Assuming you want to unfocus the dropdown after selection
-              }}
-            />
         </View>
     ); //swapped '(ScoutingDisplay)/robotDisplay' to '(ScoutingDsplay)/matchDisplay' to match the tabs. 
 };
@@ -99,14 +113,13 @@ const styles = StyleSheet.create({
     title:{
       fontFamily: 'BPoppins',
       fontSize: 25,
-      marginBottom: 110,
+      marginBottom: 50,
       marginTop: 30, 
     },
     subtitle:{
       fontFamily: 'BPoppins',
       fontSize: 15,
       color: 'rgba(127, 127, 127, 255)',
-      marginBottom: 30,
     },
     logo: {
       width: 270,  // specify a width
@@ -169,7 +182,7 @@ const styles = StyleSheet.create({
       paddingHorizontal: 8,
       // Add margin for some spacing if needed
       marginTop: 10,
-      marginBottom: 10,
+      marginBottom: 40,
     },
     label: {
       position: 'absolute',

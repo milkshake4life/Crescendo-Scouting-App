@@ -3,15 +3,17 @@ import React, { useState } from 'react';
 import { database } from '../../../.././firebaseConfig';
 import { ref, set, push } from 'firebase/database';
 import BackButton from "../../../backButton";
+import { useGlobalSearchParams, useLocalSearchParams } from "expo-router";
 
 const robotInfo = () => {
-  const [teamNumber, setTeamNumber] = useState<string>('');
   const [driveTrain, setDriveTrain] = useState<string>('');
   const [vision, setVision] = useState<string>('');
   const ClimberOptions = ['No Climb', 'Single Climb', 'Harmony Climb'];
   const ScoringOptions = ['No Scoring', 'Amp Only', 'Speaker Only', 'Both'];
   const IntakeOptions = ['No Intake', 'Ground Only', 'Source Only', 'Both'];
   const DrivingOptions = ['N/A', 'Drive Over Notes', 'Drive Under Stage', 'Both'];
+  const {regional} = useGlobalSearchParams<{ regional:string } > ();
+  const { teamNumber } = useGlobalSearchParams<{ teamNumber: string }>();
 
   //selects one option
   const [selectedClimberOption, setSelectedClimberOption] = useState<string | null>(null);
@@ -25,8 +27,8 @@ const robotInfo = () => {
   };
 
   const handleSendData = () => {
-    const sanitizedTeamNumber = String(teamNumber).trim().replace(/[.#$[\]]/g, '-');
-    const teamNumberPath = `teams/${sanitizedTeamNumber}/robotInfo`;
+    // const sanitizedTeamNumber = String(teamNumber).trim().replace(/[.#$[\]]/g, '-');
+    const teamNumberPath = regional + `/teams/` + teamNumber + `/Robot-Info/`;
 
     set(ref(database, teamNumberPath), {
       driveTrain: driveTrain,
@@ -38,6 +40,8 @@ const robotInfo = () => {
       // ... any other fields ...
     }).then(() => {
       console.log('Data saved successfully!');
+      console.log(regional)
+      console.log(teamNumber)
       // ... handle success ...
     }).catch((error) => {
       console.error('Failed to write data: ', error);
@@ -59,18 +63,9 @@ const robotInfo = () => {
 
           <TextInput
             style={styles.input}
-            value={teamNumber}
-            onChangeText={setTeamNumber}
-            placeholder="Team Number"
-            keyboardType="numeric"
-          />
-
-          <TextInput
-            style={styles.input}
             value={driveTrain}
             onChangeText={setDriveTrain}
             placeholder="Drive Train"
-            keyboardType="numeric"
           />
 
           <Text style={ styles.questiontitle }>Scoring data!</Text>
