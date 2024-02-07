@@ -4,11 +4,11 @@ import BackButton from "../../../backButton";
 import { database } from '../../../.././firebaseConfig';
 import React, { useEffect, useState } from 'react';
 import { getDatabase, ref, get, DataSnapshot } from "firebase/database";
+import { TeamProvider, useTeam } from './TeamContext';
 
 const robotDisplay = () => { 
   const [climbingData, setClimbingData] = useState<any>(null); // Use a more specific type instead of any if possible
-  const { regional } = useLocalSearchParams<{ regional:string } > ();
-  const { teamNumber } = useLocalSearchParams<{ teamNumber: string }>();
+  const { regional, teamNumber } = useTeam();
   
   useEffect(() => {
     const database = getDatabase();
@@ -29,12 +29,15 @@ const robotDisplay = () => {
   }, []); // Empty dependency array ensures this effect runs once after the initial render
 
   return (
-    <View style={styles.container}>
-      <BackButton buttonName="Home Page" />
-      <Text style={styles.title}> Robot Display! </Text>
-      <Text style={styles.subtitle}> Climbing Data! </Text>
-      <Text style={styles.dataText}>{JSON.stringify(climbingData)}</Text>
-    </View>
+    <TeamProvider>
+      <View style={styles.container}>
+        <BackButton buttonName="Home Page" />
+        <Text style={styles.title}> Robot Display! </Text>
+        <Text style={styles.subtitle}> Climbing Data! </Text>
+        <Text style={styles.dataText}>{JSON.stringify(climbingData)}</Text>
+      </View>
+    </TeamProvider>
+    
   );
 };
 

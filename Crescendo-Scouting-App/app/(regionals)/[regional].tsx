@@ -95,7 +95,9 @@ const RegionalPage = () => {
             style={styles.buttonTwo}
             onPress={() => {
                 if(selectedValue) {
+                  router.push(`/(scout)/(ScoutingDisplay)/robotDisplay?regional=${regional}&teamNumber=${selectedValue}`);
                   router.push(`/(scout)/(ScoutingDisplay)/matchDisplay?regional=${regional}&teamNumber=${selectedValue}`);
+                  // router.push(`/(scout)/(ScoutingDisplay)/matchDisplay?regional=${regional}&teamNumber=${selectedValue}`);
                 } else {
                   alert('Please select a team number.');
                 }

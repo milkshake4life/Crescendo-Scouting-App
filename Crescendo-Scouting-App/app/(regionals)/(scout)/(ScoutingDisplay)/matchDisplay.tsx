@@ -1,14 +1,21 @@
-import { Link, router } from "expo-router";
+import { Link, router, useGlobalSearchParams } from "expo-router";
 import { Pressable, Button, Text, View, StyleSheet } from "react-native";
 import BackButton from "../../../backButton";
+import React, { useState } from "react";
+import { TeamProvider, useTeam } from './TeamContext';
+
 
 
 const matchDisplay = () => {
+  const { regional, teamNumber } = useTeam();
+
   return (
-    <View style={styles.container}>
-      <BackButton buttonName="Home Page" />
-      <Text style={styles.title}> Match Display! </Text>
-    </View>
+    <TeamProvider>
+      <View style={styles.container}>
+        <BackButton buttonName="Home Page" />
+        <Text style={styles.title}> Match Display! </Text>
+      </View>  
+    </TeamProvider>    
   );
 };
 
