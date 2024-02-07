@@ -1,5 +1,5 @@
 import { Platform, KeyboardAvoidingView, ScrollView, Pressable, Button, Text, View, StyleSheet, TextInput } from "react-native";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { database } from '../../../.././firebaseConfig';
 import { ref, set, push } from 'firebase/database';
 import BackButton from "../../../backButton";

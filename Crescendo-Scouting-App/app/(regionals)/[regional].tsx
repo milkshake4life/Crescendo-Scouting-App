@@ -81,7 +81,7 @@ const RegionalPage = () => {
             onPress={() => {
               if (selectedValue) {
                 router.push(`/(scout)/scout?regional=${regional}&teamNumber=${selectedValue}`);
-                console.log(selectedValue)
+                // console.log(selectedValue)
               } else {
                 // Handle case where no team is selected
                 alert('Please select a team number.');
@@ -93,7 +93,15 @@ const RegionalPage = () => {
 
           <Pressable
             style={styles.buttonTwo}
-            onPress={() => router.push("/(scout)/(ScoutingDisplay)/matchDisplay")}
+            onPress={() => {
+                if(selectedValue) {
+                  router.push(`/(scout)/(ScoutingDisplay)/robotDisplay?regional=${regional}&teamNumber=${selectedValue}`);
+                  router.push(`/(scout)/(ScoutingDisplay)/matchDisplay?regional=${regional}&teamNumber=${selectedValue}`);
+                  // router.push(`/(scout)/(ScoutingDisplay)/matchDisplay?regional=${regional}&teamNumber=${selectedValue}`);
+                } else {
+                  alert('Please select a team number.');
+                }
+              }}
             >
             <Text style={styles.buttonTwoText}>Scouting Information</Text>
           </Pressable>

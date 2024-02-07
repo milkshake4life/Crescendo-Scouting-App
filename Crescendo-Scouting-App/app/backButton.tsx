@@ -96,7 +96,7 @@ backButtonText:{
     marginBottom: 30,
 },
 backButton: {
-    marginTop: 0,
+    marginTop: 50,
     marginBottom: 50, //adding bottom margins to avoid changing the title style
     //alignItems: 'center',
     //justifyContent: 'center',
@@ -114,7 +114,6 @@ backButton: {
 backButtonIcon: {
     width: 20,
     height: 20,
-
 }
 });
 

@@ -1,6 +1,6 @@
 import { Stack, Tabs } from "expo-router";
 
-const InputLayout = () => {
+const OutputLayout = () => {
     return (
         //tabs are a stack, so we can remove headers in the same method
         <Tabs screenOptions = {{headerShown: false,}}>
@@ -15,4 +15,4 @@ const InputLayout = () => {
     );
 };
 
-export default InputLayout;
+export default OutputLayout;
