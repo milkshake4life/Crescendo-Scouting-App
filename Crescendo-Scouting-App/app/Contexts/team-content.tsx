@@ -1,5 +1,5 @@
 import { ReactElement, createContext, useContext } from "react";
-
+//this did not work, switching directions. 
 
 //this file will contain functions which can provide context for other components. 
 
@@ -10,7 +10,8 @@ type contextWrapperType = {
 
 const teamContext = createContext<contextWrapperType | undefined>(undefined);
 
-function useTeamContext(): contextWrapperType {
+//changing up return type to better reflect the information we need. 
+function UseTeamContext(): contextWrapperType {
     const context = useContext(teamContext);
     if(!context) {
         throw new Error("useTeamContext must be used with a contextProvider");
@@ -23,4 +24,4 @@ const TeamContextProvider = (props: contextWrapperType): ReactElement => {
     return <teamContext.Provider value={{regional: props.regional, team: props.team}}/>
 };
 
-export {useTeamContext, TeamContextProvider}
+export {UseTeamContext, TeamContextProvider}
