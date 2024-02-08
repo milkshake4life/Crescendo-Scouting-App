@@ -1,7 +1,3 @@
-// import { Platform, KeyboardAvoidingView, ScrollView, Pressable, Button, Text, View, StyleSheet, TextInput } from "react-native";
-// import React, { useState } from 'react';
-// import { database } from '../../../.././firebaseConfig';
-// import { ref, set, push } from 'firebase/database';
 import { Link, router, useGlobalSearchParams, useLocalSearchParams } from "expo-router";
 import { Pressable, Button, Image, Text, View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, TextInput } from "react-native";
 import { useFonts } from 'expo-font';
@@ -12,12 +8,10 @@ import React, { useEffect, useState } from "react";
 import { database } from "../../../../firebaseConfig";
 import { onValue, ref, set } from "firebase/database";
 
-
 interface DropdownItem{
   label: string;
   value: string;
 }
-
 
 const robotInfo = () => {
   const ScoringData = [
@@ -60,7 +54,7 @@ const robotInfo = () => {
     // Assuming you have a teamNumber variable to uniquely identify teams
 
     // Path to the Firebase location where you want to store the selected value
-    const path = {regional} + `/teams/${teamNumber}/Robot-Info/scoringOption`;
+    const path = {modifiedRegional} + `/teams/${teamNumber}/Robot-Info/scoringOption`;
 
     // Push the selected value to Firebase
     set(ref(database, path), selectedValue)
@@ -72,49 +66,6 @@ const robotInfo = () => {
         console.error('Failed to write data: ', error);
       });
   };
-    
-    
-  
- 
-
-  // const [teamNumber, setTeamNumber] = useState<string>('');
-  // const [driveTrain, setDriveTrain] = useState<string>('');
-  // const [vision, setVision] = useState<string>('');
-  // const ClimberOptions = ['No Climb', 'Single Climb', 'Harmony Climb'];
-  // const ScoringOptions = ['No Scoring', 'Amp Only', 'Speaker Only', 'Both'];
-  // const IntakeOptions = ['No Intake', 'Ground Only', 'Source Only', 'Both'];
-  // const DrivingOptions = ['N/A', 'Drive Over Notes', 'Drive Under Stage', 'Both'];
-
-  // //selects one option
-  // const [selectedClimberOption, setSelectedClimberOption] = useState<string | null>(null);
-  // const [selectedScoringOption, setSelectedScoringOption] = useState<string | null>(null);
-  // const [selectedIntakeOption, setSelectedIntakeOption] = useState<string | null>(null);
-  // const [selectedDrivingOption, setSelectedDrivingOption] = useState<string | null>(null);
-
-  // // function that does a one choice selection
-  // const handleSelection = (option: string, setSelection: React.Dispatch<React.SetStateAction<string | null>>) => {
-  //   setSelection(option);
-  // };
-
-  // const handleSendData = () => {
-  //   const sanitizedTeamNumber = String(teamNumber).trim().replace(/[.#$[\]]/g, '-');
-  //   const teamNumberPath = `teams/${sanitizedTeamNumber}/robotInfo`;
-
-  //   set(ref(database, teamNumberPath), {
-  //     driveTrain: driveTrain,
-  //     vision: vision,
-  //     climberOption: selectedClimberOption,
-  //     scoringOption: selectedScoringOption,
-  //     intakeOption: selectedIntakeOption,
-  //     drivingOption: selectedDrivingOption,
-  //     // ... any other fields ...
-  //   }).then(() => {
-  //     console.log('Data saved successfully!');
-  //     // ... handle success ...
-  //   }).catch((error) => {
-  //     console.error('Failed to write data: ', error);
-  //   });
-  // };
 
   return (
     <KeyboardAvoidingView
@@ -237,95 +188,12 @@ const robotInfo = () => {
           }}
         />
       </View>
-    
-  
-
-          {/* <TextInput
-            style={styles.input}
-            value={teamNumber}
-            onChangeText={setTeamNumber}
-            placeholder="Team Number"
-            keyboardType="numeric"
-          />
-
-          <TextInput
-            style={styles.input}
-            value={driveTrain}
-            onChangeText={setDriveTrain}
-            placeholder="Drive Train"
-            keyboardType="numeric"
-          />
-
-          <Text style={ styles.questiontitle }>Scoring data!</Text>
-
-          <View style={styles.optionsContainer}>
-            {ScoringOptions.map((option, index) => (
-              <Pressable
-                key={index}
-                style={[styles.option, selectedScoringOption === option ? styles.optionSelected : {}]}
-                onPress={() => handleSelection(option, setSelectedScoringOption)}
-              >
-                <Text style={styles.optionText}>{option}</Text>
-              </Pressable>
-            ))}
-          </View>
-
-          <Text style={ styles.questiontitle }>Climbing data!</Text>
-
-          <View style={styles.optionsContainer}>
-            {ClimberOptions.map((option, index) => (
-              <Pressable
-                key={index}
-                style={[styles.option, selectedClimberOption === option ? styles.optionSelected : {}]}
-                onPress={() => handleSelection(option, setSelectedClimberOption)}
-              >
-                <Text style={styles.optionText}>{option}</Text>
-              </Pressable>
-            ))}
-          </View>
-
-          <Text style={ styles.questiontitle }>Intake data!</Text>
-
-          <View style={styles.optionsContainer}>
-            {IntakeOptions.map((option, index) => (
-              <Pressable
-                key={index}
-                style={[styles.option, selectedIntakeOption === option ? styles.optionSelected : {}]}
-                onPress={() => handleSelection(option, setSelectedIntakeOption)}
-              >
-                <Text style={styles.optionText}>{option}</Text>
-              </Pressable>
-            ))}
-          </View>
-
-          <Text style={ styles.questiontitle }>Driving data!</Text>
-
-          <View style={styles.optionsContainer}>
-            {DrivingOptions.map((option, index) => (
-              <Pressable
-                key={index}
-                style={[styles.option, selectedDrivingOption === option ? styles.optionSelected : {}]}
-                onPress={() => handleSelection(option, setSelectedDrivingOption)}
-              >
-                <Text style={styles.optionText}>{option}</Text>
-              </Pressable>
-            ))}
-          </View>
-
-          <Text style={ styles.questiontitle }>Visionary data!</Text>
-          
-          <TextInput
-            style={styles.input}
-            value={vision}
-            onChangeText={setVision}
-            placeholder="Visionary System"
-          />
           <Pressable
             style={styles.sendButton}
             onPress={handleSendData}
           >
             <Text style={styles.sendButtonText}>Send Data</Text>
-          </Pressable> */}
+          </Pressable>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -347,7 +215,6 @@ const styles = StyleSheet.create({
   title:{
     fontFamily: 'BPoppins',
     fontSize: 32,
-    marginTop: 50,
   },
   subtitle:{
     fontFamily: 'BPoppins',
