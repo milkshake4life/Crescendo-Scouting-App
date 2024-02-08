@@ -1,52 +1,120 @@
-import { Platform, KeyboardAvoidingView, ScrollView, Pressable, Button, Text, View, StyleSheet, TextInput } from "react-native";
-import React, { useEffect, useState } from 'react';
-import { database } from '../../../.././firebaseConfig';
-import { ref, set, push } from 'firebase/database';
-import BackButton from "../../../backButton";
-import { useGlobalSearchParams, useLocalSearchParams } from "expo-router";
+// import { Platform, KeyboardAvoidingView, ScrollView, Pressable, Button, Text, View, StyleSheet, TextInput } from "react-native";
+// import React, { useState } from 'react';
+// import { database } from '../../../.././firebaseConfig';
+// import { ref, set, push } from 'firebase/database';
+import { Link, router, useGlobalSearchParams, useLocalSearchParams } from "expo-router";
+import { Pressable, Button, Image, Text, View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, TextInput } from "react-native";
+import { useFonts } from 'expo-font';
+//importing the back-button component from the filee
+import BackButton from '../../../backButton';
+import { Dropdown } from 'react-native-element-dropdown';
+import React, { useEffect, useState } from "react";
+import { database } from "../../../../firebaseConfig";
+import { onValue, ref, set } from "firebase/database";
+
+
+interface DropdownItem{
+  label: string;
+  value: string;
+}
+
 
 const robotInfo = () => {
+  const ScoringData = [
+    { label: 'No Scoring', value: '1' },
+    { label: 'Amp Only', value: '2' },
+    { label: 'Speaker Only', value: '3' },
+    { label: 'Both', value: '4' },
+  ];
+  const ClimbingData = [
+    { label: 'No Climb', value: '1' },
+    { label: 'Single Climb', value: '2' },
+    { label: 'Harmony Climb', value: '3' },
+  ];
+  const IntakeData = [
+    { label: 'No Intake', value: '1' },
+    { label: 'Ground Only', value: '2' },
+    { label: 'Source Only', value: '3' },
+    { label: 'Both', value: '4' },
+  ];
+  const DrivingData = [
+    { label: 'N/A', value: '1' },
+    { label: 'Drive Over Notes', value: '2' },
+    { label: 'Drive Under Stage', value: '3' },
+    { label: 'Both', value: '4' },
+  ]
+
   const [driveTrain, setDriveTrain] = useState<string>('');
   const [vision, setVision] = useState<string>('');
-  const ClimberOptions = ['No Climb', 'Single Climb', 'Harmony Climb'];
-  const ScoringOptions = ['No Scoring', 'Amp Only', 'Speaker Only', 'Both'];
-  const IntakeOptions = ['No Intake', 'Ground Only', 'Source Only', 'Both'];
-  const DrivingOptions = ['N/A', 'Drive Over Notes', 'Drive Under Stage', 'Both'];
+  const [selectedValue, setSelectedValue] = useState<string | null>(null);  const [isFocus, setIsFocus] = useState(false);
+  const [dropdownHeight, setDropdownHeight] = useState<number>(0);
   const {regional} = useGlobalSearchParams<{ regional:string } > ();
-  const { teamNumber } = useGlobalSearchParams<{ teamNumber: string }>();
+  let modifiedRegional = regional
+  if(regional === 'Orange County'){
+    modifiedRegional = 'Orange-County'
+  }
+  const {teamNumber} = useGlobalSearchParams<{ teamNumber:string } > ();
 
-  //selects one option
-  const [selectedClimberOption, setSelectedClimberOption] = useState<string | null>(null);
-  const [selectedScoringOption, setSelectedScoringOption] = useState<string | null>(null);
-  const [selectedIntakeOption, setSelectedIntakeOption] = useState<string | null>(null);
-  const [selectedDrivingOption, setSelectedDrivingOption] = useState<string | null>(null);
-
-  // function that does a one choice selection
-  const handleSelection = (option: string, setSelection: React.Dispatch<React.SetStateAction<string | null>>) => {
-    setSelection(option);
-  };
 
   const handleSendData = () => {
-    // const sanitizedTeamNumber = String(teamNumber).trim().replace(/[.#$[\]]/g, '-');
-    const teamNumberPath = regional + `/teams/` + teamNumber + `/Robot-Info/`;
+    // Assuming you have a teamNumber variable to uniquely identify teams
 
-    set(ref(database, teamNumberPath), {
-      driveTrain: driveTrain,
-      vision: vision,
-      climberOption: selectedClimberOption,
-      scoringOption: selectedScoringOption,
-      intakeOption: selectedIntakeOption,
-      drivingOption: selectedDrivingOption,
-      // ... any other fields ...
-    }).then(() => {
-      console.log('Data saved successfully!');
-      console.log(regional)
-      console.log(teamNumber)
-      // ... handle success ...
-    }).catch((error) => {
-      console.error('Failed to write data: ', error);
-    });
+    // Path to the Firebase location where you want to store the selected value
+    const path = {regional} + `/teams/${teamNumber}/Robot-Info/scoringOption`;
+
+    // Push the selected value to Firebase
+    set(ref(database, path), selectedValue)
+      .then(() => {
+        console.log('Data saved successfully!');
+        // ... handle success ...
+      })
+      .catch((error) => {
+        console.error('Failed to write data: ', error);
+      });
   };
+    
+    
+  
+ 
+
+  // const [teamNumber, setTeamNumber] = useState<string>('');
+  // const [driveTrain, setDriveTrain] = useState<string>('');
+  // const [vision, setVision] = useState<string>('');
+  // const ClimberOptions = ['No Climb', 'Single Climb', 'Harmony Climb'];
+  // const ScoringOptions = ['No Scoring', 'Amp Only', 'Speaker Only', 'Both'];
+  // const IntakeOptions = ['No Intake', 'Ground Only', 'Source Only', 'Both'];
+  // const DrivingOptions = ['N/A', 'Drive Over Notes', 'Drive Under Stage', 'Both'];
+
+  // //selects one option
+  // const [selectedClimberOption, setSelectedClimberOption] = useState<string | null>(null);
+  // const [selectedScoringOption, setSelectedScoringOption] = useState<string | null>(null);
+  // const [selectedIntakeOption, setSelectedIntakeOption] = useState<string | null>(null);
+  // const [selectedDrivingOption, setSelectedDrivingOption] = useState<string | null>(null);
+
+  // // function that does a one choice selection
+  // const handleSelection = (option: string, setSelection: React.Dispatch<React.SetStateAction<string | null>>) => {
+  //   setSelection(option);
+  // };
+
+  // const handleSendData = () => {
+  //   const sanitizedTeamNumber = String(teamNumber).trim().replace(/[.#$[\]]/g, '-');
+  //   const teamNumberPath = `teams/${sanitizedTeamNumber}/robotInfo`;
+
+  //   set(ref(database, teamNumberPath), {
+  //     driveTrain: driveTrain,
+  //     vision: vision,
+  //     climberOption: selectedClimberOption,
+  //     scoringOption: selectedScoringOption,
+  //     intakeOption: selectedIntakeOption,
+  //     drivingOption: selectedDrivingOption,
+  //     // ... any other fields ...
+  //   }).then(() => {
+  //     console.log('Data saved successfully!');
+  //     // ... handle success ...
+  //   }).catch((error) => {
+  //     console.error('Failed to write data: ', error);
+  //   });
+  // };
 
   return (
     <KeyboardAvoidingView
@@ -56,16 +124,136 @@ const robotInfo = () => {
     >
       <ScrollView>
         <View style={ styles.container }>
-          <BackButton buttonName="Home Page" />
-          <Text style={styles.title}> Robot Display! </Text>
+        <BackButton buttonName='Home Page'/>
           <Text style={ styles.title }>Robot Scouting!</Text>
           <Text style={ styles.subtitle }>Input team's data!</Text>
+
+      <View style={styles.container}>
+      <Text style={ styles.buttontitle }>Visionary data!</Text>
+      <TextInput
+            style={styles.input}
+            value={vision}
+            onChangeText={setVision}
+            placeholder="Visionary System"
+          />
+      <Text style={ styles.buttontitle }>Drive Train Data!</Text>
+      <TextInput
+            style={styles.input}
+            value={driveTrain}
+            onChangeText={setDriveTrain}
+            placeholder="Drive Train"
+         />
+        <Text style={ styles.buttontitle }>Scoring Data</Text>
+        <Dropdown
+          style={[styles.dropdown, isFocus && { borderColor: 'blue', position: 'relative', bottom: dropdownHeight + 10, }]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          data={ScoringData}
+          search
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder={!isFocus ? 'Select item' : '...'}
+          value={selectedValue || '1'}
+          searchPlaceholder="Search..."
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={(item: DropdownItem) => {
+            setSelectedValue(item.value);
+            setIsFocus(false);
+            handleSendData(); // Call the function to push the selected value when it changes
+          }}
+          
+        />
+        <Text style={ styles.buttontitle }>Climbing Data!</Text>
+        <Dropdown
+          style={[styles.dropdown, isFocus && { borderColor: 'blue', position: 'relative', bottom: 300 }]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          data={ClimbingData}
+          search
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder={!isFocus ? 'Select item' : '...'}
+          value={selectedValue || '1'}
+          searchPlaceholder="Search..."
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={(item: DropdownItem) => {
+            setSelectedValue(item.value);
+            setIsFocus(false);
+            handleSendData(); // Call the function to push the selected value when it changes
+          }}
+        />
+        <Text style={ styles.buttontitle }>Intake Data!</Text>
+        <Dropdown
+          style={[styles.dropdown, isFocus && { borderColor: 'blue', position: 'relative', bottom: 300 }]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          data={IntakeData}
+          search
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder={!isFocus ? 'Select item' : '...'}
+          value={selectedValue || '1'}
+          searchPlaceholder="Search..."
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={(item: DropdownItem) => {
+            setSelectedValue(item.value);
+            setIsFocus(false);
+            handleSendData(); // Call the function to push the selected value when it changes
+          }}
+        />
+        <Text style={ styles.buttontitle }>Driving Data!</Text>
+        <Dropdown
+          style={[styles.dropdown, isFocus && { borderColor: 'blue'}]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          data={DrivingData}
+          search
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder={!isFocus ? 'Select item' : '...'}
+          value={selectedValue || '1'}
+          searchPlaceholder="Search..."
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={(item: DropdownItem) => {
+            setSelectedValue(item.value);
+            setIsFocus(false);
+            handleSendData(); // Call the function to push the selected value when it changes
+          }}
+        />
+      </View>
+    
+  
+
+          {/* <TextInput
+            style={styles.input}
+            value={teamNumber}
+            onChangeText={setTeamNumber}
+            placeholder="Team Number"
+            keyboardType="numeric"
+          />
 
           <TextInput
             style={styles.input}
             value={driveTrain}
             onChangeText={setDriveTrain}
             placeholder="Drive Train"
+            keyboardType="numeric"
           />
 
           <Text style={ styles.questiontitle }>Scoring data!</Text>
@@ -137,7 +325,7 @@ const robotInfo = () => {
             onPress={handleSendData}
           >
             <Text style={styles.sendButtonText}>Send Data</Text>
-          </Pressable>
+          </Pressable> */}
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -154,10 +342,12 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start', // Centers content vertically in the container
     alignItems: 'center', // Centers content horizontally in the container
     padding: 20, // Optional: Adds padding to the container
+    width: "100%",
   },
   title:{
     fontFamily: 'BPoppins',
     fontSize: 32,
+    marginTop: 50,
   },
   subtitle:{
     fontFamily: 'BPoppins',
@@ -165,17 +355,24 @@ const styles = StyleSheet.create({
     color: 'rgba(127, 127, 127, 255)',
     marginBottom: 30,
   },
+  buttontitle:{
+    fontFamily: 'BPoppins',
+    fontSize: 12,
+   
+  },
   questiontitle:{
     fontFamily: 'BPoppins',
     fontSize: 15,
     color: 'rgba(127, 127, 127, 255)',
   },
   input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
+    height: 50,
+    marginTop: 10,
+    marginBottom: 30,
+    paddingHorizontal: 8,
+    borderWidth: .5,
     padding: 10,
-    width: '80%', // Set width as needed
+    width: '90%', // Set width as needed
     borderRadius: 5, // Optional: if you want rounded corners
   },
   optionsContainer: {
@@ -203,6 +400,42 @@ const styles = StyleSheet.create({
   },
   sendButton: {},
   sendButtonText: {},
+  dropdown: {
+    height: 50,
+    width: '90%', // or some other appropriate width
+    borderColor: 'gray',
+    borderWidth: 0.5,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    // Add margin for some spacing if needed
+    marginTop: 10,
+    marginBottom: 30,
+  },
+  label: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+
 });
 
 export default robotInfo;
+
