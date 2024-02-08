@@ -8,8 +8,11 @@ import React, { useEffect, useState } from "react";
 import { database } from "../../firebaseConfig";
 import { onValue, ref } from "firebase/database";
 
-//Creating a back-button component for easier implementation. 
-//props list for the back button component
+//importing the context providers
+import { useTeamContext, TeamContextProvider } from "../Contexts/team-content";
+
+
+
 
 interface DropdownItem {
   label: string;
@@ -49,6 +52,9 @@ const RegionalPage = () => {
     fetchTeams();
   }, []);
 
+  //adding a team const so that we can store team number later. 
+  let team: string = "";
+
     return (
         <View style={styles.container}>
           <BackButton buttonName='Home Page'/>
@@ -81,7 +87,8 @@ const RegionalPage = () => {
             onPress={() => {
               if (selectedValue) {
                 router.push(`/(scout)/scout?regional=${regional}&teamNumber=${selectedValue}`);
-                // console.log(selectedValue)
+                console.log(selectedValue)
+                team = selectedValue
               } else {
                 // Handle case where no team is selected
                 alert('Please select a team number.');
@@ -90,21 +97,20 @@ const RegionalPage = () => {
           >
             <Text style={styles.buttonOneText}>Scouting</Text>
           </Pressable>
-
+         <TeamContextProvider team={team} regional={regional}> 
           <Pressable
             style={styles.buttonTwo}
-            onPress={() => {
-                if(selectedValue) {
-                  router.push(`/(scout)/(ScoutingDisplay)/robotDisplay?regional=${regional}&teamNumber=${selectedValue}`);
-                  router.push(`/(scout)/(ScoutingDisplay)/matchDisplay?regional=${regional}&teamNumber=${selectedValue}`);
-                  // router.push(`/(scout)/(ScoutingDisplay)/matchDisplay?regional=${regional}&teamNumber=${selectedValue}`);
-                } else {
-                  alert('Please select a team number.');
-                }
-              }}
+
+            //figure this out later
+            //matchDisplay?regional ... sets the route of the matchDisplay page. 
+            //trying a fix in which router pushes intou scouting display with params for the regional and team number
+            //this will hopefully allow both tabs to be part of the same route. 
+            //Fix did not work. Looking into context
+            onPress={() => router.push(`/(scout)/(ScoutingDisplay)/matchDisplay?regional=${regional}&teamNumber=${selectedValue}`)}
             >
             <Text style={styles.buttonTwoText}>Scouting Information</Text>
           </Pressable>
+          </TeamContextProvider>
         </View>
     ); //swapped '(ScoutingDisplay)/robotDisplay' to '(ScoutingDsplay)/matchDisplay' to match the tabs. 
 };
