@@ -21,27 +21,35 @@ const robotInfo = () => {
     { label: 'Both', value: '4' },
   ];
   const ClimbingData = [
-    { label: 'No Climb', value: '1' },
-    { label: 'Single Climb', value: '2' },
-    { label: 'Harmony Climb', value: '3' },
+    { label: 'No Climb', value: '5' },
+    { label: 'Single Climb', value: '6' },
+    { label: 'Harmony Climb', value: '7' },
   ];
   const IntakeData = [
-    { label: 'No Intake', value: '1' },
-    { label: 'Ground Only', value: '2' },
-    { label: 'Source Only', value: '3' },
-    { label: 'Both', value: '4' },
+    { label: 'No Intake', value: '8' },
+    { label: 'Ground Only', value: '9' },
+    { label: 'Source Only', value: '10' },
+    { label: 'Both', value: '11' },
   ];
   const DrivingData = [
-    { label: 'N/A', value: '1' },
-    { label: 'Drive Over Notes', value: '2' },
-    { label: 'Drive Under Stage', value: '3' },
-    { label: 'Both', value: '4' },
+    { label: 'N/A', value: '12' },
+    { label: 'Drive Over Notes', value: '13' },
+    { label: 'Drive Under Stage', value: '14' },
+    { label: 'Both', value: '15' },
   ]
 
   const [driveTrain, setDriveTrain] = useState<string>('');
   const [vision, setVision] = useState<string>('');
-  const [selectedValue, setSelectedValue] = useState<string | null>(null);  const [isFocus, setIsFocus] = useState(false);
+  const [isFocus, setIsFocus] = useState(false);
+  const [selectedClimbingValue, setSelectedClimbingValue] = useState<string | null>(null);   
+  const [selectedScoringValue, setSelectedScoringValue] = useState<string | null>(null);
+  const [selectedIntakeValue, setSelectedIntakeValue] = useState<string | null>(null);
+  const [selectedDrivingValue, setSelectedDrivingValue] = useState<string | null>(null);
+  // const [isScoringFocus, setIsScoringFocus] = useState(false);
   const [dropdownHeight, setDropdownHeight] = useState<number>(0);
+  const [dropdownFocus, setDropdownFocus] = useState<{
+    [key: string]: boolean;
+  }>({});
   const {regional} = useGlobalSearchParams<{ regional:string } > ();
   let modifiedRegional = regional
   if(regional === 'Orange County'){
@@ -49,22 +57,29 @@ const robotInfo = () => {
   }
   const {teamNumber} = useGlobalSearchParams<{ teamNumber:string } > ();
 
-
   const handleSendData = () => {
-    // Assuming you have a teamNumber variable to uniquely identify teams
+    const path = `${modifiedRegional}/teams/${teamNumber}/Robot-Info/`;
 
-    // Path to the Firebase location where you want to store the selected value
-    const path = {modifiedRegional} + `/teams/${teamNumber}/Robot-Info/scoringOption`;
+    set(ref(database, path + 'Drive-Train-Info'), driveTrain)
+    set(ref(database, path + 'Vision-Info'), vision)
+    set(ref(database, path + 'Climbing-Info'), selectedClimbingValue)
+    set(ref(database, path + 'Scoring-Info'), selectedScoringValue)
+    set(ref(database, path + 'Intake-Info'), selectedIntakeValue)
+    set(ref(database, path + 'Driving-Info'), selectedDrivingValue)
+  }
 
-    // Push the selected value to Firebase
-    set(ref(database, path), selectedValue)
-      .then(() => {
-        console.log('Data saved successfully!');
-        // ... handle success ...
-      })
-      .catch((error) => {
-        console.error('Failed to write data: ', error);
-      });
+  const handleFocus = (dropdownKey: string) => {
+    setDropdownFocus((prevFocus) => ({
+      ...prevFocus,
+      [dropdownKey]: true,
+    }));
+  };
+  
+  const handleBlur = (dropdownKey: string) => {
+    setDropdownFocus((prevFocus) => ({
+      ...prevFocus,
+      [dropdownKey]: false,
+    }));
   };
 
   return (
@@ -107,16 +122,15 @@ const robotInfo = () => {
           labelField="label"
           valueField="value"
           placeholder={!isFocus ? 'Select item' : '...'}
-          value={selectedValue || '1'}
+          value={selectedScoringValue || '1'}
           searchPlaceholder="Search..."
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
+          onFocus={() => handleFocus('scoringData')}
+          onBlur={() => handleBlur('scoringData')}
           onChange={(item: DropdownItem) => {
-            setSelectedValue(item.value);
+            setSelectedScoringValue(item.value);
+            // handleSendScoringData();
             setIsFocus(false);
-            handleSendData(); // Call the function to push the selected value when it changes
           }}
-          
         />
         <Text style={ styles.buttontitle }>Climbing Data!</Text>
         <Dropdown
@@ -131,14 +145,13 @@ const robotInfo = () => {
           labelField="label"
           valueField="value"
           placeholder={!isFocus ? 'Select item' : '...'}
-          value={selectedValue || '1'}
+          value={selectedClimbingValue || '5'}
           searchPlaceholder="Search..."
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
+          onFocus={() => handleFocus('climbingData')}
+          onBlur={() => handleBlur('climbingData')}
           onChange={(item: DropdownItem) => {
-            setSelectedValue(item.value);
+            setSelectedClimbingValue(item.value);
             setIsFocus(false);
-            handleSendData(); // Call the function to push the selected value when it changes
           }}
         />
         <Text style={ styles.buttontitle }>Intake Data!</Text>
@@ -154,14 +167,13 @@ const robotInfo = () => {
           labelField="label"
           valueField="value"
           placeholder={!isFocus ? 'Select item' : '...'}
-          value={selectedValue || '1'}
+          value={selectedIntakeValue || '8'}
           searchPlaceholder="Search..."
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
+          onFocus={() => handleFocus('intakeData')}
+          onBlur={() => handleBlur('intakeData')}
           onChange={(item: DropdownItem) => {
-            setSelectedValue(item.value);
+            setSelectedIntakeValue(item.value);
             setIsFocus(false);
-            handleSendData(); // Call the function to push the selected value when it changes
           }}
         />
         <Text style={ styles.buttontitle }>Driving Data!</Text>
@@ -177,21 +189,22 @@ const robotInfo = () => {
           labelField="label"
           valueField="value"
           placeholder={!isFocus ? 'Select item' : '...'}
-          value={selectedValue || '1'}
+          value={selectedDrivingValue || '12'}
           searchPlaceholder="Search..."
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
+          onFocus={() => handleFocus('Data')}
+          onBlur={() => handleBlur('drivingData')}
           onChange={(item: DropdownItem) => {
-            setSelectedValue(item.value);
+            setSelectedDrivingValue(item.value);
             setIsFocus(false);
-            handleSendData(); // Call the function to push the selected value when it changes
           }}
         />
       </View>
           <Pressable
             style={styles.sendButton}
-            onPress={handleSendData}
-          >
+            onPress={() => {
+              router.push(`/(matchInfo)/thanks`);
+              handleSendData();
+            }}>
             <Text style={styles.sendButtonText}>Send Data</Text>
           </Pressable>
         </View>
@@ -305,4 +318,3 @@ const styles = StyleSheet.create({
 });
 
 export default robotInfo;
-
