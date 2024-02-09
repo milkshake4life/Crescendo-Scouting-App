@@ -1,55 +1,182 @@
-import { Link, router } from "expo-router";
-import { Pressable, Button, Text, View, StyleSheet } from "react-native";
-import BackButton from "../../../../backButton";
+import React from 'react';
+import { View, Text, SafeAreaView, StyleSheet, ScrollView, Pressable } from 'react-native';
+import BackButton from '../../../../backButton';
+import { CheckBox } from 'react-native-elements';
+import Slider from '@react-native-community/slider';
 
+// const MatchInfo: React.FC = () => {
+//   const [sliderValue, setSliderValue] = React.useState(1);
+//   const [isChecked, setIsChecked] = React.useState(false);
 
-const matchInfo = () => {
+//   const handleSubmit = () => {
+//     // Add your submission logic here
+//     console.log('Submitting:', { sliderValue, isChecked });
+//   };
+
+//   return (
+//     <ScrollView>
+//     <View style={styles.container}>
+//       <Text style={styles.title}>Match Info</Text>
+      
+//       {/* Slider with range from 1 to 10 */}
+//       <Text style={styles.subtitle}>Driving Rating</Text>
+//       <Slider
+//         style={styles.slider}
+//         minimumValue={1}
+//         maximumValue={5}
+//         step={1}
+//         value={sliderValue}
+//         onValueChange={(value) => setSliderValue(value)}
+//       />
+      
+//       <Text style={styles.subtitle}>Selected Value: {sliderValue}</Text>
+
+//       <CheckBox
+//         title="Defense"
+//         checked={isChecked}
+//         onPress={() => setIsChecked(!isChecked)}
+//         containerStyle={styles.checkboxContainer}
+//       />
+
+//       {isChecked && (
+//         <Slider
+//           style={styles.conditionalSlider}
+//           minimumValue={1}
+//           maximumValue={10}
+//           step={1}
+//           value={sliderValue}
+//           onValueChange={(value) => setSliderValue(value)}
+//         />
+
+        
+//       )}
+//       <Text style={styles.subtitle}>Selected Value: {sliderValue}</Text>
+
+//       <Pressable style={styles.submitButton} onPress={handleSubmit}>
+//         <Text style={styles.submitButtonText}>Submit</Text>
+//       </Pressable>  
+      
+//       {/* Other components and styles... */}
+//     </View>
+//     </ScrollView>
+//   );
+// };
+const DrivingRatingSlider: React.FC = () => {
+  const [sliderValue, setSliderValue] = React.useState(1);
+
   return (
-    <View>
-      <BackButton buttonName="Home Page" />
-      <Text>Plese Input the Post Game Information!</Text>
-      <Pressable
-            style={styles.buttonOne}
-            onPress={() => router.push(`/(matchInfo)/thanks`)}
-            >
-                <Text style={styles.buttonOneText}>Thank You</Text>
-            </Pressable>
-    </View>
+    <>
+      <Text style={styles.subtitle}>Driving Rating</Text>
+      <Slider
+        style={styles.slider}
+        minimumValue={1}
+        maximumValue={5}
+        step={1}
+        value={sliderValue}
+        onValueChange={(value) => setSliderValue(value)}
+      />
+      <Text style={styles.subtitle}>Selected Value: {sliderValue}</Text>
+    </>
+  );
+};
+
+const DefenseSlider: React.FC = () => {
+  const [sliderValue, setSliderValue] = React.useState(1);
+
+  return (
+    <>
+      <Text style={styles.subtitle}>Defense</Text>
+      <Slider
+        style={styles.slider}
+        minimumValue={1}
+        maximumValue={5}
+        step={1}
+        value={sliderValue}
+        onValueChange={(value) => setSliderValue(value)}
+      />
+      <Text style={styles.subtitle}>Selected Value: {sliderValue}</Text>
+    </>
+  );
+};
+
+const MatchInfo: React.FC = () => {
+  const [isChecked, setIsChecked] = React.useState(false);
+
+  const handleSubmit = () => {
+    // Add your submission logic here
+    console.log('Submitting:', { isChecked });
+  };
+
+  return (
+    <ScrollView>
+      <View style={styles.container}>
+        <Text style={styles.title}>Match Info</Text>
+
+        {/* Driving Rating Slider */}
+        <DrivingRatingSlider />
+
+        {/* Checkbox with margin */}
+        <CheckBox
+          title="Defense"
+          checked={isChecked}
+          onPress={() => setIsChecked(!isChecked)}
+          containerStyle={styles.checkboxContainer}
+        />
+
+        {/* Conditional Defense Slider based on checkbox state */}
+        {isChecked && <DefenseSlider />}
+
+        <Pressable style={styles.submitButton} onPress={handleSubmit}>
+          <Text style={styles.submitButtonText}>Submit</Text>
+        </Pressable>
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  backButtonText:{
+  container: {
+      flex: 1, // Makes sure the container takes up the whole screen
+      justifyContent: 'flex-start', // Centers content to the top of the page
+      alignItems: 'center', // Centers content horizontally in the container
+      padding: 20, // Optional: Adds padding to the container
+  },
+  slider: {
+    width: 200, 
+    height: 40,
+    marginBottom: 20,
+  },
+  title: {
+    fontFamily: 'BPoppins',
+    fontSize: 32,
+    marginBottom: 20,
+    marginTop: 70,
+  },
+  checkboxContainer: {
+    marginVertical: 20,
+  },
+  conditionalSlider: {
+    width: 200,
+    height: 40,
+    marginBottom: 20,
+  },
+  subtitle: {
     fontFamily: 'BPoppins',
     fontSize: 15,
-    color: 'white',
-    marginBottom: 30,
+    color: 'rgba(127, 127, 127, 255)',
+    marginTop: 10,
   },
-  backButton: {
-    marginTop: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 82,
-    borderRadius: 4,
-    elevation: 3,
+  submitButton: {
+    marginTop: 20,
     backgroundColor: 'rgba(0, 130, 190, 255)',
-    borderWidth: 1,
-    borderColor: 'white',
-  },
-  buttonOne: {
-    marginTop: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
     paddingVertical: 12,
     paddingHorizontal: 53,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: 'rgba(0, 130, 190, 255)',
     borderWidth: 2,
     borderColor: 'white',
   },
-  buttonOneText: {
+  submitButtonText: {
     fontSize: 16,
     lineHeight: 21,
     fontWeight: 'bold',
@@ -57,6 +184,14 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'BPoppins',
   },
+  checkedText: {
+    fontFamily: 'BPoppins',
+    fontSize: 15,
+    color: 'green',
+    marginTop: 10,
+  },
+  
+  // ... Other styles remain the same
 });
 
-export default matchInfo;
+export default MatchInfo;
