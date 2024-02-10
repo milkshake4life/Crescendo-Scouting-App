@@ -1,22 +1,5 @@
-import {
-  Link,
-  router,
-  useGlobalSearchParams,
-  useLocalSearchParams,
-} from "expo-router";
-import {
-  Pressable,
-  Button,
-  Image,
-  Text,
-  View,
-  StyleSheet,
-  ScrollView,
-  KeyboardAvoidingView,
-  Platform,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import { Link, router, useGlobalSearchParams, useLocalSearchParams, } from "expo-router";
+import {Pressable, Button, Image, Text, View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity,} from "react-native";
 import BackButton from "../../../../backButton";
 import { Dropdown } from "react-native-element-dropdown";
 import React, { useEffect, useState } from "react";
@@ -152,15 +135,21 @@ const matchInfo: React.FC = () => {
 
           <Pressable
             style={styles.buttonOne}
-            onPress={() => router.push(`/(matchInfo)/auto`)}
+            // onPress={() => router.push(`/(matchInfo)/auto`)}
           >
             <Text style={styles.buttonOneText}>Speaker</Text>
           </Pressable>
           <Pressable
             style={styles.buttonOne}
-            onPress={() => router.push(`/(matchInfo)/auto`)}
+            // onPress={() => router.push(`/(matchInfo)/auto`)}
           >
             <Text style={styles.buttonOneText}>Amp</Text>
+          </Pressable>
+          <Pressable
+            style={styles.buttonOne}
+            onPress={() => router.push(`/(matchInfo)/teleop`)}
+          >
+            <Text style={styles.buttonOneText}>Teleop</Text>
           </Pressable>
         </View>
       </ScrollView>

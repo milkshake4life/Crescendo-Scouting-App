@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "@firebase/database": "^1.0.2"
+    "@firebase/database": "^1.0.2",
+    "@react-native-community/slider": "^4.5.0",
+    "react-native-elements": "^3.4.3"
   }
 }

@@ -3,64 +3,8 @@ import { View, Text, SafeAreaView, StyleSheet, ScrollView, Pressable } from 'rea
 import BackButton from '../../../../backButton';
 import { CheckBox } from 'react-native-elements';
 import Slider from '@react-native-community/slider';
+import { router } from 'expo-router';
 
-// const MatchInfo: React.FC = () => {
-//   const [sliderValue, setSliderValue] = React.useState(1);
-//   const [isChecked, setIsChecked] = React.useState(false);
-
-//   const handleSubmit = () => {
-//     // Add your submission logic here
-//     console.log('Submitting:', { sliderValue, isChecked });
-//   };
-
-//   return (
-//     <ScrollView>
-//     <View style={styles.container}>
-//       <Text style={styles.title}>Match Info</Text>
-      
-//       {/* Slider with range from 1 to 10 */}
-//       <Text style={styles.subtitle}>Driving Rating</Text>
-//       <Slider
-//         style={styles.slider}
-//         minimumValue={1}
-//         maximumValue={5}
-//         step={1}
-//         value={sliderValue}
-//         onValueChange={(value) => setSliderValue(value)}
-//       />
-      
-//       <Text style={styles.subtitle}>Selected Value: {sliderValue}</Text>
-
-//       <CheckBox
-//         title="Defense"
-//         checked={isChecked}
-//         onPress={() => setIsChecked(!isChecked)}
-//         containerStyle={styles.checkboxContainer}
-//       />
-
-//       {isChecked && (
-//         <Slider
-//           style={styles.conditionalSlider}
-//           minimumValue={1}
-//           maximumValue={10}
-//           step={1}
-//           value={sliderValue}
-//           onValueChange={(value) => setSliderValue(value)}
-//         />
-
-        
-//       )}
-//       <Text style={styles.subtitle}>Selected Value: {sliderValue}</Text>
-
-//       <Pressable style={styles.submitButton} onPress={handleSubmit}>
-//         <Text style={styles.submitButtonText}>Submit</Text>
-//       </Pressable>  
-      
-//       {/* Other components and styles... */}
-//     </View>
-//     </ScrollView>
-//   );
-// };
 const DrivingRatingSlider: React.FC = () => {
   const [sliderValue, setSliderValue] = React.useState(1);
 
@@ -127,7 +71,9 @@ const MatchInfo: React.FC = () => {
         {isChecked && <DefenseSlider />}
 
         <Pressable style={styles.submitButton} onPress={handleSubmit}>
-          <Text style={styles.submitButtonText}>Submit</Text>
+          <Text 
+          style={styles.submitButtonText}
+          onPress={() => router.push(`/(matchInfo)/thanks`)}>Submit</Text>
         </Pressable>
       </View>
     </ScrollView>
