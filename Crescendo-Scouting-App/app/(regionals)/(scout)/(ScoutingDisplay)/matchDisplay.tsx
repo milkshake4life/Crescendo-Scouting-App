@@ -2,23 +2,25 @@ import { Link, router, useGlobalSearchParams } from "expo-router";
 import { Pressable, Button, Text, View, StyleSheet } from "react-native";
 import BackButton from "../../../backButton";
 import React, { useContext, useState } from "react";
+//contexts
 import { TeamProvider, useTeam } from './TeamContext';
-import { RegionalContext, TeamContext } from "../../../Contexts/teamRegContext";
 
+//import { RegionalContext, TeamContext } from "../../../Contexts/teamRegContext";
+
+//import { UseTeamContext, TeamContextProvider } from "../../../Contexts/team-content";
 
 
 const matchDisplay = () => {
   //const { regional, teamNumber } = useTeam();
-
   //testing if context is being given. 
   return (
-    <TeamProvider>
+    <div>
       <View style={styles.container}>
         <BackButton buttonName="Home Page" />
         <Text style={styles.title}> Match Display! </Text>
-        <Text >Team: {useContext(TeamContext)}</Text>
+        <Text >Team: {/*UseTeamContext().team*/}</Text>
       </View>  
-    </TeamProvider>    
+    </div>
   );
 };
 

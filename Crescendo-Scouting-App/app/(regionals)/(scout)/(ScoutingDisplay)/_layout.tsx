@@ -1,7 +1,7 @@
 import { Stack, Tabs } from "expo-router";
-import { UseTeamContext } from "../../../Contexts/team-content";
+//import { UseTeamContext } from "../../../Contexts/team-content";
 import { useContext } from "react";
-import { RegionalContext, TeamContext } from "../../../Contexts/teamRegContext";
+//import { RegionalContext, TeamContext } from "../../../Contexts/teamRegContext";
 
 const OutputLayout = (regional: string, team: string | undefined) => {
     return (

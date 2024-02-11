@@ -13,7 +13,7 @@ import { onValue, ref } from "firebase/database";
 //import { UseTeamContext, TeamContextProvider } from "../Contexts/team-content";
 
 //new solution:
-import { TeamContext, RegionalContext } from "../Contexts/teamRegContext";
+//import { TeamContext, RegionalContext } from "../Contexts/teamRegContext";
 
 
 interface DropdownItem {
@@ -100,7 +100,6 @@ const RegionalPage = () => {
           >
             <Text style={styles.buttonOneText}>Scouting</Text>
           </Pressable>
-          <TeamContext.Provider value={teamNum}>
           <Pressable
             style={styles.buttonTwo}
 
@@ -127,7 +126,6 @@ const RegionalPage = () => {
               > 
             <Text style={styles.buttonTwoText}>Scouting Information</Text>
           </Pressable>
-          </TeamContext.Provider>
         </View>
     ); //swapped '(ScoutingDisplay)/robotDisplay' to '(ScoutingDsplay)/matchDisplay' to match the tabs. 
 };
