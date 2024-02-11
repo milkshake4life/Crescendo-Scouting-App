@@ -4,6 +4,7 @@ import BackButton from "../../../backButton";
 import React, { useContext, useState } from "react";
 //contexts
 import { TeamProvider, useTeam } from './TeamContext';
+import { retrieveTeam } from "../../../Contexts/useStorageState";
 
 //import { RegionalContext, TeamContext } from "../../../Contexts/teamRegContext";
 
@@ -12,15 +13,13 @@ import { TeamProvider, useTeam } from './TeamContext';
 
 const matchDisplay = () => {
   //const { regional, teamNumber } = useTeam();
-  //testing if context is being given. 
+  //testing if context is being given.
+  
   return (
-    <div>
       <View style={styles.container}>
         <BackButton buttonName="Home Page" />
         <Text style={styles.title}> Match Display! </Text>
-        <Text >Team: {/*UseTeamContext().team*/}</Text>
       </View>  
-    </div>
   );
 };
 

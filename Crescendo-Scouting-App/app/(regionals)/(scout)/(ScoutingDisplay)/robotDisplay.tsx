@@ -5,11 +5,23 @@ import { database } from '../../../.././firebaseConfig';
 import React, { useEffect, useState } from 'react';
 import { getDatabase, ref, get, DataSnapshot } from "firebase/database";
 import { TeamProvider, useTeam } from './TeamContext';
+import { retrieveRegional, retrieveTeam } from "../../../Contexts/useStorageState";
 
 const robotDisplay = () => { 
   const [climbingData, setClimbingData] = useState<any>(null); // Use a more specific type instead of any if possible
-  const { regional, teamNumber } = useTeam();
-  
+  //const { regional, teamNumber } = useTeam();
+  //trying the secureStore retrieval but it isn't working. Going to look into this later. 
+  //something to do with how regional and teamNumber are promises. Figure out how to change them into regular
+  //strings. Solving this will solve the matchdisplay issue as well, since the two no longer depend
+  //on route queries for information, but rather draw it directly from the app. 
+  //plan is to delete team and regional information stored in the keys upon exit of a page (since users
+  //cant view more than one team at one regional at once)
+  const regional = retrieveRegional();
+  console.log("regional (robotDisplay): " + regional)
+  const teamNumber = retrieveTeam();
+  console.log("team (robotDisplay): " + teamNumber)
+
+
   useEffect(() => {
     const database = getDatabase();
     const climbingRef = ref(database, regional + '/teams/'+ teamNumber + '/Robot-Info/climberOption');
@@ -29,15 +41,12 @@ const robotDisplay = () => {
   }, []); // Empty dependency array ensures this effect runs once after the initial render
 
   return (
-    <TeamProvider>
       <View style={styles.container}>
         <BackButton buttonName="Home Page" />
         <Text style={styles.title}> Robot Display! </Text>
         <Text style={styles.subtitle}> Climbing Data! </Text>
         <Text style={styles.dataText}>{JSON.stringify(climbingData)}</Text>
       </View>
-    </TeamProvider>
-    
   );
 };
 

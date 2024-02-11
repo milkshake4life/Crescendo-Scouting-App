@@ -7,6 +7,8 @@ import { Dropdown } from 'react-native-element-dropdown';
 import React, { useContext, useEffect, useState } from "react";
 import { database } from "../../firebaseConfig";
 import { onValue, ref } from "firebase/database";
+//secureStore stuff
+import { retrieveRegional, retrieveTeam, storeSecureTeam, } from "../Contexts/useStorageState";
 
 //importing the context providers
 //trying new solution
@@ -90,8 +92,6 @@ const RegionalPage = () => {
               if (selectedValue) {
                 router.push(`/(scout)/scout?regional=${regional}&teamNumber=${selectedValue}`);
                 console.log(selectedValue)
-                //setting the teamnumber to the selected value to help with context
-                teamNum = selectedValue
               } else {
                 // Handle case where no team is selected
                 alert('Please select a team number.');
@@ -120,7 +120,16 @@ const RegionalPage = () => {
               //router.push(`/(scout)/(ScoutingDisplay)/matchDisplay?regional=${regional}&teamNumber=${selectedValue}`)
               
               //honestly issues may have to do with the routing rather than the context.
-              router.push(`/(scout)/(ScoutingDisplay)/matchDisplay`)
+              
+              //storing team and regional values in secureStore
+              //non-null assertion operator (!) used because regional will never be null if the 
+              //user has gotten to this page
+              storeSecureTeam(selectedValue, regional!);
+              let reg = retrieveRegional();
+              let teamNum = retrieveTeam();
+              console.log("regional: "+ reg + " team: " + teamNum);
+
+              router.push(`/(scout)/(ScoutingDisplay)/matchDisplay?regional=${reg}&teamNumber=${teamNum}`)
               
             }}
               > 

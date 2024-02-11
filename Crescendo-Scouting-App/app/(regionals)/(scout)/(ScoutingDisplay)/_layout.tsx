@@ -7,13 +7,9 @@ const OutputLayout = (regional: string, team: string | undefined) => {
     return (
         //tabs are a stack, so we can remove headers in the same method
         //maybe placing tabs in a stack will work, because the stack can use the context?
-        <Stack screenOptions = {{headerShown: false,}}>
             <Tabs screenOptions = {{headerShown: false,}}>
                 <Tabs.Screen
                     name = "matchStats"
-                    options={{
-                        href: `/matchDisplay?regional=${regional}teamNumber=${team}`
-                    }}
 
                     //Could useContext on regional + team number to pass into hrefs. 
                 //     options={{
@@ -31,13 +27,11 @@ const OutputLayout = (regional: string, team: string | undefined) => {
                 />
                 <Tabs.Screen
                     name = "robotInfo"
-                    options={{
-                        href: `/robotDisplay?regional=${regional}teamNumber=${team}`
-                    }}
+
                 />
                 
             </Tabs>
-        </Stack>
+
     );
 };
 

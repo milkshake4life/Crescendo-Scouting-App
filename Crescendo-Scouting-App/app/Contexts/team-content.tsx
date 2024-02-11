@@ -2,6 +2,8 @@ import React from "react";
 import { Dispatch, ReactElement, ReactNode, SetStateAction, createContext, useContext, useState } from "react";
 //this did not work, switching directions. 
 
+//commenting out to test something
+
 //this file will contain functions which can provide context for other components. 
 
 /*
@@ -70,35 +72,35 @@ export function TeamContextProvider(props: React.PropsWithChildren)
     )
 }*/
 
-type contextWrapperType = {
-    team?: string;
-    regional?: string;
-}
+// type contextWrapperType = {
+//     team?: string;
+//     regional?: string;
+// }
 
-const teamContext = createContext<contextWrapperType | undefined>(undefined);
+// const teamContext = createContext<contextWrapperType | undefined>(undefined);
 
-export function useTeamContext(): contextWrapperType {
-    const content = useContext(teamContext)
-    if(!content)
-    {
-        throw new Error("teamContext must be provided")
-    }
-    return content;
+// export function useTeamContext(): contextWrapperType {
+//     const content = useContext(teamContext)
+//     if(!content)
+//     {
+//         throw new Error("teamContext must be provided")
+//     }
+//     return content;
 
-}
+// }
 
-export const TeamContextProvider = (props: React.PropsWithChildren) => {
-    const [[team, regional], setTeamReg] = useStorageState('team');
+// export const TeamContextProvider = (props: React.PropsWithChildren) => {
+//     const [[team, regional], setTeamReg] = useStorageState('team');
 
-    return (
-        <teamContext.Provider
-          value={{
-            regional,
-            team,
-          }}>
-          {props.children}
-        </teamContext.Provider>
-      );
-    }
+//     return (
+//         <teamContext.Provider
+//           value={{
+//             regional,
+//             team,
+//           }}>
+//           {props.children}
+//         </teamContext.Provider>
+//       );
+//     }
 
 
