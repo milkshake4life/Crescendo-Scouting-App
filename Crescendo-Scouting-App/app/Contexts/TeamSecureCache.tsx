@@ -25,12 +25,9 @@ const storeSecureTeam = async (teamNum: string | null, regional: string) => {
     }
 }
 
-
-
-
 //retrieves the value stored under "regional"
-const retrieveRegional = async () /* Promise<string | null> */ => {
-    let regional = await SecureStore.getItemAsync("regional");
+const retrieveRegional = async (): Promise<string | null> => {
+    let regional = await SecureStore.getItemAsync("regional"); //dynamic keys aren't needed because user can only view one team at one regional at once, so we never need to store more than one team and one regional
 
     //logs for debugging
     console.log("regional: " + regional);
@@ -43,9 +40,10 @@ const retrieveRegional = async () /* Promise<string | null> */ => {
 }
 
 //retrieves the value stored under "team".
-//returns a promise for a value because this runs asynchronously
+//returns a promise for a value because this runs asynchronously. This means that if you want to use this value, you have to use either .then(() => {}) with a callback function, or await in order
+//to ensure the promise is fulfilled. See matchDisplay and robotDisplay for examples of how you can retrieve these values for use in a component (it involves state and useEffect)
 const retrieveTeam = async (): Promise<string | null> => {
-    let team = await SecureStore.getItemAsync("team")
+    let team = await SecureStore.getItemAsync("team") 
     //setTeam(team);
     console.log("team: " + team)
     if (!team)
@@ -67,3 +65,22 @@ const deleteTeamKeys = async () => {
 
 //exports all of the SecureStore functions above
 export {storeSecureTeam, retrieveRegional, retrieveTeam, deleteTeamKeys,}; 
+
+//matchDisplay and robotDisplay no longer depend on route queries for information, but rather can draw it directly from the app. 
+//plan is to delete team and regional information stored in the keys upon exit of a page, since users cant view more than one team at one regional at once
+//this will keep everything storage efficient (hopefully)
+
+
+//from regional:
+//a disfunctional back button w/ deletion, which is actually unnecessary due to reasons described in [regional].tsx
+    // <Pressable 
+    // style={styles.backButton}
+    // onPress={async () => {
+
+    // //async await used to ensure team keys are deleted before router.back is called. 
+    // await deleteTeamKeys;
+    // router.back()
+
+    // }}>
+    // <Image style = {styles.backButtonIcon} source={require('./../../assets/images/back_arrow.png')} />
+    // </Pressable>

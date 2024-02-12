@@ -4,21 +4,18 @@ import { Pressable, Button, Image, Text, View, StyleSheet } from "react-native";
 import { useFonts } from 'expo-font';
 
 type backButtonProps = {
-    //imageSource: string; //providing image source isn't working, and its unnecessary.
-                           //since we only want one image for the back button. 
+    //providing image source isn't working, and its unnecessary since we only want one image for the back button. 
     buttonName: string;
   };
   
 const BackButton = (props: backButtonProps) => {
 let imageUrl: string;
-//imageUrl = `./../assets/images/${props.imageSource}`;
 
 return (
     <Pressable 
             style={styles.backButton}
             onPress={() => router.back()}
             >
-            {/* <Text style={styles.backButtonText}>{props.buttonName}</Text> */}
             <Image style = {styles.backButtonIcon} source={require('./../assets/images/back_arrow.png')} />
             </Pressable>
 )

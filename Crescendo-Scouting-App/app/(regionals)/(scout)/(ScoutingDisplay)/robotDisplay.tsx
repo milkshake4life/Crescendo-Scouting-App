@@ -24,20 +24,15 @@ import { retrieveRegional, retrieveTeam } from "../../../Contexts/TeamSecureCach
 
 const robotDisplay = () => { 
   const [climbingData, setClimbingData] = useState<any>(null); // Use a more specific type instead of any if possible
-  //const { regional, teamNumber } = useTeam();
-  //trying the secureStore retrieval but it isn't working. Going to look into this later. 
-  //something to do with how regional and teamNumber are promises. Figure out how to change them into regular
-  //strings. Solving this will solve the matchdisplay issue as well, since the two no longer depend
-  //on route queries for information, but rather draw it directly from the app. 
-  //plan is to delete team and regional information stored in the keys upon exit of a page (since users
-  //cant view more than one team at one regional at once)
+
+  //state variables for regional and teamNumber
   const [regional, setRegional] = useState('');
   const [teamNumber, setTeamNumber] = useState('');  
 
 
   useEffect(() => {
-    //retrieveData()
-    //async await unnecessary because of useEffect?
+    //this is copied over from matchDisplay, where it is explained in more detail. 
+    
     async function getTeamInfo() {
       retrieveRegional().then((result: string | null) => {
         if(!result)
@@ -69,6 +64,10 @@ const robotDisplay = () => {
     getTeamInfo();
     console.log("(robotDisplay): " + "team: " + teamNumber + " regional " + regional)
     
+    //Accessing cache ^
+    //-------------------------------------------------------------------------------------------------
+    //Accessing firebase:
+
     const database = getDatabase();
     const climbingRef = ref(database, regional + '/teams/'+ teamNumber + '/Robot-Info/climberOption');
   
@@ -85,14 +84,16 @@ const robotDisplay = () => {
         console.error(error);
       });
   }, [teamNumber, regional, climbingData]); // Empty dependency array ensures this effect runs once after the initial render
-  //adding teamNumber and regional as dependencies ensures that they are retrieved before the DOM loads
-  //unsure about this change. 
-  //also unsure if there is any climbing data. But the component has access to team number and regional info.  
+
+  //adding teamNumber and regional as dependencies ensures that they are retrieved before the DOM loads.  
+  //I am unsure if there is any climbing data. But the component has access to team number and regional info for sure, so if climbing data isn't appearing it
+  //likely has to do with the order in which the async functions are fulfilling, which we should be able to work around.   
+  
   return (
       <View style={styles.container}>
         <BackButton buttonName="Home Page" />
         <Text style={styles.title}> Robot Display! </Text>
-        <Text style={styles.subtitle}> Climbing Data! </Text>
+        <Text style={styles.subtitle}>{teamNumber}'s Climbing Data! </Text>
         <Text style={styles.dataText}>{JSON.stringify(climbingData)}</Text>
       </View>
   );

@@ -39,27 +39,20 @@ import { retrieveRegional, retrieveTeam, deleteTeamKeys, } from "../../../Contex
 // }
 
 const matchDisplay = () => {
-  //const { regional, teamNumber } = useTeam();
-  //testing if context is being given.
-  // useEffect(() => {
-  //   retrieveData();
-    
-  // })
-
-  //team and regional are imported from storage
-  // let teamNumber = team;
-  // let reg = regional;
-  //use state to store these guys, then set state to the retrieval (so that it can be async)
+  //defining teamNumber and regional as state variables, because this allows their values to change.
   const [teamNumber, setTeamNumber] = useState<any>();
   const [regional, setRegional] = useState<any>();
 
   useEffect(() => {
+    //log for debugging
     console.log("useEffect called");
-    // asyncGetRegional();
-    // asyncGetTeam();
 
-    //simply retrieving the data in useEffect
+    //defining a new asynchronous function which will be used to retrieve and set both the team number and the regional. 
     async function getTeamInfo() {
+
+      //.then is used to ensure that retrieveRegional has returned a value before attempting to set the value of regional to that value
+      //Basically, retrieveRegional and retrieveTeam return Promises of type string, but not actual strings. By using .then (alternatively you can use await), we 
+      //know for certain that the promise has been fulfilled, meaning we now have turned the Promise<string> into a string, so we can set our state variables to that string.
       retrieveRegional().then((result: string | null) => {
         if(!result)
         {
@@ -68,10 +61,12 @@ const matchDisplay = () => {
         else 
         {
           const reg = result;
+          //setting the value of our state variable regional to the result of retrieveRegional
           setRegional(reg);
         }
       })
       
+      //this is the same function as the above but with team instead of regional
       retrieveTeam().then((result: string | null) => {
         if(!result)
         {
@@ -87,14 +82,16 @@ const matchDisplay = () => {
       
     }
 
+    //calling the function defined above
     getTeamInfo();
+    
+    //logging for debugging
     console.log("(matchDisplay): " + "team: " + teamNumber + " regional " + regional)
-  }, [teamNumber, regional])
 
+  }, [teamNumber, regional]) 
+  //I think having these as dependencies ensures that they will have a value before the rest of the code runs, but I'm not sure
 
-
-  //the bottom regional is displayed before the actual regional data is populated. Maybe
-  //adding a button for testing. 
+  //added a line which displays stored info to ensure it is being retrieved
   return (
       <View style={styles.container}>
         <BackButton buttonName="Home Page" />

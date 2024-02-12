@@ -8,7 +8,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { database } from "../../firebaseConfig";
 import { onValue, ref } from "firebase/database";
 //secureStore stuff
-import { retrieveRegional, retrieveTeam, storeSecureTeam, } from "../Contexts/TeamSecureCache";
+import { deleteTeamKeys, retrieveRegional, retrieveTeam, storeSecureTeam, } from "../Contexts/TeamSecureCache";
 
 //importing the context providers
 //trying new solution
@@ -56,9 +56,10 @@ const RegionalPage = () => {
     fetchTeams();
   }, []);
 
-  //adding a teamNum string so that we can store team number later. 
-  let teamNum: string = "";
-
+    //Moving back from the regional page should clear the cache.
+    //The easiest way I could think of doing this is a custom back button just for the regional page, because in the onPress we need to call the
+    //deletion functions. Although this is unnecessary because we are only ever storing values under two keys (team and regional),
+    //and we are updating these keys whenever those values change, so our SecureStore only ever has two values inside of it. 
     return (
         <View style={styles.container}>
           <BackButton buttonName='Home Page'/>
@@ -103,43 +104,29 @@ const RegionalPage = () => {
           <Pressable
             style={styles.buttonTwo}
 
-            //figure this out later
-            //matchDisplay?regional ... sets the route of the matchDisplay page. 
-            //trying a fix in which router pushes intou scouting display with params for the regional and team number
-            //this will hopefully allow both tabs to be part of the same route. 
-            //Fix did not work. Looking into context
-
-            //regionalcontext is never given, make sure to add its provider.
-
-
-            //providing context via the pressable. Now we need to hook it onto the _layout of the tabs and pray. 
+            //onPress is asynchronous because it calls asynchronous functions.
             onPress={async () => {
-              //CHECK IF CONTEXT IS EVEN BEING GIVEN
 
-              //changing up the router.push for testing
-              //router.push(`/(scout)/(ScoutingDisplay)/matchDisplay?regional=${regional}&teamNumber=${selectedValue}`)
-              
-              //honestly issues may have to do with the routing rather than the context.
-              
-              //storing team and regional values in secureStore
-              //non-null assertion operator (!) used because regional will never be null if the 
-              //user has gotten to this page
+              //storing team and regional values in SecureStore using the methods in TeamSecureCache.tsx
               storeSecureTeam(selectedValue, regional!);
+
+              //retrieving values to test if they have been saved. This line can be removed later but is useful for debugging
               let reg = await retrieveRegional();
               let teamNum = await retrieveTeam();
               console.log("regional: "+ reg + " team: " + teamNum);
 
-              router.push(`/(scout)/(ScoutingDisplay)/matchDisplay?regional=${reg}&teamNumber=${teamNum}`)
-              //since the queried information is stored locally, passing it by query is unnecessary
-              //nevermind. this causes some crazy error when queries are absent. 
-              //router.push(`/(scout)/(ScoutingDisplay)/matchDisplay`)
+              //pushing to the matchDisplay tab. 
+              //router.push(`/(scout)/(ScoutingDisplay)/matchDisplay?regional=${reg}&teamNumber=${teamNum}`) is unnecessary.
+              //since the queried information is stored locally, we don't need to pass it by query. We can just retrieve it 
+              //in the components that need it
+              router.push(`/(scout)/(ScoutingDisplay)/matchDisplay`)
 
             }}
               > 
             <Text style={styles.buttonTwoText}>Scouting Information</Text>
           </Pressable>
         </View>
-    ); //swapped '(ScoutingDisplay)/robotDisplay' to '(ScoutingDsplay)/matchDisplay' to match the tabs. 
+    ); //swapped '(ScoutingDisplay)/robotDisplay' to '(ScoutingDisplay)/matchDisplay' to match the tabs. 
 };
 
 
@@ -248,6 +235,28 @@ const styles = StyleSheet.create({
       height: 40,
       fontSize: 16,
     },
+
+    //button styles for the custom back button
+    backButton: {
+      marginTop: 50,
+      marginBottom: 50, //adding bottom margins to avoid changing the title style
+      //alignItems: 'center',
+      //justifyContent: 'center',
+      //paddingVertical: 12,
+      //paddingHorizontal: 82,
+      paddingRight: 350,
+      borderRadius: 4,
+      elevation: 3,
+      //backgroundColor: 'rgba(0, 130, 190, 255)', //removing background color so we can use an image. 
+      //borderWidth: 1,                            //removing border for same reason as above
+      borderColor: 'white',
+      width: 20,
+      height: 20,
+  },
+  backButtonIcon: {
+      width: 20,
+      height: 20,
+  }
   });
 
 export default RegionalPage;
