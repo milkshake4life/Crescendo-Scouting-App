@@ -29,8 +29,8 @@ import { useState } from 'react';
 //NEED TO USE STATE IN ORDER TO GET DATA IN TERMS OF STRINGS RATHER THAN PROMISES
 //see: https://www.reddit.com/r/typescript/comments/umklpc/how_do_i_convert_promisestring_object_to_string/
 
-const [regional, setRegional] = React.useState<string>();
-const [team, setTeam] = React.useState<string>();
+// const [regional, setRegional] = React.useState<string>('');
+// const [team, setTeam] = React.useState<string>('');
 
 //stores both team number and regional under the keys "team" and "regional" respectively
 const storeSecureTeam = async (teamNum: string | null, regional: string) => {
@@ -53,6 +53,7 @@ const storeSecureTeam = async (teamNum: string | null, regional: string) => {
 const retrieveRegional = async (): Promise<string | null> => {
     const regional = await SecureStore.getItemAsync("regional");
     console.log("regional: " + regional)
+    //setRegional(regional)
    
     if (!regional)
     {
@@ -72,6 +73,7 @@ const retrieveTeam = async (): Promise<string | null> => {
     return team;
 }
 
+//regional accessed before team and regional data stored?
 //deletes the team and regional stored under "team" and "regional"
 const deleteTeamKeys = async () => {
     await SecureStore.deleteItemAsync("team");

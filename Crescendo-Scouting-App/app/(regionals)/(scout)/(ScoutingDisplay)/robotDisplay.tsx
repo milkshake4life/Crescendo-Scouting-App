@@ -7,6 +7,20 @@ import { getDatabase, ref, get, DataSnapshot } from "firebase/database";
 import { TeamProvider, useTeam } from './TeamContext';
 import { retrieveRegional, retrieveTeam } from "../../../Contexts/useStorageState";
 
+//can this function be asynchronous?
+// const [regional, setRegional] = useState('');
+// const [teamNumber, setTeam] = useState('');
+let regional: string | null = "";
+let teamNumber: string | null = "";
+
+const retrieveData = async () => {
+    regional = await retrieveRegional();
+    console.log("regional (robotDisplay): " + regional)
+    teamNumber = await retrieveTeam();
+    console.log("team (robotDisplay): " + teamNumber)
+}
+
+
 const robotDisplay = () => { 
   const [climbingData, setClimbingData] = useState<any>(null); // Use a more specific type instead of any if possible
   //const { regional, teamNumber } = useTeam();
@@ -16,13 +30,14 @@ const robotDisplay = () => {
   //on route queries for information, but rather draw it directly from the app. 
   //plan is to delete team and regional information stored in the keys upon exit of a page (since users
   //cant view more than one team at one regional at once)
-  const regional = retrieveRegional();
-  console.log("regional (robotDisplay): " + regional)
-  const teamNumber = retrieveTeam();
-  console.log("team (robotDisplay): " + teamNumber)
+  
 
 
   useEffect(() => {
+    
+    //async await unnecessary because of useEffect?
+    
+    
     const database = getDatabase();
     const climbingRef = ref(database, regional + '/teams/'+ teamNumber + '/Robot-Info/climberOption');
   

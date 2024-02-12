@@ -113,7 +113,7 @@ const RegionalPage = () => {
 
 
             //providing context via the pressable. Now we need to hook it onto the _layout of the tabs and pray. 
-            onPress={() => {
+            onPress={async () => {
               //CHECK IF CONTEXT IS EVEN BEING GIVEN
 
               //changing up the router.push for testing
@@ -125,8 +125,8 @@ const RegionalPage = () => {
               //non-null assertion operator (!) used because regional will never be null if the 
               //user has gotten to this page
               storeSecureTeam(selectedValue, regional!);
-              let reg = retrieveRegional();
-              let teamNum = retrieveTeam();
+              let reg = await retrieveRegional();
+              let teamNum = await retrieveTeam();
               console.log("regional: "+ reg + " team: " + teamNum);
 
               router.push(`/(scout)/(ScoutingDisplay)/matchDisplay?regional=${reg}&teamNumber=${teamNum}`)
