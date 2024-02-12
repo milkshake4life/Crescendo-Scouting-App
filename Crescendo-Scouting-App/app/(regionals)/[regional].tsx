@@ -130,7 +130,10 @@ const RegionalPage = () => {
               console.log("regional: "+ reg + " team: " + teamNum);
 
               router.push(`/(scout)/(ScoutingDisplay)/matchDisplay?regional=${reg}&teamNumber=${teamNum}`)
-              
+              //since the queried information is stored locally, passing it by query is unnecessary
+              //nevermind. this causes some crazy error when queries are absent. 
+              //router.push(`/(scout)/(ScoutingDisplay)/matchDisplay`)
+
             }}
               > 
             <Text style={styles.buttonTwoText}>Scouting Information</Text>

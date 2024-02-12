@@ -29,8 +29,8 @@ import { useState } from 'react';
 //NEED TO USE STATE IN ORDER TO GET DATA IN TERMS OF STRINGS RATHER THAN PROMISES
 //see: https://www.reddit.com/r/typescript/comments/umklpc/how_do_i_convert_promisestring_object_to_string/
 
-// const [regional, setRegional] = React.useState<string>('');
-// const [team, setTeam] = React.useState<string>('');
+// const [regional, setRegional] = React.useState<string | null>(null);
+// const [team, setTeam] = React.useState<string | null>(null);
 
 //stores both team number and regional under the keys "team" and "regional" respectively
 const storeSecureTeam = async (teamNum: string | null, regional: string) => {
@@ -50,8 +50,14 @@ const storeSecureTeam = async (teamNum: string | null, regional: string) => {
 
 
 //retrieves the value stored under "regional"
-const retrieveRegional = async (): Promise<string | null> => {
-    const regional = await SecureStore.getItemAsync("regional");
+const retrieveRegional = async () /* Promise<string | null> */ => {
+    let regional = await SecureStore.getItemAsync("regional");
+    //setRegional(result);
+    //below uses .then, which is mutually exclusive with await
+    // SecureStore.getItemAsync("regional").then((regional: string | null) => {
+    //     return setRegional(regional);
+    // })
+    
     console.log("regional: " + regional)
     //setRegional(regional)
    
@@ -64,7 +70,8 @@ const retrieveRegional = async (): Promise<string | null> => {
 
 //retrieves the value stored under "team"
 const retrieveTeam = async (): Promise<string | null> => {
-    const team = await SecureStore.getItemAsync("team")
+    let team = await SecureStore.getItemAsync("team")
+    //setTeam(team);
     console.log("team: " + team)
     if (!team)
     {
@@ -78,12 +85,13 @@ const retrieveTeam = async (): Promise<string | null> => {
 const deleteTeamKeys = async () => {
     await SecureStore.deleteItemAsync("team");
     await SecureStore.deleteItemAsync("regional");
+    console.log("key values have been deleted")
 }
 
 
 
 
-export {storeSecureTeam, retrieveRegional, retrieveTeam, deleteTeamKeys}; 
+export {storeSecureTeam, retrieveRegional, retrieveTeam, deleteTeamKeys,}; 
 
 // type UseStateHook<T> = [[boolean, T | null], (value: T | null) => void];
 

@@ -9,7 +9,7 @@ const OutputLayout = (regional: string, team: string | undefined) => {
         //maybe placing tabs in a stack will work, because the stack can use the context?
             <Tabs screenOptions = {{headerShown: false,}}>
                 <Tabs.Screen
-                    name = "matchStats"
+                    name = "matchDisplay"
 
                     //Could useContext on regional + team number to pass into hrefs. 
                 //     options={{
@@ -26,7 +26,7 @@ const OutputLayout = (regional: string, team: string | undefined) => {
                 // }
                 />
                 <Tabs.Screen
-                    name = "robotInfo"
+                    name = "robotDisplay"
 
                 />
                 

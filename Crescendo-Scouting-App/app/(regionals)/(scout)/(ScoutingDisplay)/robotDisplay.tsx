@@ -8,17 +8,18 @@ import { TeamProvider, useTeam } from './TeamContext';
 import { retrieveRegional, retrieveTeam } from "../../../Contexts/useStorageState";
 
 //can this function be asynchronous?
-// const [regional, setRegional] = useState('');
-// const [teamNumber, setTeam] = useState('');
-let regional: string | null = "";
-let teamNumber: string | null = "";
 
-const retrieveData = async () => {
-    regional = await retrieveRegional();
-    console.log("regional (robotDisplay): " + regional)
-    teamNumber = await retrieveTeam();
-    console.log("team (robotDisplay): " + teamNumber)
-}
+//trying state in useStorageState instead
+// let regional: string | null = "";
+// let teamNumber: string | null = "";
+
+//this retrieveData function can be copied over. 
+// const retrieveData = async () => {
+//     regional = await retrieveRegional();
+//     console.log("regional (robotDisplay): " + regional)
+//     teamNumber = await retrieveTeam();
+//     console.log("team (robotDisplay): " + teamNumber)
+// }
 
 
 const robotDisplay = () => { 
@@ -30,13 +31,43 @@ const robotDisplay = () => {
   //on route queries for information, but rather draw it directly from the app. 
   //plan is to delete team and regional information stored in the keys upon exit of a page (since users
   //cant view more than one team at one regional at once)
-  
+  const [regional, setRegional] = useState('');
+  const [teamNumber, setTeamNumber] = useState('');  
 
 
   useEffect(() => {
-    
+    //retrieveData()
     //async await unnecessary because of useEffect?
-    
+    async function getTeamInfo() {
+      retrieveRegional().then((result: string | null) => {
+        if(!result)
+        {
+          console.log("no regional found")
+        }
+        else 
+        {
+          const reg = result;
+          setRegional(reg);
+        }
+      })
+      
+      retrieveTeam().then((result: string | null) => {
+        if(!result)
+        {
+          console.log("no team found")
+        }
+        else 
+        {
+          const num = result;
+          setTeamNumber(num);
+        }
+      })
+
+      
+    }
+
+    getTeamInfo();
+    console.log("(robotDisplay): " + "team: " + teamNumber + " regional " + regional)
     
     const database = getDatabase();
     const climbingRef = ref(database, regional + '/teams/'+ teamNumber + '/Robot-Info/climberOption');
@@ -53,8 +84,10 @@ const robotDisplay = () => {
       .catch((error) => {
         console.error(error);
       });
-  }, []); // Empty dependency array ensures this effect runs once after the initial render
-
+  }, [teamNumber, regional, climbingData]); // Empty dependency array ensures this effect runs once after the initial render
+  //adding teamNumber and regional as dependencies ensures that they are retrieved before the DOM loads
+  //unsure about this change. 
+  //also unsure if there is any climbing data. But the component has access to team number and regional info.  
   return (
       <View style={styles.container}>
         <BackButton buttonName="Home Page" />
