@@ -6,37 +6,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { TeamProvider, useTeam } from './TeamContext';
 import { retrieveRegional, retrieveTeam, deleteTeamKeys, } from "../../../Contexts/TeamSecureCache";
 
-//import { RegionalContext, TeamContext } from "../../../Contexts/teamRegContext";
 
-//import { UseTeamContext, TeamContextProvider } from "../../../Contexts/team-content";
-
-//trying state in useStorageState to store these two.
-// let regional: string | null = '';
-// let teamNumber: string | null = '';
-
-//function for data retrieval
-// const retrieveData = async () => {
-//   regional = await retrieveRegional();
-//   console.log("regional (matchDisplay): " + regional)
-//   teamNumber = await retrieveTeam();
-//   console.log("team (matchDisplay): " + teamNumber)
-// }
-
-
-// const asyncGetRegional = async () => {
-//   const reg = await retrieveRegional();
-//   setRegional(reg);
-//   console.log(`asyncGet ${reg} successful`)
-//   //return reg;
-// }
-
-// //async done two ways: above using await, below using .then
-// const asyncGetTeam = async () => {
-//   let team: string | null = "";
-//   retrieveTeam().then((result: string | null) => setTeamNumber(result))
-//   console.log(`asyncGet ${team} successful`)
-//   //return team;
-// }
 
 const matchDisplay = () => {
   //defining teamNumber and regional as state variables, because this allows their values to change.

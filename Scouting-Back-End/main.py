@@ -1,7 +1,7 @@
 import requests
 from firebase import firebase
 import json
-
+#pushes all teams from an event to team.
 firebase = firebase.FirebaseApplication('https://crescendo-scouting-app-default-rtdb.firebaseio.com/', None)
 f = open("../key.txt", "r")
 eventKey = open("../eventKey.txt", "w")
