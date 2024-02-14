@@ -6,6 +6,7 @@ import Slider from '@react-native-community/slider';
 import { router } from 'expo-router';
 
 const DrivingRatingSlider: React.FC = () => {
+  
   const [sliderValue, setSliderValue] = React.useState(1);
 
   return (
@@ -53,6 +54,7 @@ const MatchInfo: React.FC = () => {
 
   return (
     <ScrollView>
+      <BackButton buttonName="Home Page" />
       <View style={styles.container}>
         <Text style={styles.title}>Match Info</Text>
 
