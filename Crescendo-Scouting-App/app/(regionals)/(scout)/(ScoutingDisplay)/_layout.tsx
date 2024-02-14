@@ -1,17 +1,23 @@
 import { Stack, Tabs } from "expo-router";
+//import { UseTeamContext } from "../../../Contexts/team-content";
+import { useContext } from "react";
+//import { RegionalContext, TeamContext } from "../../../Contexts/teamRegContext";
 
-const OutputLayout = () => {
+const OutputLayout = (regional: string, team: string | undefined) => {
     return (
-        //tabs are a stack, so we can remove headers in the same method
-        <Tabs screenOptions = {{headerShown: false,}}>
-            <Tabs.Screen
-                name = "matchStats"
-            />
-            <Tabs.Screen
-                name = "robotInfo"
-            />
-            
-        </Tabs>
+
+            <Tabs screenOptions = {{headerShown: false,}}>
+                <Tabs.Screen
+                    name = "matchDisplay"
+                    //changed name to match destination filename after a warning.
+                />
+                <Tabs.Screen
+                    name = "robotDisplay"
+                    //changed name to match destination filename after a warning.
+                />
+                
+            </Tabs>
+
     );
 };
 

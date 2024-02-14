@@ -4,12 +4,19 @@ import { useFonts } from 'expo-font';
 //importing the back-button component from the filee
 import BackButton from '../backButton';
 import { Dropdown } from 'react-native-element-dropdown';
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { database } from "../../firebaseConfig";
 import { onValue, ref } from "firebase/database";
+//secureStore stuff
+import { deleteTeamKeys, retrieveRegional, retrieveTeam, storeSecureTeam, } from "../Contexts/TeamSecureCache";
 
-//Creating a back-button component for easier implementation. 
-//props list for the back button component
+//importing the context providers
+//trying new solution
+//import { UseTeamContext, TeamContextProvider } from "../Contexts/team-content";
+
+//new solution:
+//import { TeamContext, RegionalContext } from "../Contexts/teamRegContext";
+
 
 interface DropdownItem {
   label: string;
@@ -49,6 +56,10 @@ const RegionalPage = () => {
     fetchTeams();
   }, []);
 
+    //Moving back from the regional page should clear the cache.
+    //The easiest way I could think of doing this is a custom back button just for the regional page, because in the onPress we need to call the
+    //deletion functions. Although this is unnecessary because we are only ever storing values under two keys (team and regional),
+    //and we are updating these keys whenever those values change, so our SecureStore only ever has two values inside of it. 
     return (
         <View style={styles.container}>
           <BackButton buttonName='Home Page'/>
@@ -81,7 +92,7 @@ const RegionalPage = () => {
             onPress={() => {
               if (selectedValue) {
                 router.push(`/(scout)/scout?regional=${regional}&teamNumber=${selectedValue}`);
-                // console.log(selectedValue)
+                console.log(selectedValue)
               } else {
                 // Handle case where no team is selected
                 alert('Please select a team number.');
@@ -90,23 +101,32 @@ const RegionalPage = () => {
           >
             <Text style={styles.buttonOneText}>Scouting</Text>
           </Pressable>
-
           <Pressable
             style={styles.buttonTwo}
-            onPress={() => {
-                if(selectedValue) {
-                  router.push(`/(scout)/(ScoutingDisplay)/robotDisplay?regional=${regional}&teamNumber=${selectedValue}`);
-                  router.push(`/(scout)/(ScoutingDisplay)/matchDisplay?regional=${regional}&teamNumber=${selectedValue}`);
-                  // router.push(`/(scout)/(ScoutingDisplay)/matchDisplay?regional=${regional}&teamNumber=${selectedValue}`);
-                } else {
-                  alert('Please select a team number.');
-                }
-              }}
-            >
+
+            //onPress is asynchronous because it calls asynchronous functions.
+            onPress={async () => {
+
+              //storing team and regional values in SecureStore using the methods in TeamSecureCache.tsx
+              storeSecureTeam(selectedValue, regional!);
+
+              //retrieving values to test if they have been saved. This line can be removed later but is useful for debugging
+              let reg = await retrieveRegional();
+              let teamNum = await retrieveTeam();
+              console.log("regional: "+ reg + " team: " + teamNum);
+
+              //pushing to the matchDisplay tab. 
+              //router.push(`/(scout)/(ScoutingDisplay)/matchDisplay?regional=${reg}&teamNumber=${teamNum}`) is unnecessary.
+              //since the queried information is stored locally, we don't need to pass it by query. We can just retrieve it 
+              //in the components that need it
+              router.push(`/(scout)/(ScoutingDisplay)/matchDisplay`)
+
+            }}
+              > 
             <Text style={styles.buttonTwoText}>Scouting Information</Text>
           </Pressable>
         </View>
-    ); //swapped '(ScoutingDisplay)/robotDisplay' to '(ScoutingDsplay)/matchDisplay' to match the tabs. 
+    ); //swapped '(ScoutingDisplay)/robotDisplay' to '(ScoutingDisplay)/matchDisplay' to match the tabs. 
 };
 
 
@@ -215,6 +235,28 @@ const styles = StyleSheet.create({
       height: 40,
       fontSize: 16,
     },
+
+    //button styles for the custom back button
+    backButton: {
+      marginTop: 50,
+      marginBottom: 50, //adding bottom margins to avoid changing the title style
+      //alignItems: 'center',
+      //justifyContent: 'center',
+      //paddingVertical: 12,
+      //paddingHorizontal: 82,
+      paddingRight: 350,
+      borderRadius: 4,
+      elevation: 3,
+      //backgroundColor: 'rgba(0, 130, 190, 255)', //removing background color so we can use an image. 
+      //borderWidth: 1,                            //removing border for same reason as above
+      borderColor: 'white',
+      width: 20,
+      height: 20,
+  },
+  backButtonIcon: {
+      width: 20,
+      height: 20,
+  }
   });
 
 export default RegionalPage;

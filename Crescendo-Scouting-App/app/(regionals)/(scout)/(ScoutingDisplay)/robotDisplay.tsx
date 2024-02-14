@@ -5,12 +5,69 @@ import { database } from '../../../.././firebaseConfig';
 import React, { useEffect, useState } from 'react';
 import { getDatabase, ref, get, DataSnapshot } from "firebase/database";
 import { TeamProvider, useTeam } from './TeamContext';
+import { retrieveRegional, retrieveTeam } from "../../../Contexts/TeamSecureCache";
+
+//can this function be asynchronous?
+
+//trying state in useStorageState instead
+// let regional: string | null = "";
+// let teamNumber: string | null = "";
+
+//this retrieveData function can be copied over. 
+// const retrieveData = async () => {
+//     regional = await retrieveRegional();
+//     console.log("regional (robotDisplay): " + regional)
+//     teamNumber = await retrieveTeam();
+//     console.log("team (robotDisplay): " + teamNumber)
+// }
+
 
 const robotDisplay = () => { 
   const [climbingData, setClimbingData] = useState<any>(null); // Use a more specific type instead of any if possible
-  const { regional, teamNumber } = useTeam();
-  
+
+  //state variables for regional and teamNumber
+  const [regional, setRegional] = useState('');
+  const [teamNumber, setTeamNumber] = useState('');  
+
+
   useEffect(() => {
+    //this is copied over from matchDisplay, where it is explained in more detail. 
+    
+    async function getTeamInfo() {
+      retrieveRegional().then((result: string | null) => {
+        if(!result)
+        {
+          console.log("no regional found")
+        }
+        else 
+        {
+          const reg = result;
+          setRegional(reg);
+        }
+      })
+      
+      retrieveTeam().then((result: string | null) => {
+        if(!result)
+        {
+          console.log("no team found")
+        }
+        else 
+        {
+          const num = result;
+          setTeamNumber(num);
+        }
+      })
+
+      
+    }
+
+    getTeamInfo();
+    console.log("(robotDisplay): " + "team: " + teamNumber + " regional " + regional)
+    
+    //Accessing cache ^
+    //-------------------------------------------------------------------------------------------------
+    //Accessing firebase:
+
     const database = getDatabase();
     const climbingRef = ref(database, regional + '/teams/'+ teamNumber + '/Robot-Info/climberOption');
   
@@ -26,18 +83,19 @@ const robotDisplay = () => {
       .catch((error) => {
         console.error(error);
       });
-  }, []); // Empty dependency array ensures this effect runs once after the initial render
+  }, [teamNumber, regional, climbingData]); // Empty dependency array ensures this effect runs once after the initial render
 
+  //adding teamNumber and regional as dependencies ensures that they are retrieved before the DOM loads.  
+  //I am unsure if there is any climbing data. But the component has access to team number and regional info for sure, so if climbing data isn't appearing it
+  //likely has to do with the order in which the async functions are fulfilling, which we should be able to work around.   
+  
   return (
-    <TeamProvider>
       <View style={styles.container}>
         <BackButton buttonName="Home Page" />
         <Text style={styles.title}> Robot Display! </Text>
-        <Text style={styles.subtitle}> Climbing Data! </Text>
+        <Text style={styles.subtitle}>{teamNumber}'s Climbing Data! </Text>
         <Text style={styles.dataText}>{JSON.stringify(climbingData)}</Text>
       </View>
-    </TeamProvider>
-    
   );
 };
 

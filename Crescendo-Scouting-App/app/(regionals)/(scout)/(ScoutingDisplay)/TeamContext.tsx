@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
+//This file is unused but I am unsure if you guys need something from here so I didn't really touch it. 
 const TeamContext = createContext({
   regional: '',
   teamNumber: '',
