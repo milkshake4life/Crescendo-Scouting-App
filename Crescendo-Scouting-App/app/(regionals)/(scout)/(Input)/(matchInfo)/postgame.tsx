@@ -111,7 +111,8 @@ const MatchInfo: React.FC = () => {
         <Pressable style={styles.submitButton} onPress={handleSubmit}>
           <Text 
           style={styles.submitButtonText}
-          onPress={() => router.push(`/(matchInfo)/thanks`)}>Review</Text>
+          onPress={() => router.push(`/(matchInfo)/review`)}>Review</Text>
+
         </Pressable>
       </View>
     </ScrollView>

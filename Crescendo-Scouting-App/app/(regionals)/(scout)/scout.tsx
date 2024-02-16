@@ -23,7 +23,7 @@ const Scout = () => {
 
             <Pressable
             style={styles.buttonTwo}
-            onPress={() => router.push(`/(Input)/(matchInfo)/auto?teamNumber=${regional}`)}
+            onPress={() => router.push(`/(Input)/(matchInfo)/pregame?teamNumber=${regional}`)}
             >
                 <Text style={styles.buttonTwoText}>Match Information</Text>
             </Pressable>
