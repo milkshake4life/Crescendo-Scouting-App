@@ -8,7 +8,7 @@
   import { retrieveRegional, retrieveTeam } from "../../../Contexts/TeamSecureCache";
 
 
-  const robotDisplay = () => {
+const robotDisplay = () => {
   const [climbingData, setClimbingData] = useState<any>(null); // Use a more specific type instead of any if possible
 
 
@@ -19,9 +19,12 @@
   //state variable for climber display value
   //this results in a render error. 
   //const [climberOption, setClimberOption] = useState('')
+  const [climberOption, setClimberOption] = useState('');
 
   const [climbData, setClimbData] = useState(".");
 
+
+  //fetching, setting data
   useEffect(() => {
     //this is copied over from matchDisplay, where it is explained in more detail.
 
@@ -85,27 +88,34 @@
   }, [teamNumber, regional, climbingData]); // Empty dependency array ensures this effect runs once after the initial render
   //adding teamNumber and regional as dependencies ensures that they are retrieved before the DOM loads.  
 
+    //setting display data based on fetched data
+    useEffect(() => {
+      if(climbData === "\"5\"")
+      {
+        setClimberOption("No Climb");
+        console.log("test log 5: " + climberOption)
+      }
+      else if(climbData === "\"6\"")
+      {
+        setClimberOption("Single Climb");
+        console.log("test log 6: " + climberOption)
+      }
+      else if(climbData === "\"7\"") //Data fetced from firebase comes with quotes
+      {
+        setClimberOption("Harmony Climb");
+        console.log("test log 7: " + climberOption)
+      }
+      else
+      {
+        setClimberOption("Data could not be accessed");
+      }
+    }, [climbData, climbingData]);
+
+
   //display value from data value
   //using ifs to set displayed value to value associated with climbingData number (see README/Information for comprehensive list of number-value pairs)
 
-  let climberOption = "";
   console.log("after effect climbdata: " + climbData)
-  if(climbData == "5")
-  {
-    climberOption = "No Climb";
-  }
-  else if(climbData == "6")
-  {
-    climberOption = "Single Climb";
-  }
-  else if(climbData == '7')
-  {
-    climberOption = "Harmony Climb"
-  }
-  else
-  {
-    climberOption = "Data could not be accessed"
-  }
   console.log("Display: " + climberOption)
 
 
