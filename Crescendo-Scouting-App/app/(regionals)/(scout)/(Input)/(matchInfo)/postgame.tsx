@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, SafeAreaView, StyleSheet, ScrollView, Pressable } from 'react-native';
+import React, { useEffect, useState } from "react";
+import {Pressable, Button, Image, Text, View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity,} from "react-native";
 import BackButton from '../../../../backButton';
 import { CheckBox } from 'react-native-elements';
 import Slider from '@react-native-community/slider';
@@ -46,6 +46,17 @@ const DefenseSlider: React.FC = () => {
 
 const MatchInfo: React.FC = () => {
   const [isChecked, setIsChecked] = React.useState(false);
+  const [counter,setCounter] =useState(0)
+
+  const incrementCounter = () => {
+    setCounter(counter+1)
+  }
+
+  const decrementCounter = () => {
+    if(counter > 0) {
+        setCounter(counter-1)
+    }
+  }
 
   const handleSubmit = () => {
     // Add your submission logic here
@@ -68,6 +79,31 @@ const MatchInfo: React.FC = () => {
           onPress={() => setIsChecked(!isChecked)}
           containerStyle={styles.checkboxContainer}
         />
+        <Text style={styles.subtitle}>Penalties</Text>
+
+        <View style={styles.buttonContainer}>
+        
+        <TouchableOpacity
+           onPress={decrementCounter}
+           style={styles.buttonTwo}
+         >
+           <Text style={styles.buttonTwoText}>-</Text>
+         </TouchableOpacity>
+      
+
+
+         <Text style={styles.counterText}>{counter}</Text>
+
+
+         <TouchableOpacity
+           onPress={incrementCounter}
+           style={styles.buttonTwo}
+         >
+           <Text style={styles.buttonTwoText}>+</Text>
+         </TouchableOpacity>
+         </View>
+
+        
 
         {/* Conditional Defense Slider based on checkbox state */}
         {isChecked && <DefenseSlider />}
@@ -75,7 +111,8 @@ const MatchInfo: React.FC = () => {
         <Pressable style={styles.submitButton} onPress={handleSubmit}>
           <Text 
           style={styles.submitButtonText}
-          onPress={() => router.push(`/(matchInfo)/review`)}>Submit</Text>
+          onPress={() => router.push(`/(matchInfo)/review`)}>Review</Text>
+
         </Pressable>
       </View>
     </ScrollView>
@@ -138,6 +175,61 @@ const styles = StyleSheet.create({
     color: 'green',
     marginTop: 10,
   },
+  buttonOne: {
+    marginTop: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 53,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: "rgba(0, 130, 190, 255)",
+    borderWidth: 2,
+    borderColor: "white",
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '70%',
+  },
+  buttonOneText: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: "bold",
+    letterSpacing: 0.25,
+    color: "white",
+    fontFamily: "BPoppins",
+  },
+  buttonTwo: {
+    marginTop: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 53,
+    // borderRadius: 4,
+    // elevation: 3,
+    // backgroundColor: "rgba(0, 130, 190, 255)",
+    // borderWidth: 2,
+    // borderColor: "white",
+  },
+  buttonTwoText: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: "bold",
+    letterSpacing: 0.25,
+    color: "black",
+    fontFamily: "BPoppins",
+  },
+  counterText: {
+    fontSize: 16,
+    marginTop: 19,
+    lineHeight: 21,
+    fontWeight: "bold",
+    letterSpacing: 0.25,
+    color: "black",
+    fontFamily: "BPoppins",
+  }
+ 
   
   // ... Other styles remain the same
 });
