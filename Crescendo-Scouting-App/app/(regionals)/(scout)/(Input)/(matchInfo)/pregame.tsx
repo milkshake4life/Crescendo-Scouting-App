@@ -7,12 +7,12 @@ const matchInfo = () => {
   return (
     <View>
       <BackButton buttonName="Home Page" />
-      <Text>Plese Input the End Game Information!</Text>
+      <Text>Plese Input the Pre Game Information!</Text>
       <Pressable
             style={styles.buttonOne}
-            onPress={() => router.push(`/(matchInfo)/postgame`)}
+            onPress={() => router.push(`/(matchInfo)/auto`)}
             >
-                <Text style={styles.buttonOneText}>Post Game</Text>
+                <Text style={styles.buttonOneText}>Auto</Text>
             </Pressable>
     </View>
   );
