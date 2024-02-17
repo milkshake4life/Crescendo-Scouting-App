@@ -91,18 +91,18 @@ const robotInfo = () => {
       <ScrollView>
         <View style={ styles.container }>
         <BackButton buttonName='Home Page'/>
-          <Text style={ styles.title }>Robot Scouting!</Text>
-          <Text style={ styles.subtitle }>Input team's data!</Text>
+          <Text style={ styles.title }>Pit Scouting</Text>
+          <Text style={ styles.subtitle }>Input team's data</Text>
 
       <View style={styles.container}>
-      <Text style={ styles.buttontitle }>Visionary data!</Text>
+      <Text style={ styles.buttontitle }>Visionary Data</Text>
       <TextInput
             style={styles.input}
             value={vision}
             onChangeText={setVision}
             placeholder="Visionary System"
           />
-      <Text style={ styles.buttontitle }>Drive Train Data!</Text>
+      <Text style={ styles.buttontitle }>Drive Train Data</Text>
       <TextInput
             style={styles.input}
             value={driveTrain}
@@ -132,7 +132,7 @@ const robotInfo = () => {
             setIsFocus(false);
           }}
         />
-        <Text style={ styles.buttontitle }>Climbing Data!</Text>
+        <Text style={ styles.buttontitle }>Climbing Data</Text>
         <Dropdown
           style={[styles.dropdown, isFocus && { borderColor: 'blue', position: 'relative', bottom: 300 }]}
           placeholderStyle={styles.placeholderStyle}
@@ -154,7 +154,7 @@ const robotInfo = () => {
             setIsFocus(false);
           }}
         />
-        <Text style={ styles.buttontitle }>Intake Data!</Text>
+        <Text style={ styles.buttontitle }>Intake Data</Text>
         <Dropdown
           style={[styles.dropdown, isFocus && { borderColor: 'blue', position: 'relative', bottom: 300 }]}
           placeholderStyle={styles.placeholderStyle}
@@ -176,7 +176,7 @@ const robotInfo = () => {
             setIsFocus(false);
           }}
         />
-        <Text style={ styles.buttontitle }>Driving Data!</Text>
+        <Text style={ styles.buttontitle }>Driving Data</Text>
         <Dropdown
           style={[styles.dropdown, isFocus && { borderColor: 'blue'}]}
           placeholderStyle={styles.placeholderStyle}
@@ -207,6 +207,8 @@ const robotInfo = () => {
             }}>
             <Text style={styles.sendButtonText}>Send Data</Text>
           </Pressable>
+
+          
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -278,8 +280,22 @@ const styles = StyleSheet.create({
     borderColor: '#0056b3',
     color: '#fff',
   },
-  sendButton: {},
-  sendButtonText: {},
+  sendButton: {
+    marginTop: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: '3%',
+    paddingHorizontal: '15%',
+    borderRadius: 4,
+    backgroundColor: 'rgba(0, 130, 190, 255)',
+    borderWidth: 1,
+    borderColor: 'white',
+
+  },
+  sendButtonText: {
+    color:'white',
+    fontFamily: 'BPoppins',
+  },
   dropdown: {
     height: 50,
     width: '90%', // or some other appropriate width

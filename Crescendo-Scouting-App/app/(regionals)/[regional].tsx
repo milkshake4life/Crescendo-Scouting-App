@@ -63,8 +63,8 @@ const RegionalPage = () => {
     return (
         <View style={styles.container}>
           <BackButton buttonName='Home Page'/>
-          <Text style={styles.title} >{regional} regional! </Text>
-
+          <Text style={styles.title} >{regional} Regional </Text>
+        
           <Text style={styles.subtitle}>Select a Team</Text>
           <Dropdown
             style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
@@ -99,7 +99,7 @@ const RegionalPage = () => {
               }
             }}
           >
-            <Text style={styles.buttonOneText}>Scouting</Text>
+            <Text style={styles.buttonOneText}>Scouting Forms</Text>
           </Pressable>
           <Pressable
             style={styles.buttonTwo}
@@ -123,7 +123,7 @@ const RegionalPage = () => {
 
             }}
               > 
-            <Text style={styles.buttonTwoText}>Scouting Information</Text>
+            <Text style={styles.buttonTwoText}>Team Information</Text>
           </Pressable>
         </View>
     ); //swapped '(ScoutingDisplay)/robotDisplay' to '(ScoutingDisplay)/matchDisplay' to match the tabs. 
@@ -140,13 +140,13 @@ const styles = StyleSheet.create({
     },
     title:{
       fontFamily: 'BPoppins',
-      fontSize: 25,
-      marginBottom: 50,
-      marginTop: 30, 
+      fontSize: 30,
+      marginBottom: 30,
+      marginTop: 50, 
     },
     subtitle:{
       fontFamily: 'BPoppins',
-      fontSize: 15,
+      fontSize: 20,
       color: 'rgba(127, 127, 127, 255)',
     },
     logo: {
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
       paddingVertical: 12,
-      paddingHorizontal: 82,
+      paddingHorizontal: '13%',
       borderRadius: 4,
       elevation: 3,
       backgroundColor: 'rgba(0, 130, 190, 255)',
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
       paddingVertical: 12,
-      paddingHorizontal: 30,
+      paddingHorizontal: '10%',
       borderRadius: 4,
       elevation: 3,
       backgroundColor: 'white',
@@ -180,17 +180,15 @@ const styles = StyleSheet.create({
       marginTop: 10, // Adds space between buttons
     },
     buttonOneText: {
-      fontSize: 16,
+      fontSize: 15,
       lineHeight: 21,
-      fontWeight: 'bold',
       letterSpacing: 0.25,
       color: 'white',
       fontFamily: 'BPoppins',
     },
     buttonTwoText: {
-      fontSize: 16,
+      fontSize: 15,
       lineHeight: 21,
-      fontWeight: 'bold',
       letterSpacing: 0.25,
       color: 'rgba(0, 130, 190, 255)',
       fontFamily: 'BPoppins',

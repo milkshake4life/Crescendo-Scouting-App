@@ -17,7 +17,7 @@ const HomePage = () => {
     <View style={styles.container}>
       <Image source={require('../assets/images/589Logo.png')} style={styles.logo} />
       <Text style={styles.title}>Hello!</Text>
-      <Text style={styles.subtitle}>Welcome to 589 Scouting App!</Text>
+      <Text style={styles.subtitle}>Welcome to the 589 Scouting App!</Text>
 
       <Pressable 
         style={styles.buttonOne}
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   title:{
     fontFamily: 'BPoppins',
     fontSize: 32,
-    marginBottom: 30,
+    marginBottom: 20,
   },
   subtitle:{
     fontFamily: 'BPoppins',
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 270,  // specify a width
     height: 270, // and a height for your image
-    marginBottom: 60,
+    marginBottom: 20,
     // add other styling as needed
   },
   buttonOne: {
@@ -90,7 +90,6 @@ const styles = StyleSheet.create({
   buttonOneText: {
     fontSize: 16,
     lineHeight: 21,
-    fontWeight: 'bold',
     letterSpacing: 0.25,
     color: 'white',
     fontFamily: 'BPoppins',
@@ -98,7 +97,6 @@ const styles = StyleSheet.create({
   buttonTwoText: {
     fontSize: 16,
     lineHeight: 21,
-    fontWeight: 'bold',
     letterSpacing: 0.25,
     color: 'rgba(0, 130, 190, 255)',
     fontFamily: 'BPoppins',

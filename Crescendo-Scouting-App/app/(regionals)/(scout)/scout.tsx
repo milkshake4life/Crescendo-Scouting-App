@@ -13,19 +13,19 @@ const Scout = () => {
       
         <View style={styles.container}>
             <BackButton buttonName='Regional Page' />
-            <Text style={styles.title}> Scouting! </Text>
+            <Text style={styles.title}> Team Scouting </Text>
             <Pressable
             style={styles.buttonOne}
-            onPress={() => router.push(`/(Input)/robotInfo?regional=${regional}&teamNumber=${teamNumber}`)}
+            onPress={() => router.push(`/(Input)/pitScouting?regional=${regional}&teamNumber=${teamNumber}`)}
             >
-                <Text style={styles.buttonOneText}>Robot Information</Text>
+                <Text style={styles.buttonOneText}>Pit Scouting</Text>
             </Pressable>
 
             <Pressable
             style={styles.buttonTwo}
             onPress={() => router.push(`/(Input)/(matchInfo)/pregame?teamNumber=${regional}`)}
             >
-                <Text style={styles.buttonTwoText}>Match Information</Text>
+                <Text style={styles.buttonTwoText}>Match Scouting</Text>
             </Pressable>
 
         </View>
@@ -43,8 +43,8 @@ const styles = StyleSheet.create({
     title:{
       fontFamily: 'BPoppins',
       fontSize: 32,  //font size differs from regional page. Regional = 25. 
-      marginBottom: 110,
-      marginTop: 30, //adding top margin to move down the page. 
+      marginBottom: '16%',
+      marginTop: '30%', //adding top margin to move down the page. 
     },
     subtitle:{
       fontFamily: 'BPoppins',
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
       paddingVertical: 12,
-      paddingHorizontal: 53,
+      paddingHorizontal: '20.5%',
       borderRadius: 4,
       elevation: 3,
       backgroundColor: 'rgba(0, 130, 190, 255)',
@@ -85,7 +85,6 @@ const styles = StyleSheet.create({
     buttonOneText: {
       fontSize: 16,
       lineHeight: 21,
-      fontWeight: 'bold',
       letterSpacing: 0.25,
       color: 'white',
       fontFamily: 'BPoppins',
@@ -93,7 +92,6 @@ const styles = StyleSheet.create({
     buttonTwoText: {
       fontSize: 16,
       lineHeight: 21,
-      fontWeight: 'bold',
       letterSpacing: 0.25,
       color: 'rgba(0, 130, 190, 255)',
       fontFamily: 'BPoppins',
