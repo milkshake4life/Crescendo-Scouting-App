@@ -2,7 +2,11 @@ import { Stack } from "expo-router";
 
 const ScoutLayout = () => {
     return (
-        <Stack screenOptions = {{headerShown: false,}}>
+        <Stack screenOptions = {{headerShown: false, contentStyle: {
+            // flex: 1,
+            // backgroundColor: 'white', // Set the background color here
+          },
+        }}>
             <Stack.Screen 
                 name = "(scout)" 
                 options = {{
