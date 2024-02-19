@@ -129,7 +129,7 @@ const matchInfo = () => {
         <Pressable
           style={styles.buttonOne}
           onPress={() => {
-            if (selectedAlliance && selectedSeating && selectedStartingPosition) {
+            if (selectedAlliance && selectedSeating && selectedStartingPosition && selectedValue) {
               router.push(`/(matchInfo)/auto?alliance=${selectedAlliance}`)
             }
             else{
