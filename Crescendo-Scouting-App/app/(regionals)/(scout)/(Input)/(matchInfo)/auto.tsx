@@ -16,6 +16,7 @@ const matchInfo: React.FC = () => {
     { id: 's1', color: 'orange', used: false },
     { id: 's2', color: 'orange', used: false },
     { id: 's3', color: 'orange', used: false },
+    { id: 'R', color: 'green', used: false },
     { id: 'm1', color: 'orange', used: false },
     { id: 'm2', color: 'orange', used: false },
     { id: 'm3', color: 'orange', used: false },
@@ -137,7 +138,7 @@ const matchInfo: React.FC = () => {
         <View style={styles.notesContainer}>
           {/* Column for Side Notes (s*) */}
           <View style={styles.notesColumn}>
-            {notes.filter(note => note.id.startsWith('s')).map((note) => (
+            {notes.filter(note => note.id.startsWith('s') || note.id.startsWith('R')).map((note) => (
               <Pressable
                 key={note.id}
                 onPress={() => handlePressNote(note.id)}

@@ -69,7 +69,7 @@ const matchInfo = () => {
           maxHeight={300}
           labelField="label"
           valueField="value"
-          placeholder={!isFocus ? 'Select item' : '...'}
+          placeholder={!isFocus ? 'Select match' : '...'}
           searchPlaceholder="Search..."
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
