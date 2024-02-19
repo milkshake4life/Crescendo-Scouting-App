@@ -128,7 +128,14 @@ const matchInfo = () => {
 
         <Pressable
           style={styles.buttonOne}
-          onPress={() => router.push(`/(matchInfo)/auto?alliance=${selectedAlliance}`)}
+          onPress={() => {
+            if (selectedAlliance && selectedSeating && selectedStartingPosition) {
+              router.push(`/(matchInfo)/auto?alliance=${selectedAlliance}`)
+            }
+            else{
+              alert('Please fill out all the fields before continuing.')
+            }
+          }}
         >
           <Text style={styles.buttonOneText}>Auto</Text>
         </Pressable>
