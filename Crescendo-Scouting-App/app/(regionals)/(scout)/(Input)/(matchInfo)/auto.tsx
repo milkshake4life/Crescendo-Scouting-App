@@ -1,260 +1,203 @@
 import { Link, router, useGlobalSearchParams, useLocalSearchParams, } from "expo-router";
-import {Pressable, Button, Image, Text, View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity,} from "react-native";
+import { Pressable, Button, Image, Text, View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity, } from "react-native";
 import BackButton from "../../../../backButton";
-import { Dropdown } from "react-native-element-dropdown";
-import React, { useEffect, useState } from "react";
-import { database } from "../../../../../firebaseConfig";
-import { onValue, ref, set } from "firebase/database";
-import Slider from "@react-native-community/slider";
+import React, { useEffect, useMemo, useState } from "react";
 
-interface DropdownItem {
-  label: string;
-  value: string;
+interface Note {
+  id: string;
+  color: 'orange' | 'green';
+  used: boolean;
 }
 
 const matchInfo: React.FC = () => {
-  const ScoringData = [
-    { label: "Amp Side", value: "1" },
-    { label: "Speaker Side(middle)", value: "2" },
-    { label: "Source Side", value: "3" },
-  ];
-  const [sliderValue, setSliderValue] = React.useState(1);
-  const [driveTrain, setDriveTrain] = useState<string>("");
-  const [vision, setVision] = useState<string>("");
-  const [selectedValue, setSelectedValue] = useState<string | null>(null);
-  const [isFocus, setIsFocus] = useState(false);
-  const [dropdownHeight, setDropdownHeight] = useState<number>(0);
-  const { regional } = useGlobalSearchParams<{ regional: string }>();
+  const { alliance } = useGlobalSearchParams<{ alliance: string }>();
+  const [notes, setNotes] = useState<Note[]>([
+    { id: 's1', color: 'orange', used: false },
+    { id: 's2', color: 'orange', used: false },
+    { id: 's3', color: 'orange', used: false },
+    { id: 'R', color: 'green', used: false },
+    { id: 'm1', color: 'orange', used: false },
+    { id: 'm2', color: 'orange', used: false },
+    { id: 'm3', color: 'orange', used: false },
+    { id: 'm4', color: 'orange', used: false },
+    { id: 'm5', color: 'orange', used: false },
+  ]);
+  const [buttonPresses, setButtonPresses] = useState<string[]>([]);
+  const isAnyNoteGreen = notes.some(note => note.color === 'green');
+  const [taxiPressed, setTaxiPressed] = useState<boolean>(false);
+  const { leftNotes, rightNotes } = useMemo(() => {
+    const sNotes = notes.filter(note => note.id.startsWith('s') || note.id.startsWith('R'));
+    const mNotes = notes.filter(note => note.id.startsWith('m')); // Include "R" in mNotes for simplicity
 
-  let modifiedRegional = regional;
-  if (regional === "Orange County") {
-    modifiedRegional = "Orange-County";
-  }
-  const { teamNumber } = useGlobalSearchParams<{ teamNumber: string }>();
+    return alliance === "Red" ? { leftNotes: mNotes, rightNotes: sNotes } : { leftNotes: sNotes, rightNotes: mNotes };
+  }, [notes, alliance]);
 
-  const handleSendData = () => {
-    // Assuming you have a teamNumber variable to uniquely identify teams
 
-    // Path to the Firebase location where you want to store the selected value
-    const path =
-      { modifiedRegional } + `/teams/${teamNumber}/Robot-Info/scoringOption`;
-
-    // Push the selected value to Firebase
-    set(ref(database, path), selectedValue)
-      .then(() => {
-        console.log("Data saved successfully!");
-        // ... handle success ...
+  const handlePressNote = (noteId: string): void => {
+    setNotes((currentNotes) =>
+      currentNotes.map((note) => {
+        if (note.id === noteId && !note.used) {
+          return { ...note, color: note.color === 'green' ? 'orange' : 'green' };
+        }
+        return note;
       })
-      .catch((error) => {
-        console.error("Failed to write data: ", error);
-      });
+    );
   };
 
-  const [counter,setCounter] =useState(0)
-
-  const incrementCounter = () => {
-    setCounter(counter+1)
-  }
-
-  const decrementCounter = () => {
-    if(counter > 0) {
-        setCounter(counter-1)
+  const handlePress = (item: string): void => {
+    if (item === 'TAXI') {
+      if (taxiPressed) {
+        return;
+      }
+      setButtonPresses(currentPresses => [...currentPresses, item]);
+      setTaxiPressed(true);
+      return;
     }
-  }
+
+    if (!isAnyNoteGreen) {
+      // Optionally, provide feedback to the user that a note needs to be selected first.
+      return;
+    }
+
+    // Step 1: Find the currently green note
+    const greenNoteIndex = notes.findIndex(note => note.color === 'green');
+
+    // If there's a green note, prepare the entry for the buttonPresses and update the notes state
+    if (greenNoteIndex !== -1) {
+      const greenNote = notes[greenNoteIndex];
+      const entry = `${greenNote.id.toUpperCase()} - ${item}`;
+
+      // Step 2: Add the entry to buttonPresses
+      setButtonPresses(currentPresses => [...currentPresses, entry]);
+
+      // Step 3: Mark the note as used and reset its color
+      // Note: Since we're directly modifying the state based on the previous state,
+      // it's better to use the functional update form of the setState hook.
+      setNotes(currentNotes =>
+        currentNotes.map((note, index) =>
+          index === greenNoteIndex ? { ...note, color: 'orange', used: true } : note
+        )
+      );
+    } else {
+      // If no note is green, just add the item
+      setButtonPresses(currentPresses => [...currentPresses, item]);
+    }
+  };
+
+  const handleDeletePress = (index: number) => {
+    const entry = buttonPresses[index];
+
+    // Check if the entry directly matches special cases like "TAXI"
+    if (entry === 'TAXI') {
+      setTaxiPressed(false);
+    } else {
+      // Assuming the format is "NOTEID - ACTION" (e.g., "R - Speaker")
+      const noteIdPattern = entry.split(' - ')[0].toLowerCase(); // This will extract "r" from "R - Speaker"
+      const matchedNote = notes.find(note => note.id.toLowerCase() === noteIdPattern);
+
+      if (matchedNote) {
+        // If a matching note is found, update its 'used' state
+        setNotes(currentNotes =>
+          currentNotes.map(note =>
+            note.id.toLowerCase() === noteIdPattern ? { ...note, used: false } : note
+          )
+        );
+      }
+    }
+
+    // Remove the entry from the list regardless of the type
+    setButtonPresses(currentPresses => currentPresses.filter((_, i) => i !== index));
+  };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.keyboardAvoidingView}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
-    >
-      <ScrollView>
-        <View style={styles.container}>
-          <BackButton buttonName="Home Page" />
-          {/* <Text style={styles.title}>Robot Scouting!</Text>
-          <Text style={styles.subtitle}>Input team's data!</Text>
+    <ScrollView>
+      <View style={styles.mainContainer}>
+        <BackButton buttonName="Home Page" />
+        <Text style={styles.title}>Auto</Text>
 
-          <View style={styles.container}>
-            <Text style={styles.buttontitle}>Visionary data!</Text>
-            <TextInput
-              style={styles.input}
-              value={vision}
-              onChangeText={setVision}
-              placeholder="Visionary System"
-            />
-            <Text style={styles.buttontitle}>Drive Train Data!</Text>
-            <TextInput
-              style={styles.input}
-              value={driveTrain}
-              onChangeText={setDriveTrain}
-              placeholder="Drive Train"
-            />
-          </View> */}
-          <Text style={styles.buttontitle}>Starting Position</Text>
-          <Dropdown
-            style={[
-              styles.dropdown,
-              isFocus && {
-                borderColor: "blue",
-                position: "relative",
-                bottom: dropdownHeight + 10,
-              },
-            ]}
-            placeholderStyle={styles.placeholderStyle}
-            selectedTextStyle={styles.selectedTextStyle}
-            inputSearchStyle={styles.inputSearchStyle}
-            iconStyle={styles.iconStyle}
-            data={ScoringData}
-            maxHeight={300}
-            labelField="label"
-            valueField="value"
-            placeholder={!isFocus ? "Select item" : "..."}
-            value={selectedValue || "1"}
-            onFocus={() => setIsFocus(true)}
-            onBlur={() => setIsFocus(false)}
-            onChange={(item: DropdownItem) => {
-              setSelectedValue(item.value);
-              setIsFocus(false);
-              handleSendData(); // Call the function to push the selected value when it changes
-            }}
-          />
-          <Text style={styles.counterText} >{counter}</Text>
-          <TouchableOpacity
-            onPress={incrementCounter}
-            style={styles.buttonOne}
-          >
-            <Text style={styles.buttonOneText}>+</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={decrementCounter}
-            style={styles.buttonOne}
-          >
-            <Text style={styles.buttonOneText}>-</Text>
-          </TouchableOpacity>
-
-          <Pressable
-            style={styles.buttonOne}
-            // onPress={() => router.push(`/(matchInfo)/auto`)}
-          >
-            <Text style={styles.buttonOneText}>Speaker</Text>
+        <View style={styles.buttonGroup}>
+          <Pressable onPress={() => handlePress('TAXI')} style={styles.button}>
+            <Text style={styles.buttonText}>Taxi</Text>
           </Pressable>
-          <Pressable
-            style={styles.buttonOne}
-            // onPress={() => router.push(`/(matchInfo)/auto`)}
-          >
-            <Text style={styles.buttonOneText}>Amp</Text>
+          <Pressable onPress={() => handlePress('SPEAKER')} style={styles.button}>
+            <Text style={styles.buttonText}>Speaker</Text>
           </Pressable>
-          <Pressable
-            style={styles.buttonOne}
-            onPress={() => router.push(`/(matchInfo)/teleop`)}
-          >
-            <Text style={styles.buttonOneText}>Teleop</Text>
+          <Pressable onPress={() => handlePress('MISSED SPEAKER')} style={styles.button}>
+            <Text style={styles.buttonText}>Missed Speaker</Text>
+          </Pressable>
+          <Pressable onPress={() => handlePress('AMP')} style={styles.button}>
+            <Text style={styles.buttonText}>Amp</Text>
+          </Pressable>
+          <Pressable onPress={() => handlePress('MISSED AMP')} style={styles.button}>
+            <Text style={styles.buttonText}>Missed Amp</Text>
+          </Pressable>
+          <Pressable onPress={() => handlePress('Intake')} style={styles.button}>
+            <Text style={styles.buttonText}>Intake</Text>
+          </Pressable>
+          <Pressable onPress={() => handlePress('MISSED Intake')} style={styles.button}>
+            <Text style={styles.buttonText}>Missed Intake</Text>
           </Pressable>
         </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+
+        <View style={styles.notesContainer}>
+          {/* Left Column */}
+          <View style={styles.notesColumn}>
+            {leftNotes.map((note) => (
+              <Pressable
+                key={note.id}
+                onPress={() => handlePressNote(note.id)}
+                disabled={note.used}
+                style={[styles.noteWrapper, note.used && styles.usedNote]}
+              >
+                <View style={[styles.noteBase, { borderColor: note.color }]}>
+                  <Text style={styles.noteText}>{note.id.toUpperCase()}</Text>
+                </View>
+              </Pressable>
+            ))}
+          </View>
+
+          {/* Right Column */}
+          <View style={styles.notesColumn}>
+            {rightNotes.map((note) => (
+              <Pressable
+                key={note.id}
+                onPress={() => handlePressNote(note.id)}
+                disabled={note.used}
+                style={[styles.noteWrapper, note.used && styles.usedNote]}
+              >
+                <View style={[styles.noteBase, { borderColor: note.color }]}>
+                  <Text style={styles.noteText}>{note.id.toUpperCase()}</Text>
+                </View>
+              </Pressable>
+            ))}
+          </View>
+        </View>
+
+        <View style={styles.listContainer}>
+          <Text style={styles.listTitle}>List</Text>
+          {buttonPresses.map((press, index) => (
+            <Pressable key={index} onPress={() => handleDeletePress(index)} style={styles.listItemContainer}>
+              <Text style={styles.listItem}>{press}</Text>
+              <Text style={styles.closeButtonText}>X</Text>
+            </Pressable>
+          ))}
+        </View>
+
+        <Pressable
+          style={styles.buttonOne}
+          onPress={() => router.push(`/(matchInfo)/teleop`)}
+        >
+          <Text style={styles.buttonOneText}>Teleop</Text>
+        </Pressable>
+      </View>
+    </ScrollView >
   );
 };
 
 const styles = StyleSheet.create({
-  keyboardAvoidingView: {
-    flex: 1,
-  },
-  container: {
-    flex: 1, // Makes sure the container takes up the whole screen
-    justifyContent: "flex-start", // Centers content vertically in the container
-    alignItems: "center", // Centers content horizontally in the container
-    padding: 20, // Optional: Adds padding to the container
-    width: "100%",
-  },
   title: {
     fontFamily: "BPoppins",
     fontSize: 32,
-  },
-  subtitle: {
-    fontFamily: "BPoppins",
-    fontSize: 15,
-    color: "rgba(127, 127, 127, 255)",
-    marginBottom: 30,
-  },
-  buttontitle: {
-    fontFamily: "BPoppins",
-    fontSize: 12,
-  },
-  questiontitle: {
-    fontFamily: "BPoppins",
-    fontSize: 15,
-    color: "rgba(127, 127, 127, 255)",
-  },
-  input: {
-    height: 50,
-    marginTop: 10,
-    marginBottom: 30,
-    paddingHorizontal: 8,
-    borderWidth: 0.5,
-    padding: 10,
-    width: "90%", // Set width as needed
-    borderRadius: 5, // Optional: if you want rounded corners
-  },
-  optionsContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-  },
-  option: {
-    padding: 10,
-    margin: 5,
-    borderWidth: 1,
-    borderColor: "#000",
-    borderRadius: 20, // Makes it more "bubble"-like
-    backgroundColor: "#fff",
-  },
-  optionText: {
-    fontSize: 16,
-    color: "#000",
-    //fontFamily: 'BPoppins', // Change this to less dense font
-  },
-  optionSelected: {
-    backgroundColor: "#007bff",
-    borderColor: "#0056b3",
-    color: "#fff",
-  },
-  sendButton: {},
-  sendButtonText: {},
-  dropdown: {
-    height: 50,
-    width: "90%", // or some other appropriate width
-    borderColor: "gray",
-    borderWidth: 0.5,
-    borderRadius: 8,
-    paddingHorizontal: 8,
-    // Add margin for some spacing if needed
-    marginTop: 10,
-    marginBottom: 30,
-  },
-  label: {
-    position: "absolute",
-    backgroundColor: "white",
-    left: 22,
-    top: 8,
-    zIndex: 999,
-    paddingHorizontal: 8,
-    fontSize: 14,
-  },
-  placeholderStyle: {
-    fontSize: 16,
-  },
-  selectedTextStyle: {
-    fontSize: 16,
-  },
-  iconStyle: {
-    width: 20,
-    height: 20,
-  },
-  inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
   },
   buttonOne: {
     marginTop: 5,
@@ -276,14 +219,154 @@ const styles = StyleSheet.create({
     color: "white",
     fontFamily: "BPoppins",
   },
-  counterText: {
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: "bold",
-    letterSpacing: 0.25,
-    color: "black",
+  ringsContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  ringWrapper: {
+    marginVertical: 10,
+  },
+  ringBase: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  ringActive: {
+    borderColor: '#00f',
+  },
+  ringInactive: {
+    borderColor: '#f90',
+  },
+  greenRing: {
+    borderColor: '#0f0',
+  },
+  redRing: {
+    borderColor: '#f00',
+  },
+  content: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    flex: 1,
+    width: '100%',
+  },
+  buttonGroup: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    // flexDirection: 'row',
+  },
+  button: {
+    backgroundColor: '#00f', // Button color
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    marginVertical: 5, // Adjust for space between buttons
+    marginLeft: 10,//PLEASE CHANGE THIS 
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  mainContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    padding: 20,
+    width: "100%",
+  },
+  ringsOuterContainer: {
+    flexDirection: 'column', // Stack the two rows vertically
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+  ringsRow: {
+    flexDirection: 'row', // Arrange items in a row
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    width: '100%',
+  },
+  ringText: {
+    color: 'black', // Choose the text color that suits your design
+    fontWeight: 'bold', // If you want the text to be bold
+    // Position the text in the center of the ring
+    position: 'absolute',
+    textAlign: 'center',
+    width: '100%', // Ensure the text is centered in the ring
+    lineHeight: 40, // Adjust line height to vertically center text in the ring
+  },
+  listContainer: {
+    borderColor: '#000',
+    borderWidth: 2,
+    marginTop: 20,
+    padding: 10,
+    width: '90%',
+    alignSelf: 'center',
+  },
+  listTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  listItemContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: 'lightgray', // Apply background color to the entire item
+    marginBottom: 5,
+    padding: 10, // Add padding inside the item for spacing
+    borderRadius: 5, // Optional: for rounded corners
+  },
+  listItem: {
+    color: '#000', // Text color for the list item
+    fontWeight: 'normal',
+    flex: 1, // Allows text to fill the row and push the "X" to the end
+  },
+  closeButtonText: {
+    color: '#333', // Color for the "X"
+    fontWeight: 'bold',
+    marginLeft: 10, // Ensure spacing between the text and "X"
+  },
+  usedNote: {
+    backgroundColor: '#ccc', // Gray background for used notes
+  },
+  notesContainer: {
+    flexDirection: 'row', // Align columns side by side
+    justifyContent: 'space-around',
+    alignItems: 'flex-start',
+    width: '100%',
+  },
+  notesColumn: {
+    flexDirection: 'column', // Arrange notes vertically
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  noteWrapper: {
+    marginVertical: 10, // Adjust spacing between notes
+  },
+  noteBase: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noteText: {
+    // Your text style here
+    color: 'black', // Choose the text color that suits your design
+    fontWeight: 'bold', // If you want the text to be bold
+    // Position the text in the center of the ring
+    position: 'absolute',
+    textAlign: 'center',
+    width: '100%', // Ensure the text is centered in the ring
+    lineHeight: 40, // Adjust line height to vertically center text in the ring
     fontFamily: "BPoppins",
-  }
+  },
 });
 
 export default matchInfo;

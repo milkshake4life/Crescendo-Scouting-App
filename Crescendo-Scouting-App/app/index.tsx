@@ -33,6 +33,13 @@ const HomePage = () => {
         <Text style={styles.buttonTwoText}>Orange County</Text>
       </Pressable>
 
+      <Pressable 
+        style={styles.buttonTwo}
+        onPress={() => router.push("/(regionals)/ISR")}
+      >
+        <Text style={styles.buttonTwoText}>ISR</Text>
+      </Pressable>
+
     </View>
   );
 };

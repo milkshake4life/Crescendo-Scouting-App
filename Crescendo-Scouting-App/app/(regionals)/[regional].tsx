@@ -113,14 +113,18 @@ const RegionalPage = () => {
               //retrieving values to test if they have been saved. This line can be removed later but is useful for debugging
               let reg = await retrieveRegional();
               let teamNum = await retrieveTeam();
-              console.log("regional: "+ reg + " team: " + teamNum);
+              // console.log("regional: "+ reg + " team: " + teamNum);
 
               //pushing to the matchDisplay tab. 
               //router.push(`/(scout)/(ScoutingDisplay)/matchDisplay?regional=${reg}&teamNumber=${teamNum}`) is unnecessary.
               //since the queried information is stored locally, we don't need to pass it by query. We can just retrieve it 
               //in the components that need it
-              router.push(`/(scout)/(ScoutingDisplay)/matchDisplay`)
-
+              if (selectedValue) {
+                router.push(`/(scout)/(ScoutingDisplay)/matchDisplay`)
+              }
+              else{
+                alert('Please select a team number.')
+              }
             }}
               > 
             <Text style={styles.buttonTwoText}>Team Information</Text>
