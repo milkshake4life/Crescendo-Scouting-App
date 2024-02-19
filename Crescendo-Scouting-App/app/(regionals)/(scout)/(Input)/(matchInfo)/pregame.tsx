@@ -128,7 +128,7 @@ const matchInfo = () => {
 
         <Pressable
           style={styles.buttonOne}
-          onPress={() => router.push(`/(matchInfo)/auto`)}
+          onPress={() => router.push(`/(matchInfo)/auto?alliance=${selectedAlliance}`)}
         >
           <Text style={styles.buttonOneText}>Auto</Text>
         </Pressable>

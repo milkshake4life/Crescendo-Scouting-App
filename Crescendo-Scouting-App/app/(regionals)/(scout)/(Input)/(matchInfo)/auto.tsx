@@ -1,8 +1,7 @@
 import { Link, router, useGlobalSearchParams, useLocalSearchParams, } from "expo-router";
 import { Pressable, Button, Image, Text, View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity, } from "react-native";
 import BackButton from "../../../../backButton";
-import React, { useEffect, useState } from "react";
-import DraggableFlatList, { RenderItemParams } from 'react-native-draggable-flatlist';
+import React, { useEffect, useMemo, useState } from "react";
 
 interface Note {
   id: string;
@@ -11,7 +10,7 @@ interface Note {
 }
 
 const matchInfo: React.FC = () => {
-  const { regional } = useGlobalSearchParams<{ regional: string }>();
+  const { alliance } = useGlobalSearchParams<{ alliance: string }>();
   const [notes, setNotes] = useState<Note[]>([
     { id: 's1', color: 'orange', used: false },
     { id: 's2', color: 'orange', used: false },
@@ -26,11 +25,12 @@ const matchInfo: React.FC = () => {
   const [buttonPresses, setButtonPresses] = useState<string[]>([]);
   const isAnyNoteGreen = notes.some(note => note.color === 'green');
   const [taxiPressed, setTaxiPressed] = useState<boolean>(false);
+  const { leftNotes, rightNotes } = useMemo(() => {
+    const sNotes = notes.filter(note => note.id.startsWith('s') || note.id.startsWith('R'));
+    const mNotes = notes.filter(note => note.id.startsWith('m')); // Include "R" in mNotes for simplicity
 
-  let modifiedRegional = regional;
-  if (regional === "Orange County") {
-    modifiedRegional = "Orange-County";
-  }
+    return alliance === "Red" ? { leftNotes: mNotes, rightNotes: sNotes } : { leftNotes: sNotes, rightNotes: mNotes };
+  }, [notes, alliance]);
 
 
   const handlePressNote = (noteId: string): void => {
@@ -58,7 +58,7 @@ const matchInfo: React.FC = () => {
       // Optionally, provide feedback to the user that a note needs to be selected first.
       return;
     }
-    
+
     // Step 1: Find the currently green note
     const greenNoteIndex = notes.findIndex(note => note.color === 'green');
 
@@ -86,23 +86,27 @@ const matchInfo: React.FC = () => {
 
   const handleDeletePress = (index: number) => {
     const entry = buttonPresses[index];
-    const noteId = entry.split(' ')[0].toLowerCase(); // Assuming the format is "S1 - Speaker"
-  
+
+    // Check if the entry directly matches special cases like "TAXI"
     if (entry === 'TAXI') {
       setTaxiPressed(false);
+    } else {
+      // Assuming the format is "NOTEID - ACTION" (e.g., "R - Speaker")
+      const noteIdPattern = entry.split(' - ')[0].toLowerCase(); // This will extract "r" from "R - Speaker"
+      const matchedNote = notes.find(note => note.id.toLowerCase() === noteIdPattern);
+
+      if (matchedNote) {
+        // If a matching note is found, update its 'used' state
+        setNotes(currentNotes =>
+          currentNotes.map(note =>
+            note.id.toLowerCase() === noteIdPattern ? { ...note, used: false } : note
+          )
+        );
+      }
     }
-  
-    setButtonPresses((currentPresses) => currentPresses.filter((_, i) => i !== index));
-  
-    // Mark the corresponding note as not used
-    setNotes((currentNotes) =>
-      currentNotes.map((note) => {
-        if (note.id === noteId) {
-          return { ...note, used: false };
-        }
-        return note;
-      })
-    );
+
+    // Remove the entry from the list regardless of the type
+    setButtonPresses(currentPresses => currentPresses.filter((_, i) => i !== index));
   };
 
   return (
@@ -136,9 +140,9 @@ const matchInfo: React.FC = () => {
         </View>
 
         <View style={styles.notesContainer}>
-          {/* Column for Side Notes (s*) */}
+          {/* Left Column */}
           <View style={styles.notesColumn}>
-            {notes.filter(note => note.id.startsWith('s') || note.id.startsWith('R')).map((note) => (
+            {leftNotes.map((note) => (
               <Pressable
                 key={note.id}
                 onPress={() => handlePressNote(note.id)}
@@ -152,9 +156,9 @@ const matchInfo: React.FC = () => {
             ))}
           </View>
 
-          {/* Column for Middle Notes (m*) */}
+          {/* Right Column */}
           <View style={styles.notesColumn}>
-            {notes.filter(note => note.id.startsWith('m')).map((note) => (
+            {rightNotes.map((note) => (
               <Pressable
                 key={note.id}
                 onPress={() => handlePressNote(note.id)}
