@@ -130,7 +130,7 @@ const matchInfo = () => {
           style={styles.buttonOne}
           onPress={() => {
             if (selectedAlliance && selectedSeating && selectedStartingPosition) {
-              router.push(`/(matchInfo)/auto?alliance=${selectedAlliance}`)
+              router.push(`/(matchInfo)/auto?alliance=${selectedAlliance}&seating=${selectedSeating}`)
             }
             else{
               alert('Please fill out all the fields before continuing.')
