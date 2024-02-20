@@ -19,8 +19,13 @@ const Counter = () => {
     { label: 'Double Climb', value: '3' },
     { label: 'Triple Climb', value: '4' },
   ];
-  const [madeCount, setMadeCount] = useState<number>(0);
-  const [missCount, setMissCount] = useState<number>(0);
+  const [madeCountSpeaker, setMadeCountSpeaker] = useState<number>(0);
+  const [missCountSpeaker, setMissCountSpeaker] = useState<number>(0);
+  const [madeCountAmp, setMadeCountAmp] = useState<number>(0);
+  const [missCountAmp, setMissCountAmp] = useState<number>(0);
+  const [madeCountIntake, setMadeCountIntake] = useState<number>(0);
+  const [missCountIntake, setMissCountIntake] = useState<number>(0);
+
   const [isFocus, setIsFocus] = useState(false);
   const [selectedClimbingValue, setSelectedClimbingValue] = useState<string | null>(null);
   const [dropdownFocus, setDropdownFocus] = useState<{
@@ -34,19 +39,52 @@ const Counter = () => {
   };
   const [sliderValue, setSliderValue] = useState<number>(0);
 
-  const increment = (type: 'made' | 'miss') => {
+
+  const incrementSpeaker = (type: 'made' | 'miss') => {
     if (type === 'made') {
-      setMadeCount(prev => prev + 1);
+      setMadeCountSpeaker(prev => prev + 1);
     } else {
-      setMissCount(prev => prev + 1);
+      setMissCountSpeaker(prev => prev + 1);
     }
   };
 
-  const decrement = (type: 'made' | 'miss') => {
-    if (type === 'made' && madeCount > 0) {
-      setMadeCount(prev => prev - 1);
-    } else if (type === 'miss' && missCount > 0) {
-      setMissCount(prev => prev - 1);
+  const incrementAmp = (type: 'made' | 'miss') => {
+    if (type === 'made') {
+      setMadeCountAmp(prev => prev + 1);
+    } else {
+      setMissCountAmp(prev => prev + 1);
+    }
+  };
+
+  const incrementIntake = (type: 'made' | 'miss') => {
+    if (type === 'made') {
+      setMadeCountIntake(prev => prev + 1);
+    } else {
+      setMissCountIntake(prev => prev + 1);
+    }
+  };
+
+  const decrementSpeaker = (type: 'made' | 'miss') => {
+    if (type === 'made' && madeCountSpeaker > 0) {
+      setMadeCountSpeaker(prev => prev - 1);
+    } else if (type === 'miss' && missCountSpeaker > 0) {
+      setMissCountSpeaker(prev => prev - 1);
+    }
+  };
+
+  const decrementAmp = (type: 'made' | 'miss') => {
+    if (type === 'made' && madeCountAmp > 0) {
+      setMadeCountAmp(prev => prev - 1);
+    } else if (type === 'miss' && missCountAmp > 0) {
+      setMissCountAmp(prev => prev - 1);
+    }
+  };
+
+  const decrementIntake = (type: 'made' | 'miss') => {
+    if (type === 'made' && madeCountIntake > 0) {
+      setMadeCountIntake(prev => prev - 1);
+    } else if (type === 'miss' && missCountIntake > 0) {
+      setMissCountIntake(prev => prev - 1);
     }
   };
   const handleBlur = (dropdownKey: string) => {
@@ -81,8 +119,8 @@ const Counter = () => {
         <View style={styles.container}>
           <View style={styles.border}>
             <View style={styles.counterContainer}>
-              <CounterControl label="Made" count={madeCount} onIncrement={() => increment('made')} onDecrement={() => decrement('made')} />
-              <CounterControl label="Miss" count={missCount} onIncrement={() => increment('miss')} onDecrement={() => decrement('miss')} />
+              <CounterControl label="Made" count={madeCountSpeaker} onIncrement={() => incrementSpeaker('made')} onDecrement={() => decrementSpeaker('made')} />
+              <CounterControl label="Miss" count={missCountSpeaker} onIncrement={() => incrementSpeaker('miss')} onDecrement={() => decrementSpeaker('miss')} />
             </View>
           </View>
 
@@ -90,8 +128,8 @@ const Counter = () => {
           <View style={styles.container}>
             <View style={styles.border}>
               <View style={styles.counterContainer}>
-                <CounterControl label="Made" count={madeCount} onIncrement={() => increment('made')} onDecrement={() => decrement('made')} />
-                <CounterControl label="Miss" count={missCount} onIncrement={() => increment('miss')} onDecrement={() => decrement('miss')} />
+                <CounterControl label="Made" count={madeCountAmp} onIncrement={() => incrementAmp('made')} onDecrement={() => decrementAmp('made')} />
+                <CounterControl label="Miss" count={missCountAmp} onIncrement={() => incrementAmp('miss')} onDecrement={() => decrementAmp('miss')} />
               </View>
             </View>
 
@@ -99,8 +137,8 @@ const Counter = () => {
             <View style={styles.container}>
               <View style={styles.border}>
                 <View style={styles.counterContainer}>
-                  <CounterControl label="Made" count={madeCount} onIncrement={() => increment('made')} onDecrement={() => decrement('made')} />
-                  <CounterControl label="Miss" count={missCount} onIncrement={() => increment('miss')} onDecrement={() => decrement('miss')} />
+                  <CounterControl label="Made" count={madeCountIntake} onIncrement={() => incrementIntake('made')} onDecrement={() => decrementIntake('made')} />
+                  <CounterControl label="Miss" count={missCountIntake} onIncrement={() => incrementIntake('miss')} onDecrement={() => decrementIntake('miss')} />
                 </View>
               </View>
 
@@ -126,7 +164,7 @@ const Counter = () => {
             {marker}
           </Text>
         ))}
-      </View>} */}
+      </View>} */}  
                     </View>
                     <View style={styles.space} />
                     <Text style={styles.number}>1</Text>
