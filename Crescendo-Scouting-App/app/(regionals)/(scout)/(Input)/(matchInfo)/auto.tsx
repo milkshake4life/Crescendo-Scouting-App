@@ -34,10 +34,15 @@ const matchInfo: React.FC = () => {
 
 
   const handlePressNote = (noteId: string): void => {
+
     setNotes((currentNotes) =>
       currentNotes.map((note) => {
-        if (note.id === noteId && !note.used) {
+        if (note.id === noteId && !note.used) { //need an additional statement in here setting the previously green note to orange
           return { ...note, color: note.color === 'green' ? 'orange' : 'green' };
+        }
+        if (note.color === 'green')
+        {
+          note.color = 'orange'; //changes the color of the currently green note to orange. 
         }
         return note;
       })
@@ -61,7 +66,7 @@ const matchInfo: React.FC = () => {
 
     // Step 1: Find the currently green note
     const greenNoteIndex = notes.findIndex(note => note.color === 'green');
-
+    console.log(greenNoteIndex)
     // If there's a green note, prepare the entry for the buttonPresses and update the notes state
     if (greenNoteIndex !== -1) {
       const greenNote = notes[greenNoteIndex];
@@ -78,6 +83,8 @@ const matchInfo: React.FC = () => {
           index === greenNoteIndex ? { ...note, color: 'orange', used: true } : note
         )
       );
+      //log for debugging
+      console.log("note: " + greenNote + "green note entry: " + entry);
     } else {
       // If no note is green, just add the item
       setButtonPresses(currentPresses => [...currentPresses, item]);
