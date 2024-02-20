@@ -92,7 +92,7 @@ const robotInfo = () => {
         <View style={ styles.container }>
         <BackButton buttonName='Home Page'/>
           <Text style={ styles.title }>Pit Scouting</Text>
-          <Text style={ styles.subtitle }>Input team's data</Text>
+          <Text style={ styles.subtitle }>Input the team's data</Text>
 
       <View style={styles.container}>
       <Text style={ styles.buttontitle }>Visionary Data</Text>
