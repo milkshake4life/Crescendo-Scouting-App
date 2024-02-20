@@ -37,7 +37,7 @@ const matchInfo: React.FC = () => {
 
     setNotes((currentNotes) =>
       currentNotes.map((note) => {
-        if (note.id === noteId && !note.used) { //need an additional statement in here setting the previously green note to orange
+        if (note.id === noteId && !note.used) {
           return { ...note, color: note.color === 'green' ? 'orange' : 'green' };
         }
         if (note.color === 'green')
