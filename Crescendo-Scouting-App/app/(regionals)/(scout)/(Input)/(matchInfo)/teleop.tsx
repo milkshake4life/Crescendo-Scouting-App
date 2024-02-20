@@ -32,7 +32,7 @@ const Counter = () => {
       [dropdownKey]: true,
     }));
   };
-  const[sliderValue,setSliderValue]=useState<number>(0);
+  const [sliderValue, setSliderValue] = useState<number>(0);
 
   const increment = (type: 'made' | 'miss') => {
     if (type === 'made') {
@@ -127,57 +127,57 @@ const Counter = () => {
           </Text>
         ))}
       </View>} */}
-    </View>
-                      <View style={styles.space} />
-                      <Text style={styles.number}>1</Text>
-
-                      <View style={styles.space} />
-                      <Text style={styles.number}>2</Text>
-
-                      <View style={styles.space} />
-                      <Text style={styles.number}>3</Text>
                     </View>
+                    <View style={styles.space} />
+                    <Text style={styles.number}>1</Text>
+
+                    <View style={styles.space} />
+                    <Text style={styles.number}>2</Text>
+
+                    <View style={styles.space} />
+                    <Text style={styles.number}>3</Text>
                   </View>
                 </View>
-                <Text style={styles.subtitle}>Climb</Text>
-                <View style={styles.container}>
-                  <View style={styles.border}>
-                    <View style={styles.counterContainer}>
-                      <Dropdown
-                        style={[styles.dropdown, isFocus && { borderColor: 'blue', position: 'relative', bottom: 300 }]}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={ClimbingData}
-                        search
-                        maxHeight={300}
-                        labelField="label"
-                        valueField="value"
-                        placeholder={!isFocus ? 'Select item' : '...'}
-                        value={selectedClimbingValue || '5'}
-                        searchPlaceholder="Search..."
-                        onFocus={() => handleFocus('climbingData')}
-                        onBlur={() => handleBlur('climbingData')}
-                        onChange={(item: DropdownItem) => {
-                          setSelectedClimbingValue(item.value);
-                          setIsFocus(false);
-                        }}
-                      />
+              </View>
+              <Text style={styles.subtitle}>Climb</Text>
+              <View style={styles.container}>
+                <View style={styles.border}>
+                  <View style={styles.counterContainer}>
+                    <Dropdown
+                      style={[styles.dropdown, isFocus && { borderColor: 'blue', position: 'relative', bottom: 300 }]}
+                      placeholderStyle={styles.placeholderStyle}
+                      selectedTextStyle={styles.selectedTextStyle}
+                      inputSearchStyle={styles.inputSearchStyle}
+                      iconStyle={styles.iconStyle}
+                      data={ClimbingData}
+                      search
+                      maxHeight={300}
+                      labelField="label"
+                      valueField="value"
+                      placeholder={!isFocus ? 'Select item' : '...'}
+                      value={selectedClimbingValue || '5'}
+                      searchPlaceholder="Search..."
+                      onFocus={() => handleFocus('climbingData')}
+                      onBlur={() => handleBlur('climbingData')}
+                      onChange={(item: DropdownItem) => {
+                        setSelectedClimbingValue(item.value);
+                        setIsFocus(false);
+                      }}
+                    />
 
-                    </View>
                   </View>
-                  <Pressable style={styles.submitButton}>
-          <Text 
-          style={styles.submitButtonText}
-          onPress={() => router.push(`/(matchInfo)/postgame`)}>Post Game</Text>
-
-        </Pressable>
                 </View>
+                <Pressable style={styles.submitButton}>
+                  <Text
+                    style={styles.submitButtonText}
+                    onPress={() => router.push(`/(matchInfo)/postgame`)}>Post Game</Text>
+
+                </Pressable>
               </View>
             </View>
           </View>
         </View>
+      </View>
       {/* </View> */}
     </ScrollView>
 
