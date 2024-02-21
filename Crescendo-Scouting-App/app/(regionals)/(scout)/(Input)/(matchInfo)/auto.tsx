@@ -11,6 +11,9 @@ interface Note {
 
 const matchInfo: React.FC = () => {
   const { alliance } = useGlobalSearchParams<{ alliance: string }>();
+  const { regional } = useGlobalSearchParams<{ regional: string }>();
+  const { teamNumber } = useGlobalSearchParams<{ teamNumber: string }>();
+  const { qualMatch } = useGlobalSearchParams<{ qualMatch: string }>();
   const [notes, setNotes] = useState<Note[]>([
     { id: 's1', color: 'orange', used: false },
     { id: 's2', color: 'orange', used: false },
@@ -192,7 +195,7 @@ const matchInfo: React.FC = () => {
 
         <Pressable
           style={styles.buttonOne}
-          onPress={() => router.push(`/(matchInfo)/teleop`)}
+          onPress={() => router.push(`/(matchInfo)/teleop?regional=${regional}&teamNumber=${teamNumber}&qualMatch=${qualMatch}`)}
         >
           <Text style={styles.buttonOneText}>Teleop</Text>
         </Pressable>

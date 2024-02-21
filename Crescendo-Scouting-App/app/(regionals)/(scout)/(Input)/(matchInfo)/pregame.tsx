@@ -137,7 +137,7 @@ const matchInfo = () => {
           onPress={() => {
             if (selectedAlliance && selectedSeating && selectedStartingPosition && selectedQualMatch) {
               handleSetStartingPositionData();
-              router.push(`/(matchInfo)/auto?alliance=${selectedAlliance}&seating=${selectedSeating}`)
+              router.push(`/(matchInfo)/auto?regional=${modifiedRegional}&teamNumber=${teamNumber}&qualMatch=${selectedQualMatch}&alliance=${selectedAlliance}&seating=${selectedSeating}`)
             }
             else{
               alert('Please fill out all the fields before continuing.')
