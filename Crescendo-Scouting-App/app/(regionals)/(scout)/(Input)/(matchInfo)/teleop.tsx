@@ -16,10 +16,11 @@ interface DropdownItem {
 
 const Counter = () => {
   const ClimbingData = [
-    { label: 'No Climb', value: '1' },
-    { label: 'Single Climb', value: '2' },
-    { label: 'Double Climb', value: '3' },
-    { label: 'Triple Climb', value: '4' },
+    { label: 'Nothing', value: '1' },
+    { label: 'Taxi', value: '2' },
+    { label: 'Single Climb', value: '3' },
+    { label: 'Double Climb', value: '4' },
+    { label: 'Triple Climb', value: '5' },
   ];
   const [madeCountSpeaker, setMadeCountSpeaker] = useState<number>(0);
   const [missCountSpeaker, setMissCountSpeaker] = useState<number>(0);
@@ -99,14 +100,15 @@ const Counter = () => {
   };
 
   const handleSendAllData = () => {
-    const path = `${regional}/teams/${teamNumber}/Match-Info/${qualMatch}/Teleop/`;
+    const path = `${regional}/teams/${teamNumber}/Match-Info/${qualMatch}`;
 
-    set(ref(database, path + 'Speaker/Made'), madeCountSpeaker)
-    set(ref(database, path + 'Speaker/Miss'), missCountSpeaker)
-    set(ref(database, path + 'Amp/Made'), madeCountAmp)
-    set(ref(database, path + 'Amp/Miss'), missCountAmp)
-    set(ref(database, path + 'Intake/Ground'), groundCount)
-    set(ref(database, path + 'Intake/Source'), sourceCount)
+    set(ref(database, path + '/Teleop/Speaker/Made'), madeCountSpeaker)
+    set(ref(database, path + '/Teleop/Speaker/Miss'), missCountSpeaker)
+    set(ref(database, path + '/Teleop/Amp/Made'), madeCountAmp)
+    set(ref(database, path + '/Teleop/Amp/Miss'), missCountAmp)
+    set(ref(database, path + '/Teleop/Intake/Ground'), groundCount)
+    set(ref(database, path + '/Teleop/Intake/Source'), sourceCount)
+    set(ref(database, path + '/Climb'), selectedClimbingValue)
   }
   // const fontSize = sliderWidth / markers.length;
 
@@ -208,7 +210,7 @@ const Counter = () => {
                       labelField="label"
                       valueField="value"
                       placeholder={!isFocus ? 'Select item' : '...'}
-                      value={selectedClimbingValue || '5'}
+                      value={selectedClimbingValue || '1'}
                       searchPlaceholder="Search..."
                       onFocus={() => handleFocus('climbingData')}
                       onBlur={() => handleBlur('climbingData')}
