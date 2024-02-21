@@ -1,7 +1,7 @@
 import { Link, router, useGlobalSearchParams } from "expo-router";
 import { Pressable, Button, Text, View, StyleSheet, ScrollView } from "react-native";
 import BackButton from "../../../../backButton";
-import { onValue, ref } from "@firebase/database";
+import { onValue, ref, set } from "@firebase/database";
 import { database } from "../../../../../firebaseConfig";
 import { useEffect, useState } from "react";
 import { Dropdown } from "react-native-element-dropdown";
@@ -23,9 +23,9 @@ const matchInfo = () => {
     value: string;
   }
 
-  const [dropdownData, setDropdownData] = useState<DropdownItem[]>([]);
+  const [qualMatch, setQualMatch] = useState<DropdownItem[]>([]);
   const [isFocus, setIsFocus] = useState(false);
-  const [selectedValue, setSelectedValue] = useState<string | null>(null);
+  const [selectedQualMatch, setSelectedQualMatch] = useState<string | null>(null);
   const [selectedAlliance, setSelectedAlliance] = useState<"Red" | "Blue" | null>(null);
   const [selectedSeating, setSelectedSeating] = useState<"Amp" | "Source" | null>(null);
   const [selectedStartingPosition, setSelectedStartingPosition] = useState<"Amp" | "Middle" | "Source" | null>(null);
@@ -41,9 +41,9 @@ const matchInfo = () => {
             value: qualMatch,  // Also using the team number as the value
           };
         });
-        setDropdownData(processedData);
+        setQualMatch(processedData);
       } else {
-        setDropdownData([]);
+        setQualMatch([]);
       }
     });
   };
@@ -51,6 +51,12 @@ const matchInfo = () => {
   useEffect(() => {
     fetchTeams();
   }, []);
+
+  const handleSetStartingPositionData = () => {
+    const path = `${modifiedRegional}/teams/${teamNumber}/Match-Info/${selectedQualMatch}/Starting-Position`;
+    
+    set(ref(database, path), selectedStartingPosition)
+  }
 
   return (
     <ScrollView>
@@ -64,7 +70,7 @@ const matchInfo = () => {
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
-          data={dropdownData}
+          data={qualMatch}
           search
           maxHeight={300}
           labelField="label"
@@ -74,7 +80,7 @@ const matchInfo = () => {
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
           onChange={item => {
-            setSelectedValue(item.value);  // Update the state to the new value
+            setSelectedQualMatch(item.value);  // Update the state to the new value
             setIsFocus(false);  // Assuming you want to unfocus the dropdown after selection
           }}
         />
@@ -129,7 +135,8 @@ const matchInfo = () => {
         <Pressable
           style={styles.buttonOne}
           onPress={() => {
-            if (selectedAlliance && selectedSeating && selectedStartingPosition && selectedValue) {
+            if (selectedAlliance && selectedSeating && selectedStartingPosition && selectedQualMatch) {
+              handleSetStartingPositionData();
               router.push(`/(matchInfo)/auto?alliance=${selectedAlliance}&seating=${selectedSeating}`)
             }
             else{
