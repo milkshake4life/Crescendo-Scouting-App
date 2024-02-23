@@ -3,6 +3,7 @@ import { Pressable, Button, Image, Text, View, StyleSheet, ScrollView, KeyboardA
 import BackButton from "../../../../backButton";
 import React, { useEffect, useMemo, useState } from "react";
 
+
 interface Note {
   id: string;
   color: 'orange' | 'green';
@@ -35,17 +36,27 @@ const matchInfo: React.FC = () => {
     return alliance === "Red" ? { leftNotes: mNotes, rightNotes: sNotes } : { leftNotes: sNotes, rightNotes: mNotes };
   }, [notes, alliance]);
 
+  //state variable which determines whether or not the robot curently has a note (true if robot intake was successful)
+  const [hasNote, setHasNote] = useState<boolean>(false);
 
   const handlePressNote = (noteId: string): void => {
 
     setNotes((currentNotes) =>
       currentNotes.map((note) => {
-        if (note.id === noteId && !note.used) {
+        if (note.id === noteId && !note.used && !hasNote) { //!hasNote disables the color swap if the robot has a note
           return { ...note, color: note.color === 'green' ? 'orange' : 'green' };
         }
         if (note.color === 'green')
         {
-          note.color = 'orange'; //changes the color of the currently green note to orange. 
+          console.log(hasNote);
+          if(hasNote)
+          {
+            note.color = 'green'; //if the robot has a note, then keep the currently green note as green. 
+          }
+          else
+          {
+            note.color = 'orange'; //changes the color of the currently green note to orange. 
+          }
         }
         return note;
       })
@@ -53,6 +64,7 @@ const matchInfo: React.FC = () => {
   };
 
   const handlePress = (item: string): void => {
+    //Taxi entry
     if (item === 'TAXI') {
       if (taxiPressed) {
         return;
@@ -70,6 +82,7 @@ const matchInfo: React.FC = () => {
     // Step 1: Find the currently green note
     const greenNoteIndex = notes.findIndex(note => note.color === 'green');
     console.log(greenNoteIndex)
+
     // If there's a green note, prepare the entry for the buttonPresses and update the notes state
     if (greenNoteIndex !== -1) {
       const greenNote = notes[greenNoteIndex];
@@ -81,18 +94,36 @@ const matchInfo: React.FC = () => {
       // Step 3: Mark the note as used and reset its color
       // Note: Since we're directly modifying the state based on the previous state,
       // it's better to use the functional update form of the setState hook.
-      setNotes(currentNotes =>
-        currentNotes.map((note, index) =>
-          index === greenNoteIndex ? { ...note, color: 'orange', used: true } : note
-        )
-      );
-      //log for debugging
-      console.log("note: " + greenNote + "green note entry: " + entry);
-    } else {
-      // If no note is green, just add the item
-      setButtonPresses(currentPresses => [...currentPresses, item]);
-    }
-  };
+      
+      if(item === 'Intake')
+      {
+        //Conditionally resets the color based on intake status of the robot. If the robot intakes a note,
+        //selection of other notes is disabled until another button is pressed. After the second action log for the intake
+        //note, the note is marked as used.  
+        setNotes(currentNotes =>
+          currentNotes.map((note, index) => 
+              index === greenNoteIndex ? { ...note, color: 'green', used: false } : note
+          )
+        );
+        
+        //log for debugging
+        console.log("note: " + greenNote + "green note entry: " + entry);
+      }
+      else
+      {
+        setNotes(currentNotes =>
+          currentNotes.map((note, index) => 
+              index === greenNoteIndex ? { ...note, color: 'orange', used: true } : note
+          )
+        );
+        setHasNote(false);
+      }
+  }
+  else {
+    // If no note is green, just add the item
+    setButtonPresses(currentPresses => [...currentPresses, item]);
+  }
+};
 
   const handleDeletePress = (index: number) => {
     const entry = buttonPresses[index];
@@ -141,7 +172,13 @@ const matchInfo: React.FC = () => {
           <Pressable onPress={() => handlePress('MISSED AMP')} style={styles.button}>
             <Text style={styles.buttonText}>Missed Amp</Text>
           </Pressable>
-          <Pressable onPress={() => handlePress('Intake')} style={styles.button}>
+          <Pressable onPress={() => {
+            //Because of batching, setHasNote completes its setting after the handlePress function runs. This means that
+            //it can't be used for comparisons in handlePress, which is why item value is used for those comparisons,
+            //while hasNote is used for selection logic. 
+            setHasNote(true);
+            handlePress('Intake');
+            }} style={styles.button}>
             <Text style={styles.buttonText}>Intake</Text>
           </Pressable>
           <Pressable onPress={() => handlePress('MISSED Intake')} style={styles.button}>
