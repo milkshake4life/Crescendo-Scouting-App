@@ -3,6 +3,7 @@
     "@firebase/database": "^1.0.2",
     "@react-native-community/slider": "^4.5.0",
     "react-native-draggable-flatlist": "^4.0.1",
-    "react-native-elements": "^3.4.3"
+    "react-native-elements": "^3.4.3",
+    "react-native-vector-icons": "^10.0.3"
   }
 }

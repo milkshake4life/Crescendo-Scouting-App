@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Pressable } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Pressable} from 'react-native';
 import BackButton from '../../../../backButton';
 import { Dropdown } from 'react-native-element-dropdown';
-import { router } from 'expo-router';
+import { router, useGlobalSearchParams } from 'expo-router';
 import { Slider } from 'react-native-elements';
+import { ref, set } from '@firebase/database';
+import { database } from '../../../../../firebaseConfig';
 
 
 interface DropdownItem {
@@ -12,22 +14,75 @@ interface DropdownItem {
 }
 
 
+interface SliderWithNumbersProps {
+  value: number;
+  onValueChange: (value: number) => void;
+  minValue: number;
+  maxValue: number;
+  step: number;
+  sliderWidth: number;
+}
+
+const SliderWithNumbers: React.FC<SliderWithNumbersProps> = ({
+  value,
+  onValueChange,
+  minValue,
+  maxValue,
+  step,
+  sliderWidth,
+}) => {
+  const markers = Array.from(
+    { length: (maxValue - minValue) / step + 1 },
+    (_, index) => minValue + index * step
+  );
+
+  const fontSize = sliderWidth / markers.length;
+
+  return (
+    <View style={styles.sliderContainer}>
+      <View style={styles.sliderWrapper}>
+        <Slider
+          style={styles.slider}
+          thumbTintColor="rgba(0, 130, 190, 255)"
+          minimumTrackTintColor="rgba(0, 130, 190, 255)"
+          minimumValue={minValue}
+          maximumValue={maxValue}
+          step={step}
+          value={value}
+          onValueChange={onValueChange}
+        />
+      </View>
+      <View style={styles.sliderMarkersContainer}>
+        {markers.map((marker, index) => (
+          <Text key={marker} style={[styles.markerText, { fontSize }]}>
+            {marker}
+          </Text>
+        ))}
+      </View>
+    </View>
+  );
+};
+
+
 const Counter = () => {
   const ClimbingData = [
-    { label: 'No Climb', value: '1' },
-    { label: 'Single Climb', value: '2' },
-    { label: 'Double Climb', value: '3' },
-    { label: 'Triple Climb', value: '4' },
+    { label: 'Nothing', value: '1' },
+    { label: 'Taxi', value: '2' },
+    { label: 'Single Climb', value: '3' },
+    { label: 'Double Climb', value: '4' },
+    { label: 'Triple Climb', value: '5' },
   ];
   const [madeCountSpeaker, setMadeCountSpeaker] = useState<number>(0);
   const [missCountSpeaker, setMissCountSpeaker] = useState<number>(0);
   const [madeCountAmp, setMadeCountAmp] = useState<number>(0);
   const [missCountAmp, setMissCountAmp] = useState<number>(0);
-  const [madeCountIntake, setMadeCountIntake] = useState<number>(0);
-  const [missCountIntake, setMissCountIntake] = useState<number>(0);
-
+  const [groundCount, setGroundCount] = useState<number>(0);
+  const [sourceCount, setSourceCount] = useState<number>(0);
   const [isFocus, setIsFocus] = useState(false);
   const [selectedClimbingValue, setSelectedClimbingValue] = useState<string | null>(null);
+  const { regional } = useGlobalSearchParams<{ regional: string }>();
+  const { teamNumber } = useGlobalSearchParams<{ teamNumber: string }>();
+  const { qualMatch } = useGlobalSearchParams<{ qualMatch: string }>();
   const [dropdownFocus, setDropdownFocus] = useState<{
     [key: string]: boolean;
   }>({});
@@ -37,7 +92,7 @@ const Counter = () => {
       [dropdownKey]: true,
     }));
   };
-  const [sliderValue, setSliderValue] = useState<number>(0);
+  const [sliderValue, setSliderValue] = useState<number>(1);
 
 
   const incrementSpeaker = (type: 'made' | 'miss') => {
@@ -56,11 +111,11 @@ const Counter = () => {
     }
   };
 
-  const incrementIntake = (type: 'made' | 'miss') => {
-    if (type === 'made') {
-      setMadeCountIntake(prev => prev + 1);
+  const incrementIntake = (type: 'ground' | 'source') => {
+    if (type === 'ground') {
+      setGroundCount(prev => prev + 1);
     } else {
-      setMissCountIntake(prev => prev + 1);
+      setSourceCount(prev => prev + 1);
     }
   };
 
@@ -80,11 +135,11 @@ const Counter = () => {
     }
   };
 
-  const decrementIntake = (type: 'made' | 'miss') => {
-    if (type === 'made' && madeCountIntake > 0) {
-      setMadeCountIntake(prev => prev - 1);
-    } else if (type === 'miss' && missCountIntake > 0) {
-      setMissCountIntake(prev => prev - 1);
+  const decrementIntake = (type: 'ground' | 'source') => {
+    if (type === 'ground' && groundCount > 0) {
+      setGroundCount(prev => prev - 1);
+    } else if (type === 'source' && sourceCount > 0) {
+      setSourceCount(prev => prev - 1);
     }
   };
   const handleBlur = (dropdownKey: string) => {
@@ -93,6 +148,18 @@ const Counter = () => {
       [dropdownKey]: false,
     }));
   };
+
+  const handleSendAllData = () => {
+    const path = `${regional}/teams/${teamNumber}/Match-Info/${qualMatch}`;
+
+    set(ref(database, path + '/Teleop/Speaker/Made'), madeCountSpeaker)
+    set(ref(database, path + '/Teleop/Speaker/Miss'), missCountSpeaker)
+    set(ref(database, path + '/Teleop/Amp/Made'), madeCountAmp)
+    set(ref(database, path + '/Teleop/Amp/Miss'), missCountAmp)
+    set(ref(database, path + '/Teleop/Intake/Ground'), groundCount)
+    set(ref(database, path + '/Teleop/Intake/Source'), sourceCount)
+    set(ref(database, path + '/Climb'), selectedClimbingValue)
+  }
   // const fontSize = sliderWidth / markers.length;
 
 
@@ -137,8 +204,8 @@ const Counter = () => {
             <View style={styles.container}>
               <View style={styles.border}>
                 <View style={styles.counterContainer}>
-                  <CounterControl label="Made" count={madeCountIntake} onIncrement={() => incrementIntake('made')} onDecrement={() => decrementIntake('made')} />
-                  <CounterControl label="Miss" count={missCountIntake} onIncrement={() => incrementIntake('miss')} onDecrement={() => decrementIntake('miss')} />
+                  <CounterControl label="Ground" count={groundCount} onIncrement={() => incrementIntake('ground')} onDecrement={() => decrementIntake('ground')} />
+                  <CounterControl label="Source" count={sourceCount} onIncrement={() => incrementIntake('source')} onDecrement={() => decrementIntake('source')} />
                 </View>
               </View>
 
@@ -147,33 +214,15 @@ const Counter = () => {
                 <View style={styles.border}>
                   <View style={styles.counterContainer}>
                     <View style={styles.numberLine}>
-                      <Text style={styles.number}>0</Text>
-                      {/* <Text style={styles.subtitle}>Defense</Text>
-                      <View style={styles.sliderContainer}>
-      { <Slider
-        style={styles.slider}
-        minimumValue={0}
-        maximumValue={3}
-        step={step}
-        value={value}
-        onValueChange={onValueChange}
-      />
-      <View style={[styles.sliderMarkers, { paddingHorizontal: 0 }]}>
-        {markers.map((marker, index) => (
-          <Text key={marker} style={[styles.markerText, { fontSize }]}>
-            {marker}
-          </Text>
-        ))}
-      </View>} */}  
                     </View>
-                    <View style={styles.space} />
-                    <Text style={styles.number}>1</Text>
-
-                    <View style={styles.space} />
-                    <Text style={styles.number}>2</Text>
-
-                    <View style={styles.space} />
-                    <Text style={styles.number}>3</Text>
+                    <SliderWithNumbers
+                      value={sliderValue}
+                      onValueChange={(value) => setSliderValue(value)}
+                      minValue={0}
+                      maxValue={3}
+                      step={1}
+                      sliderWidth={90} // Adjust the slider width as needed
+                    />
                   </View>
                 </View>
               </View>
@@ -193,7 +242,7 @@ const Counter = () => {
                       labelField="label"
                       valueField="value"
                       placeholder={!isFocus ? 'Select item' : '...'}
-                      value={selectedClimbingValue || '5'}
+                      value={selectedClimbingValue || '1'}
                       searchPlaceholder="Search..."
                       onFocus={() => handleFocus('climbingData')}
                       onBlur={() => handleBlur('climbingData')}
@@ -208,7 +257,10 @@ const Counter = () => {
                 <Pressable style={styles.submitButton}>
                   <Text
                     style={styles.submitButtonText}
-                    onPress={() => router.push(`/(matchInfo)/postgame`)}>Post Game</Text>
+                    onPress={() => {
+                      handleSendAllData();
+                      router.push(`/(matchInfo)/postgame`)
+                    }}>Post Game</Text>
 
                 </Pressable>
               </View>
@@ -347,6 +399,7 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     marginTop: 20,
+    marginBottom: 30,
     backgroundColor: 'rgba(0, 130, 190, 255)',
     paddingVertical: 12,
     paddingHorizontal: 53,
@@ -367,23 +420,29 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-  slider: {
-    width: 200,
-    height: 40,
-    marginBottom: 5,
+  sliderWrapper: {
+    width: '80%', // Adjust as needed
+    alignItems: 'center',
+    marginRight: 40,
   },
-  sliderMarkers: {
+  slider: {
+    width: '100%',
+    height: 40,
+    marginBottom: 30,
+  },
+  sliderMarkersContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '50%',
-    paddingHorizontal: 20,
+    paddingLeft: 20,
+    width: '95%',
+    paddingHorizontal: 60,
+    position: 'absolute',
+    bottom: 0,
   },
   markerText: {
     fontSize: 12,
     color: 'rgba(127, 127, 127, 255)',
   },
-
-
 });
 
 export default Counter;
