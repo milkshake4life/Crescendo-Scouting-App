@@ -3,87 +3,43 @@ import {Pressable, Button, Image, Text, View, StyleSheet, ScrollView, KeyboardAv
 import BackButton from '../../../../backButton';
 import { CheckBox } from 'react-native-elements';
 import Slider from '@react-native-community/slider';
-import { router } from 'expo-router'
+import { router } from 'expo-router';
 
-
-
-interface SliderWithNumbersProps {
-  value: number;
-  onValueChange: (value: number) => void;
-  minValue: number;
-  maxValue: number;
-  step: number;
-  sliderWidth: number;
-}
-
-const SliderWithNumbers: React.FC<SliderWithNumbersProps> = ({
-  value,
-  onValueChange,
-  minValue,
-  maxValue,
-  step,
-  sliderWidth,
-}) => {
-  const markers = Array.from(
-    { length: (maxValue - minValue) / step + 1 },
-    (_, index) => minValue + index * step
-  );
-
-  const fontSize = sliderWidth / markers.length;
-
-  return (
-    <View style={styles.sliderContainer}>
-      <Slider
-        style={styles.slider}
-        minimumValue={minValue}
-        maximumValue={maxValue}
-        step={step}
-        value={value}
-        onValueChange={onValueChange}
-      />
-      <View style={[styles.sliderMarkers, { paddingHorizontal: 0 }]}>
-        {markers.map((marker, index) => (
-          <Text key={marker} style={[styles.markerText, { fontSize }]}>
-            {marker}
-          </Text>
-        ))}
-      </View>
-    </View>
-  );
-};
 const DrivingRatingSlider: React.FC = () => {
-  const [sliderValue, setSliderValue] = useState<number>(1);
+  
+  const [sliderValue, setSliderValue] = React.useState(1);
 
   return (
     <>
       <Text style={styles.subtitle}>Driving Rating</Text>
-      <SliderWithNumbers
+      <Slider
+        style={styles.slider}
+        minimumValue={1}
+        maximumValue={5}
+        step={1}
         value={sliderValue}
         onValueChange={(value) => setSliderValue(value)}
-        minValue={1}
-        maxValue={5}
-        step={1}
-        sliderWidth={110} // Adjust the slider width as needed
       />
-      
+      <Text style={styles.subtitle}>Selected Value: {sliderValue}</Text>
     </>
   );
 };
+
 const DefenseSlider: React.FC = () => {
   const [sliderValue, setSliderValue] = React.useState(1);
 
   return (
     <>
       <Text style={styles.subtitle}>Defense</Text>
-      <SliderWithNumbers
+      <Slider
+        style={styles.slider}
+        minimumValue={1}
+        maximumValue={5}
+        step={1}
         value={sliderValue}
         onValueChange={(value) => setSliderValue(value)}
-        minValue={1}
-        maxValue={5}
-        step={1}
-        sliderWidth={110} 
       />
-     
+      <Text style={styles.subtitle}>Selected Value: {sliderValue}</Text>
     </>
   );
 };
@@ -123,8 +79,6 @@ const MatchInfo: React.FC = () => {
           onPress={() => setIsChecked(!isChecked)}
           containerStyle={styles.checkboxContainer}
         />
-
-        {isChecked && <DefenseSlider />}
         <Text style={styles.subtitle}>Penalties</Text>
 
         <View style={styles.buttonContainer}>
@@ -152,7 +106,7 @@ const MatchInfo: React.FC = () => {
         
 
         {/* Conditional Defense Slider based on checkbox state */}
-        
+        {isChecked && <DefenseSlider />}
 
         <Pressable style={styles.submitButton} onPress={handleSubmit}>
           <Text 
@@ -172,15 +126,17 @@ const styles = StyleSheet.create({
       alignItems: 'center', // Centers content horizontally in the container
       padding: 20, // Optional: Adds padding to the container
   },
+  slider: {
+    width: 200, 
+    height: 40,
+    marginBottom: 20,
+  },
   title: {
     fontFamily: 'BPoppins',
     fontSize: 32,
     marginBottom: 20,
     marginTop: 70,
   },
-  // checkBox: {
-  //   color: 'white',
-  // },
   checkboxContainer: {
     marginVertical: 20,
   },
@@ -272,26 +228,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.25,
     color: "black",
     fontFamily: "BPoppins",
-  },
-  sliderContainer: {
-    width: '100%',
-    alignItems: 'center',
-  },
-  slider: {
-    width: 200,
-    height: 40,
-    marginBottom: 5,
-  },
-  sliderMarkers: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '50%',
-    paddingHorizontal: 20,
-  },
-  markerText: {
-    fontSize: 12,
-    color: 'rgba(127, 127, 127, 255)',
-  },
+  }
  
   
   // ... Other styles remain the same

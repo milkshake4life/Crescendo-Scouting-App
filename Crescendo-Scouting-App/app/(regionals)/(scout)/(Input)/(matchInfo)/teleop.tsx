@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Pressable } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Pressable} from 'react-native';
 import BackButton from '../../../../backButton';
 import { Dropdown } from 'react-native-element-dropdown';
 import { router, useGlobalSearchParams } from 'expo-router';
@@ -12,6 +12,56 @@ interface DropdownItem {
   label: string;
   value: string;
 }
+
+
+interface SliderWithNumbersProps {
+  value: number;
+  onValueChange: (value: number) => void;
+  minValue: number;
+  maxValue: number;
+  step: number;
+  sliderWidth: number;
+}
+
+const SliderWithNumbers: React.FC<SliderWithNumbersProps> = ({
+  value,
+  onValueChange,
+  minValue,
+  maxValue,
+  step,
+  sliderWidth,
+}) => {
+  const markers = Array.from(
+    { length: (maxValue - minValue) / step + 1 },
+    (_, index) => minValue + index * step
+  );
+
+  const fontSize = sliderWidth / markers.length;
+
+  return (
+    <View style={styles.sliderContainer}>
+      <View style={styles.sliderWrapper}>
+        <Slider
+          style={styles.slider}
+          thumbTintColor="rgba(0, 130, 190, 255)"
+          minimumTrackTintColor="rgba(0, 130, 190, 255)"
+          minimumValue={minValue}
+          maximumValue={maxValue}
+          step={step}
+          value={value}
+          onValueChange={onValueChange}
+        />
+      </View>
+      <View style={styles.sliderMarkersContainer}>
+        {markers.map((marker, index) => (
+          <Text key={marker} style={[styles.markerText, { fontSize }]}>
+            {marker}
+          </Text>
+        ))}
+      </View>
+    </View>
+  );
+};
 
 
 const Counter = () => {
@@ -42,7 +92,7 @@ const Counter = () => {
       [dropdownKey]: true,
     }));
   };
-  const [sliderValue, setSliderValue] = useState<number>(0);
+  const [sliderValue, setSliderValue] = useState<number>(1);
 
 
   const incrementSpeaker = (type: 'made' | 'miss') => {
@@ -164,33 +214,15 @@ const Counter = () => {
                 <View style={styles.border}>
                   <View style={styles.counterContainer}>
                     <View style={styles.numberLine}>
-                      <Text style={styles.number}>0</Text>
-                      {/* <Text style={styles.subtitle}>Defense</Text>
-                      <View style={styles.sliderContainer}>
-      { <Slider
-        style={styles.slider}
-        minimumValue={0}
-        maximumValue={3}
-        step={step}
-        value={value}
-        onValueChange={onValueChange}
-      />
-      <View style={[styles.sliderMarkers, { paddingHorizontal: 0 }]}>
-        {markers.map((marker, index) => (
-          <Text key={marker} style={[styles.markerText, { fontSize }]}>
-            {marker}
-          </Text>
-        ))}
-      </View>} */}
                     </View>
-                    <View style={styles.space} />
-                    <Text style={styles.number}>1</Text>
-
-                    <View style={styles.space} />
-                    <Text style={styles.number}>2</Text>
-
-                    <View style={styles.space} />
-                    <Text style={styles.number}>3</Text>
+                    <SliderWithNumbers
+                      value={sliderValue}
+                      onValueChange={(value) => setSliderValue(value)}
+                      minValue={0}
+                      maxValue={3}
+                      step={1}
+                      sliderWidth={90} // Adjust the slider width as needed
+                    />
                   </View>
                 </View>
               </View>
@@ -388,23 +420,29 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-  slider: {
-    width: 200,
-    height: 40,
-    marginBottom: 5,
+  sliderWrapper: {
+    width: '80%', // Adjust as needed
+    alignItems: 'center',
+    marginRight: 40,
   },
-  sliderMarkers: {
+  slider: {
+    width: '100%',
+    height: 40,
+    marginBottom: 30,
+  },
+  sliderMarkersContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '50%',
-    paddingHorizontal: 20,
+    paddingLeft: 20,
+    width: '95%',
+    paddingHorizontal: 60,
+    position: 'absolute',
+    bottom: 0,
   },
   markerText: {
     fontSize: 12,
     color: 'rgba(127, 127, 127, 255)',
   },
-
-
 });
 
 export default Counter;
