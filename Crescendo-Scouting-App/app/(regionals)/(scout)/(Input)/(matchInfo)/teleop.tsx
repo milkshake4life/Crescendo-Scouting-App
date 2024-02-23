@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Pressable} from 'react-native';
 import BackButton from '../../../../backButton';
 import { Dropdown } from 'react-native-element-dropdown';
-import { router } from 'expo-router';
+import { router, useGlobalSearchParams } from 'expo-router';
 import { Slider } from 'react-native-elements';
+import { ref, set } from '@firebase/database';
+import { database } from '../../../../../firebaseConfig';
 
 
 interface DropdownItem {
@@ -64,20 +66,23 @@ const SliderWithNumbers: React.FC<SliderWithNumbersProps> = ({
 
 const Counter = () => {
   const ClimbingData = [
-    { label: 'No Climb', value: '1' },
-    { label: 'Single Climb', value: '2' },
-    { label: 'Double Climb', value: '3' },
-    { label: 'Triple Climb', value: '4' },
+    { label: 'Nothing', value: '1' },
+    { label: 'Taxi', value: '2' },
+    { label: 'Single Climb', value: '3' },
+    { label: 'Double Climb', value: '4' },
+    { label: 'Triple Climb', value: '5' },
   ];
   const [madeCountSpeaker, setMadeCountSpeaker] = useState<number>(0);
   const [missCountSpeaker, setMissCountSpeaker] = useState<number>(0);
   const [madeCountAmp, setMadeCountAmp] = useState<number>(0);
   const [missCountAmp, setMissCountAmp] = useState<number>(0);
-  const [madeCountIntake, setMadeCountIntake] = useState<number>(0);
-  const [missCountIntake, setMissCountIntake] = useState<number>(0);
-
+  const [groundCount, setGroundCount] = useState<number>(0);
+  const [sourceCount, setSourceCount] = useState<number>(0);
   const [isFocus, setIsFocus] = useState(false);
   const [selectedClimbingValue, setSelectedClimbingValue] = useState<string | null>(null);
+  const { regional } = useGlobalSearchParams<{ regional: string }>();
+  const { teamNumber } = useGlobalSearchParams<{ teamNumber: string }>();
+  const { qualMatch } = useGlobalSearchParams<{ qualMatch: string }>();
   const [dropdownFocus, setDropdownFocus] = useState<{
     [key: string]: boolean;
   }>({});
@@ -106,11 +111,11 @@ const Counter = () => {
     }
   };
 
-  const incrementIntake = (type: 'made' | 'miss') => {
-    if (type === 'made') {
-      setMadeCountIntake(prev => prev + 1);
+  const incrementIntake = (type: 'ground' | 'source') => {
+    if (type === 'ground') {
+      setGroundCount(prev => prev + 1);
     } else {
-      setMissCountIntake(prev => prev + 1);
+      setSourceCount(prev => prev + 1);
     }
   };
 
@@ -130,11 +135,11 @@ const Counter = () => {
     }
   };
 
-  const decrementIntake = (type: 'made' | 'miss') => {
-    if (type === 'made' && madeCountIntake > 0) {
-      setMadeCountIntake(prev => prev - 1);
-    } else if (type === 'miss' && missCountIntake > 0) {
-      setMissCountIntake(prev => prev - 1);
+  const decrementIntake = (type: 'ground' | 'source') => {
+    if (type === 'ground' && groundCount > 0) {
+      setGroundCount(prev => prev - 1);
+    } else if (type === 'source' && sourceCount > 0) {
+      setSourceCount(prev => prev - 1);
     }
   };
   const handleBlur = (dropdownKey: string) => {
@@ -143,6 +148,18 @@ const Counter = () => {
       [dropdownKey]: false,
     }));
   };
+
+  const handleSendAllData = () => {
+    const path = `${regional}/teams/${teamNumber}/Match-Info/${qualMatch}`;
+
+    set(ref(database, path + '/Teleop/Speaker/Made'), madeCountSpeaker)
+    set(ref(database, path + '/Teleop/Speaker/Miss'), missCountSpeaker)
+    set(ref(database, path + '/Teleop/Amp/Made'), madeCountAmp)
+    set(ref(database, path + '/Teleop/Amp/Miss'), missCountAmp)
+    set(ref(database, path + '/Teleop/Intake/Ground'), groundCount)
+    set(ref(database, path + '/Teleop/Intake/Source'), sourceCount)
+    set(ref(database, path + '/Climb'), selectedClimbingValue)
+  }
   // const fontSize = sliderWidth / markers.length;
 
 
@@ -187,8 +204,8 @@ const Counter = () => {
             <View style={styles.container}>
               <View style={styles.border}>
                 <View style={styles.counterContainer}>
-                  <CounterControl label="Made" count={madeCountIntake} onIncrement={() => incrementIntake('made')} onDecrement={() => decrementIntake('made')} />
-                  <CounterControl label="Miss" count={missCountIntake} onIncrement={() => incrementIntake('miss')} onDecrement={() => decrementIntake('miss')} />
+                  <CounterControl label="Ground" count={groundCount} onIncrement={() => incrementIntake('ground')} onDecrement={() => decrementIntake('ground')} />
+                  <CounterControl label="Source" count={sourceCount} onIncrement={() => incrementIntake('source')} onDecrement={() => decrementIntake('source')} />
                 </View>
               </View>
 
@@ -225,7 +242,7 @@ const Counter = () => {
                       labelField="label"
                       valueField="value"
                       placeholder={!isFocus ? 'Select item' : '...'}
-                      value={selectedClimbingValue || '5'}
+                      value={selectedClimbingValue || '1'}
                       searchPlaceholder="Search..."
                       onFocus={() => handleFocus('climbingData')}
                       onBlur={() => handleBlur('climbingData')}
@@ -240,7 +257,10 @@ const Counter = () => {
                 <Pressable style={styles.submitButton}>
                   <Text
                     style={styles.submitButtonText}
-                    onPress={() => router.push(`/(matchInfo)/postgame`)}>Post Game</Text>
+                    onPress={() => {
+                      handleSendAllData();
+                      router.push(`/(matchInfo)/postgame`)
+                    }}>Post Game</Text>
 
                 </Pressable>
               </View>
@@ -379,6 +399,7 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     marginTop: 20,
+    marginBottom: 30,
     backgroundColor: 'rgba(0, 130, 190, 255)',
     paddingVertical: 12,
     paddingHorizontal: 53,

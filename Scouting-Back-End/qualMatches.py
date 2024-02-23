@@ -4,7 +4,7 @@ import json
 
 #pushes all qual matches to teams
 firebase = firebase.FirebaseApplication('https://crescendo-scouting-app-default-rtdb.firebaseio.com/', None)
-f = open("../key.txt", "r")
+f = open("../TBAkey.txt", "r")
 headers = {'X-TBA-Auth-Key': f.read()}
 
 eventKey = "2023isde1" #ONLY CHANGE THIS VARIABLE
