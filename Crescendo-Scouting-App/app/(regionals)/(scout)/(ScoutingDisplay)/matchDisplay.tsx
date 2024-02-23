@@ -62,11 +62,15 @@ const matchDisplay = () => {
   //I think having these as dependencies ensures that they will have a value before the rest of the code runs, but I'm not sure
 
   //added a line which displays stored info to ensure it is being retrieved
+
   return (
       <View style={styles.container}>
         <BackButton buttonName="Home Page" />
+        <Text style={styles.teamNumber}> {teamNumber} </Text>
         <Text style={styles.title}> Match Display! </Text>
-        <Text>team: {teamNumber} regional: {regional}</Text>
+        <Text>{regional} Regional!</Text>
+
+        
       </View>  
   );
 };
@@ -78,11 +82,17 @@ const styles = StyleSheet.create({
     alignItems: 'center', // Centers content horizontally in the container
     padding: 20, // Optional: Adds padding to the container
   },
+  teamNumber:{
+    fontFamily: 'BPoppins',
+    fontSize: 32,  //font size differs from regional page. Regional = 25. 
+    // marginBottom: 110,
+    // marginTop: 30, //adding top margin to move down the page. 
+  },
   title:{
     fontFamily: 'BPoppins',
     fontSize: 32,  //font size differs from regional page. Regional = 25. 
-    marginBottom: 110,
-    marginTop: 30, //adding top margin to move down the page. 
+    // marginBottom: 110,
+    // marginTop: 30, //adding top margin to move down the page. 
   },
   subtitle:{
     fontFamily: 'BPoppins',

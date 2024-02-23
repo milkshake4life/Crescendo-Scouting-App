@@ -28,7 +28,7 @@ const matchInfo = () => {
   const [selectedQualMatch, setSelectedQualMatch] = useState<string | null>(null);
   const [selectedAlliance, setSelectedAlliance] = useState<"Red" | "Blue" | null>(null);
   const [selectedSeating, setSelectedSeating] = useState<"Amp" | "Source" | null>(null);
-  const [selectedStartingPosition, setSelectedStartingPosition] = useState<"Amp" | "Middle" | "Source" | null>(null);
+  const [selectedStartingPosition, setSelectedStartingPosition] = useState<1 | 2 | 3 | null>(null);
 
   const fetchTeams = () => {
     const qualMatchRef = ref(database, modifiedRegional + '/teams/' + teamNumber + '/Match-Info'); // Adjusted path
@@ -115,20 +115,20 @@ const matchInfo = () => {
         <Text>Starting Position</Text>
         <CheckBox
           title="Amp"
-          checked={selectedStartingPosition === "Amp"}
-          onPress={() => setSelectedStartingPosition(selectedStartingPosition === "Amp" ? null : "Amp")}
+          checked={selectedStartingPosition === 1}
+          onPress={() => setSelectedStartingPosition(selectedStartingPosition === 1 ? null : 1)}
           containerStyle={styles.checkboxContainer}
         />
         <CheckBox
           title="Middle"
-          checked={selectedStartingPosition === "Middle"}
-          onPress={() => setSelectedStartingPosition(selectedStartingPosition === "Middle" ? null : "Middle")}
+          checked={selectedStartingPosition === 2}
+          onPress={() => setSelectedStartingPosition(selectedStartingPosition === 2 ? null : 2)}
           containerStyle={styles.checkboxContainer}
         />
         <CheckBox
           title="Source"
-          checked={selectedStartingPosition === "Source"}
-          onPress={() => setSelectedStartingPosition(selectedStartingPosition === "Source" ? null : "Source")}
+          checked={selectedStartingPosition === 3}
+          onPress={() => setSelectedStartingPosition(selectedStartingPosition === 3 ? null : 3)}
           containerStyle={styles.checkboxContainer}
         />
 
