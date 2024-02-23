@@ -97,10 +97,18 @@ const matchInfo: React.FC = () => {
       // Step 3: Mark the note as used and reset its color
       // Note: Since we're directly modifying the state based on the previous state,
       // it's better to use the functional update form of the setState hook.
+
+      //IF THE NOTE IS R, THIS IS ALREADY TRUE, SO IT SHOULD JUST TRIGGER THE INTAKE FUNCTION IMMEDIATELY
       
+
+      //Since we already find the index of the selected note and we have the item its selected for, we can update 
+      //action values when we set the note to used using the greenNoteIndex and item (entry has this)
+      //For intake values, if item = intake -> setIntakeVar to intake successful, if item -> missedIntake -> setIntakeVar to
+      //missed, default to didnt try
+      //For action values, set them to their corresponding action (via item). 
       if(item === 'Intake')
       {
-        //Conditionally resets the color based on intake status of the robot. If the robot intakes a note,
+        //Conditionally resets the color based on intake status of the robot. If the robot isntakes a note,
         //selection of other notes is disabled until another button is pressed. After the second action log for the intake
         //note, the note is marked as used.  
         setNotes(currentNotes =>
@@ -158,15 +166,54 @@ const matchInfo: React.FC = () => {
     //each note is a "directory", and stores two sets of values
     //value 1: didnt use/missed intake/successful intake (0/1/2)
     //value 2: didnt use/amp made/amp missed/speaker made/speaker missed 
+    //teamnumber, regional, qualmatch are queries from useGlobalSearchParams
+    /*
+          { id: 's1', color: 'orange', used: false },
+    { id: 's2', color: 'orange', used: false },
+    { id: 's3', color: 'orange', used: false },
+    { id: 'R', color: 'green', used: false },
+    { id: 'm1', color: 'orange', used: false },
+    { id: 'm2', color: 'orange', used: false },
+    { id: 'm3', color: 'orange', used: false },
+    { id: 'm4', color: 'orange', used: false },
+    { id: 'm5', color: 'orange', used: false },
+    */
     const path = `${regional}/teams/${teamNumber}/Match-Info/${qualMatch}`;
 
-    set(ref(database, path + '/Teleop/Speaker/Made'), madeCountSpeaker)
-    set(ref(database, path + '/Teleop/Speaker/Miss'), missCountSpeaker)
-    set(ref(database, path + '/Teleop/Amp/Made'), madeCountAmp)
-    set(ref(database, path + '/Teleop/Amp/Miss'), missCountAmp)
-    set(ref(database, path + '/Teleop/Intake/Ground'), groundCount)
-    set(ref(database, path + '/Teleop/Intake/Source'), sourceCount)
-    set(ref(database, path + '/Climb'), selectedClimbingValue)
+    //S1
+    set(ref(database, path + '/Auto/S1/Intake'), madeCountSpeaker)
+    set(ref(database, path + '/Auto/S1/Action'), missCountSpeaker)
+
+    //S2
+    set(ref(database, path + '/Auto/S2/Intake'), madeCountSpeaker)
+    set(ref(database, path + '/Auto/S2/Action'), missCountSpeaker)
+
+    //S3
+    set(ref(database, path + '/Auto/S2/Intake'), madeCountSpeaker)
+    set(ref(database, path + '/Auto/S2/Action'), missCountSpeaker)
+  
+    //M1
+    set(ref(database, path + '/Auto/S2/Intake'), madeCountSpeaker)
+    set(ref(database, path + '/Auto/S2/Action'), missCountSpeaker)
+
+    //M2
+    set(ref(database, path + '/Auto/S2/Intake'), madeCountSpeaker)
+    set(ref(database, path + '/Auto/S2/Action'), missCountSpeaker)
+
+    //M3
+    set(ref(database, path + '/Auto/S2/Intake'), madeCountSpeaker)
+    set(ref(database, path + '/Auto/S2/Action'), missCountSpeaker)
+
+    //M4
+    set(ref(database, path + '/Auto/S2/Intake'), madeCountSpeaker)
+    set(ref(database, path + '/Auto/S2/Action'), missCountSpeaker)
+
+    //M5
+    set(ref(database, path + '/Auto/S2/Intake'), madeCountSpeaker)
+    set(ref(database, path + '/Auto/S2/Action'), missCountSpeaker)
+
+    //R
+    set(ref(database, path + '/Auto/S2/Action'), missCountSpeaker) //No intake for R because the robot starts with R in the intake position
   }
 
   return (
