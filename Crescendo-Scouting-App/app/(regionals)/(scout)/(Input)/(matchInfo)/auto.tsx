@@ -2,6 +2,9 @@ import { Link, router, useGlobalSearchParams, useLocalSearchParams, } from "expo
 import { Pressable, Button, Image, Text, View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity, } from "react-native";
 import BackButton from "../../../../backButton";
 import React, { useEffect, useMemo, useState } from "react";
+import { ref, set } from '@firebase/database';
+import { database } from '../../../../../firebaseConfig';
+
 
 
 interface Note {
@@ -149,6 +152,22 @@ const matchInfo: React.FC = () => {
     // Remove the entry from the list regardless of the type
     setButtonPresses(currentPresses => currentPresses.filter((_, i) => i !== index));
   };
+
+  const handleSendAutoData = () => {
+
+    //each note is a "directory", and stores two sets of values
+    //value 1: didnt use/missed intake/successful intake (0/1/2)
+    //value 2: didnt use/amp made/amp missed/speaker made/speaker missed 
+    const path = `${regional}/teams/${teamNumber}/Match-Info/${qualMatch}`;
+
+    set(ref(database, path + '/Teleop/Speaker/Made'), madeCountSpeaker)
+    set(ref(database, path + '/Teleop/Speaker/Miss'), missCountSpeaker)
+    set(ref(database, path + '/Teleop/Amp/Made'), madeCountAmp)
+    set(ref(database, path + '/Teleop/Amp/Miss'), missCountAmp)
+    set(ref(database, path + '/Teleop/Intake/Ground'), groundCount)
+    set(ref(database, path + '/Teleop/Intake/Source'), sourceCount)
+    set(ref(database, path + '/Climb'), selectedClimbingValue)
+  }
 
   return (
     <ScrollView>
