@@ -439,26 +439,6 @@ const matchInfo: React.FC = () => {
 
   //state variable which determines whether or not the robot curently has a note (true if robot intake was successful)
   const [hasNote, setHasNote] = useState<boolean>(false);
-  // const [hasNote, setHasNote] = useStateCallback<b
-
-  //3rd option: use a separate function which contains everything involving hasNote
-
-
-  //a new function using setState which will hopefully help in the button press stuff
-  // const intakeHandlerFunc = (status: boolean) => {
-  //   console.log("intake handler function called");
-  //   useEffect(()=> {
-  //       setHasNote(status);
-  //       console.log("item = intake, intake status: " + hasNote);
-  //   }, [hasNote])
-  // }
-  //IDEA: set the value of a boolean equal to the value of hasNote after setHasNote is called, and then use that bool
-
-
-  useEffect(() => {
-    console.log(hasNote); //this should hopefully ensure that the hasNote changes
-    //hasNote updates after the function call. How can we make this update beforehand?
-  }, [hasNote])
 
   const handlePressNote = (noteId: string): void => {
 
@@ -472,12 +452,11 @@ const matchInfo: React.FC = () => {
           console.log(hasNote);
           if(hasNote)
           {
-            note.color = 'green';
+            note.color = 'green'; //if the robot has a note, then keep the currently green note as green. 
           }
           else
           {
             note.color = 'orange'; //changes the color of the currently green note to orange. 
-            // note.color = 'green'; //testing
           }
         }
         return note;
@@ -486,7 +465,7 @@ const matchInfo: React.FC = () => {
   };
 
   const handlePress = (item: string): void => {
-    // let intaken: boolean = false;
+    //Taxi entry
     if (item === 'TAXI') {
       if (taxiPressed) {
         return;
@@ -495,27 +474,6 @@ const matchInfo: React.FC = () => {
       setTaxiPressed(true);
       return;
     }
-    // if(item === 'Intake') {
-    //   // intakeHandlerFunc(true);
-      
-    //   intaken = hasNote;
-    // }
-
-    
-
-    //I think this if can be moved inside useEffect | it cant
-    //but it still might not be necessary if we just update the value of hasNote in intake using setState and a callback
-    // if(item === 'Intake')
-    // {
-    //   //setHasNote(true);
-    //   setHasNote(true);
-    //   console.log("item = intake, intake status: " + hasNote);
-    // }
-    // else
-    // {
-    //   //setHasNote to false when any other item is selected
-    // }
-    //hasNote -> true, so handlePressNote is disabled until another button is pressed, turning hasNote -> false
 
     if (!isAnyNoteGreen) {
       // Optionally, provide feedback to the user that a note needs to be selected first.
@@ -526,7 +484,6 @@ const matchInfo: React.FC = () => {
     const greenNoteIndex = notes.findIndex(note => note.color === 'green');
     console.log(greenNoteIndex)
 
-    console.log(hasNote)
     // If there's a green note, prepare the entry for the buttonPresses and update the notes state
     if (greenNoteIndex !== -1) {
       const greenNote = notes[greenNoteIndex];
@@ -538,16 +495,12 @@ const matchInfo: React.FC = () => {
       // Step 3: Mark the note as used and reset its color
       // Note: Since we're directly modifying the state based on the previous state,
       // it's better to use the functional update form of the setState hook.
-
-      //if hasNote is true, don't reset the color. Also, don't set note to used when hasNote is true. 
-      //just await another button press and on other button press set hasNote to false, which should run the below.
-      //why doesnt the above comparison happen just if intake is pressed? hasNote can be used for the rest of the DOM updates because
-      //its value changes after this function runs
-      console.log(hasNote);
-      //IT WORKS GOD BLESS 
-      //now just reset hasNote at the end of this function maybe?
-      if(/* !hasNote */item === 'Intake')
+      
+      if(item === 'Intake')
       {
+        //Conditionally resets the color based on intake status of the robot. If the robot intakes a note,
+        //selection of other notes is disabled until another button is pressed. After the second action log for the intake
+        //note, the note is marked as used.  
         setNotes(currentNotes =>
           currentNotes.map((note, index) => 
               index === greenNoteIndex ? { ...note, color: 'green', used: false } : note
@@ -621,16 +574,9 @@ const matchInfo: React.FC = () => {
             <Text style={styles.buttonText}>Missed Amp</Text>
           </Pressable>
           <Pressable onPress={() => {
-//trying to use useEffect in handlePress to handle updates. 
-
-            // this.setState({
-              // hasNote: true
-            // }, () => {console.log(this.state.hasNote)}); //setting the intake status to true on button press instead of inside the function call
-            //for some reason the value of setHasNote never changes
-            //the issue comes from react's batching process, which pushes state updates until the end of an event handler. Maybe
-            //a fix could be using a second event handler before handlePress which updates the value of the state var?
-            //handleIntake(true); Pray that useEffect might work in another one
-
+            //Because of batching, setHasNote completes its setting after the handlePress function runs. This means that
+            //it can't be used for comparisons in handlePress, which is why item value is used for those comparisons,
+            //while hasNote is used for selection logic. 
             setHasNote(true);
             handlePress('Intake');
             }} style={styles.button}>
