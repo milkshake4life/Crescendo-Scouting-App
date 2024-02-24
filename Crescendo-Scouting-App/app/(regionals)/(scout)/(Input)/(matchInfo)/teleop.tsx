@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Pressable } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import BackButton from '../../../../backButton';
 import { Dropdown } from 'react-native-element-dropdown';
-import { router } from 'expo-router';
-import { Slider } from 'react-native-elements';
 
 
 interface DropdownItem {
   label: string;
   value: string;
 }
-
 
 const Counter = () => {
   const ClimbingData = [
@@ -23,17 +20,13 @@ const Counter = () => {
   const [missCount, setMissCount] = useState<number>(0);
   const [isFocus, setIsFocus] = useState(false);
   const [selectedClimbingValue, setSelectedClimbingValue] = useState<string | null>(null);
-  const [dropdownFocus, setDropdownFocus] = useState<{
-    [key: string]: boolean;
-  }>({});
   const handleFocus = (dropdownKey: string) => {
     setDropdownFocus((prevFocus) => ({
       ...prevFocus,
       [dropdownKey]: true,
     }));
-  };
-  const [sliderValue, setSliderValue] = useState<number>(0);
 
+  };
   const increment = (type: 'made' | 'miss') => {
     if (type === 'made') {
       setMadeCount(prev => prev + 1);
@@ -55,21 +48,12 @@ const Counter = () => {
       [dropdownKey]: false,
     }));
   };
-  // const fontSize = sliderWidth / markers.length;
+  const [dropdownHeight, setDropdownHeight] = useState<number>(0);
+  const [dropdownFocus, setDropdownFocus] = useState<{
+    [key: string]: boolean;
+  }>({});
 
 
-  // const SliderWithNumbers: React.FC<SliderWithNumbersProps> = ({
-  //   value,
-  //   onValueChange,
-  //   minValue,
-  //   maxValue,
-  //   step,
-  //   sliderWidth,
-  // }) => {
-  //   const markers = Array.from(
-  //     { length: (maxValue - minValue) / step + 1 },
-  //     (_, index) => minValue + index * step
-  //   );
   return (
     <ScrollView>
       <View>
@@ -110,77 +94,49 @@ const Counter = () => {
                   <View style={styles.counterContainer}>
                     <View style={styles.numberLine}>
                       <Text style={styles.number}>0</Text>
-                      {/* <Text style={styles.subtitle}>Defense</Text>
-                      <View style={styles.sliderContainer}>
-      { <Slider
-        style={styles.slider}
-        minimumValue={0}
-        maximumValue={3}
-        step={step}
-        value={value}
-        onValueChange={onValueChange}
-      />
-      <View style={[styles.sliderMarkers, { paddingHorizontal: 0 }]}>
-        {markers.map((marker, index) => (
-          <Text key={marker} style={[styles.markerText, { fontSize }]}>
-            {marker}
-          </Text>
-        ))}
-      </View>} */}
+
+                      <View style={styles.space} />
+                      <Text style={styles.number}>1</Text>
+
+                      <View style={styles.space} />
+                      <Text style={styles.number}>2</Text>
+
+                      <View style={styles.space} />
+                      <Text style={styles.number}>3</Text>
                     </View>
-                    <View style={styles.space} />
-                    <Text style={styles.number}>1</Text>
-
-                    <View style={styles.space} />
-                    <Text style={styles.number}>2</Text>
-
-                    <View style={styles.space} />
-                    <Text style={styles.number}>3</Text>
                   </View>
                 </View>
-              </View>
-              <Text style={styles.subtitle}>Climb</Text>
-              <View style={styles.container}>
-                <View style={styles.border}>
-                  <View style={styles.counterContainer}>
-                    <Dropdown
-                      style={[styles.dropdown, isFocus && { borderColor: 'blue', position: 'relative', bottom: 300 }]}
-                      placeholderStyle={styles.placeholderStyle}
-                      selectedTextStyle={styles.selectedTextStyle}
-                      inputSearchStyle={styles.inputSearchStyle}
-                      iconStyle={styles.iconStyle}
-                      data={ClimbingData}
-                      search
-                      maxHeight={300}
-                      labelField="label"
-                      valueField="value"
-                      placeholder={!isFocus ? 'Select item' : '...'}
-                      value={selectedClimbingValue || '5'}
-                      searchPlaceholder="Search..."
-                      onFocus={() => handleFocus('climbingData')}
-                      onBlur={() => handleBlur('climbingData')}
-                      onChange={(item: DropdownItem) => {
-                        setSelectedClimbingValue(item.value);
-                        setIsFocus(false);
-                      }}
-                    />
-
+                <Text style={styles.subtitle}>Climb</Text>
+                <View style={styles.container}>
+                  <View style={styles.border}>
+                    <View style={styles.counterContainer}>
+                      <Dropdown
+                        style={[styles.dropdown, isFocus && { borderColor: 'blue', position: 'relative' }]}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        iconStyle={styles.iconStyle}
+                        data={ClimbingData}
+                        maxHeight={300}
+                        labelField="label"
+                        valueField="value"
+                        placeholder={!isFocus ? 'Select item' : '...'}
+                        value={selectedClimbingValue || '5'}
+                        onFocus={() => handleFocus('climbingData')}
+                        onBlur={() => handleBlur('climbingData')}
+                        onChange={(item: DropdownItem) => {
+                          setSelectedClimbingValue(item.value);
+                          setIsFocus(false);
+                        }}
+                      />
+                    </View>
                   </View>
                 </View>
-                <Pressable style={styles.submitButton}>
-                  <Text
-                    style={styles.submitButtonText}
-                    onPress={() => router.push(`/(matchInfo)/postgame`)}>Post Game</Text>
 
-                </Pressable>
               </View>
             </View>
           </View>
         </View>
       </View>
-      {/* </View> */}
     </ScrollView>
-
 
 
 
@@ -200,8 +156,6 @@ const CounterControl = ({ label, count, onIncrement, onDecrement }: { label: str
       <Text style={styles.buttonText}>+</Text>
     </TouchableOpacity>
   </View>
-
-
 );
 
 const styles = StyleSheet.create({
@@ -284,68 +238,23 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     height: 50,
-    width: '99%', // or some other appropriate width
+    width: '90%', // or some other appropriate width
     borderColor: 'gray',
     borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 8,
     // Add margin for some spacing if needed
     marginTop: 10,
-    marginBottom: 10,
+    marginBottom: 20,
   },
   iconStyle: {
     width: 20,
     height: 20,
   },
-  placeholderStyle: {
-    fontSize: 16,
-  },
+
   selectedTextStyle: {
     fontSize: 16,
   },
-  inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
-  },
-  submitButton: {
-    marginTop: 20,
-    backgroundColor: 'rgba(0, 130, 190, 255)',
-    paddingVertical: 12,
-    paddingHorizontal: 53,
-    borderRadius: 4,
-    elevation: 3,
-    borderWidth: 2,
-    borderColor: 'white',
-  },
-  submitButtonText: {
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: 'bold',
-    letterSpacing: 0.25,
-    color: 'white',
-    fontFamily: 'BPoppins',
-  },
-  sliderContainer: {
-    width: '100%',
-    alignItems: 'center',
-  },
-  slider: {
-    width: 200,
-    height: 40,
-    marginBottom: 5,
-  },
-  sliderMarkers: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '50%',
-    paddingHorizontal: 20,
-  },
-  markerText: {
-    fontSize: 12,
-    color: 'rgba(127, 127, 127, 255)',
-  },
-
-
 });
 
 export default Counter;
