@@ -1,7 +1,7 @@
 import { Link, router, useGlobalSearchParams } from "expo-router";
 import { Pressable, Button, Text, View, StyleSheet, ScrollView } from "react-native";
 import BackButton from "../../../../backButton";
-import { onValue, ref } from "@firebase/database";
+import { onValue, ref, set } from "@firebase/database";
 import { database } from "../../../../../firebaseConfig";
 import { useEffect, useState } from "react";
 import { Dropdown } from "react-native-element-dropdown";
@@ -23,12 +23,12 @@ const matchInfo = () => {
     value: string;
   }
 
-  const [dropdownData, setDropdownData] = useState<DropdownItem[]>([]);
+  const [qualMatch, setQualMatch] = useState<DropdownItem[]>([]);
   const [isFocus, setIsFocus] = useState(false);
-  const [selectedValue, setSelectedValue] = useState<string | null>(null);
+  const [selectedQualMatch, setSelectedQualMatch] = useState<string | null>(null);
   const [selectedAlliance, setSelectedAlliance] = useState<"Red" | "Blue" | null>(null);
   const [selectedSeating, setSelectedSeating] = useState<"Amp" | "Source" | null>(null);
-  const [selectedStartingPosition, setSelectedStartingPosition] = useState<"Amp" | "Middle" | "Source" | null>(null);
+  const [selectedStartingPosition, setSelectedStartingPosition] = useState<1 | 2 | 3 | null>(null);
 
   const fetchTeams = () => {
     const qualMatchRef = ref(database, modifiedRegional + '/teams/' + teamNumber + '/Match-Info'); // Adjusted path
@@ -41,9 +41,9 @@ const matchInfo = () => {
             value: qualMatch,  // Also using the team number as the value
           };
         });
-        setDropdownData(processedData);
+        setQualMatch(processedData);
       } else {
-        setDropdownData([]);
+        setQualMatch([]);
       }
     });
   };
@@ -51,6 +51,12 @@ const matchInfo = () => {
   useEffect(() => {
     fetchTeams();
   }, []);
+
+  const handleSetStartingPositionData = () => {
+    const path = `${modifiedRegional}/teams/${teamNumber}/Match-Info/${selectedQualMatch}/Starting-Position`;
+    
+    set(ref(database, path), selectedStartingPosition)
+  }
 
   return (
     <ScrollView>
@@ -64,7 +70,7 @@ const matchInfo = () => {
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
-          data={dropdownData}
+          data={qualMatch}
           search
           maxHeight={300}
           labelField="label"
@@ -74,7 +80,7 @@ const matchInfo = () => {
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
           onChange={item => {
-            setSelectedValue(item.value);  // Update the state to the new value
+            setSelectedQualMatch(item.value);  // Update the state to the new value
             setIsFocus(false);  // Assuming you want to unfocus the dropdown after selection
           }}
         />
@@ -109,28 +115,29 @@ const matchInfo = () => {
         <Text>Starting Position</Text>
         <CheckBox
           title="Amp"
-          checked={selectedStartingPosition === "Amp"}
-          onPress={() => setSelectedStartingPosition(selectedStartingPosition === "Amp" ? null : "Amp")}
+          checked={selectedStartingPosition === 1}
+          onPress={() => setSelectedStartingPosition(selectedStartingPosition === 1 ? null : 1)}
           containerStyle={styles.checkboxContainer}
         />
         <CheckBox
           title="Middle"
-          checked={selectedStartingPosition === "Middle"}
-          onPress={() => setSelectedStartingPosition(selectedStartingPosition === "Middle" ? null : "Middle")}
+          checked={selectedStartingPosition === 2}
+          onPress={() => setSelectedStartingPosition(selectedStartingPosition === 2 ? null : 2)}
           containerStyle={styles.checkboxContainer}
         />
         <CheckBox
           title="Source"
-          checked={selectedStartingPosition === "Source"}
-          onPress={() => setSelectedStartingPosition(selectedStartingPosition === "Source" ? null : "Source")}
+          checked={selectedStartingPosition === 3}
+          onPress={() => setSelectedStartingPosition(selectedStartingPosition === 3 ? null : 3)}
           containerStyle={styles.checkboxContainer}
         />
 
         <Pressable
           style={styles.buttonOne}
           onPress={() => {
-            if (selectedAlliance && selectedSeating && selectedStartingPosition && selectedValue) {
-              router.push(`/(matchInfo)/auto?alliance=${selectedAlliance}&seating=${selectedSeating}`)
+            if (selectedAlliance && selectedSeating && selectedStartingPosition && selectedQualMatch) {
+              handleSetStartingPositionData();
+              router.push(`/(matchInfo)/auto?regional=${modifiedRegional}&teamNumber=${teamNumber}&qualMatch=${selectedQualMatch}&alliance=${selectedAlliance}&seating=${selectedSeating}`)
             }
             else{
               alert('Please fill out all the fields before continuing.')
