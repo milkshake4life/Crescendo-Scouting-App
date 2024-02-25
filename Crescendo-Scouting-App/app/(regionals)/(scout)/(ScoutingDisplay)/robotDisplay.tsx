@@ -83,27 +83,28 @@ const robotDisplay = () => {
   //accessing Climbing Info
   useEffect(() => {
     const database = getDatabase();
-
-    const climbingRef = ref(database, regional + '/teams/'+ teamNumber + '/Robot-Info/Climbing-Info');
+    const climbingRef = ref(database, `${regional}/teams/${teamNumber}/Robot-Info/Climbing-Info`);
+  
     get(climbingRef)
       .then((snapshot: DataSnapshot) => {
         if (snapshot.exists()) {
           const data = snapshot.val();
-          setClimbingData(data); // Set the data to state
-          //bottom stuff is subject to change. 
-          setClimbData(JSON.stringify(climbingData))
-          console.log("climbing data: " + climbingData + " climbing Display: " + climbData)
+          setClimbingData(data);
+          setClimbData(JSON.stringify(data)); // Use 'data' directly
+          console.log(`Climbing data: ${data}`);
         } else {
+          // Set default value if no data is available
+          setClimbingData("No information");
+          setClimbData("No information");
           console.log("No climbing data available");
         }
       })
       .catch((error) => {
         console.error(error);
       });
-
-  }, [teamNumber, regional, climbingData]); // Empty dependency array ensures this effect runs once after the initial render
-  //adding teamNumber and regional as dependencies ensures that they are retrieved before the DOM loads.  
-
+  
+  }, [teamNumber, regional]);
+  
   //accessing Driving Info
   useEffect(() => {
     const database = getDatabase();
