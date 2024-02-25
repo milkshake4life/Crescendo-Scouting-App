@@ -14,6 +14,29 @@ interface Note {
 }
 
 const matchInfo: React.FC = () => {
+  //Backend Value Constants
+  const IntakeStatus = [
+    { label: 'No Attempt', value: '0' },
+    { label: 'Missed', value: '1' },
+    { label: 'Successful', value: '2' },
+  ];
+
+  const ActionName = [
+    { label: 'No Action', value: '0' },
+    { label: 'Amp Made', value: '1' },
+    { label: 'Amp Missed', value: '2' },
+    { label: 'Speaker Made', value: '3' },
+    { label: 'Speaker Missed', value: '4' },
+  ];
+
+  //Backend Value State vars
+  // const [currentNoteName, setCurrentNoteName] = useState<number>(0);
+  // Might need states for every single note to update all of them at once
+
+  const [intake, setIntake] = useState<number>(0);
+  const [action, setAction] = useState<number>(0);
+
+
   const { alliance } = useGlobalSearchParams<{ alliance: string }>();
   const { regional } = useGlobalSearchParams<{ regional: string }>();
   const { teamNumber } = useGlobalSearchParams<{ teamNumber: string }>();
@@ -105,7 +128,10 @@ const matchInfo: React.FC = () => {
       //action values when we set the note to used using the greenNoteIndex and item (entry has this)
       //For intake values, if item = intake -> setIntakeVar to intake successful, if item -> missedIntake -> setIntakeVar to
       //missed, default to didnt try
-      //For action values, set them to their corresponding action (via item). 
+      //For action values, set them to their corresponding action (via item).
+      //OR do this by parsing the list at the end right before submission 
+      //String.split entries in ButtonPresses right before submission, determine note based on first half of split, and use
+      //second half to determine action and intake status
       if(item === 'Intake')
       {
         //Conditionally resets the color based on intake status of the robot. If the robot isntakes a note,
@@ -165,19 +191,9 @@ const matchInfo: React.FC = () => {
 
     //each note is a "directory", and stores two sets of values
     //value 1: didnt use/missed intake/successful intake (0/1/2)
-    //value 2: didnt use/amp made/amp missed/speaker made/speaker missed 
+    //value 2: didnt use/amp made/amp missed/speaker made/speaker missed (0/1/2/3/4) 
     //teamnumber, regional, qualmatch are queries from useGlobalSearchParams
-    /*
-          { id: 's1', color: 'orange', used: false },
-    { id: 's2', color: 'orange', used: false },
-    { id: 's3', color: 'orange', used: false },
-    { id: 'R', color: 'green', used: false },
-    { id: 'm1', color: 'orange', used: false },
-    { id: 'm2', color: 'orange', used: false },
-    { id: 'm3', color: 'orange', used: false },
-    { id: 'm4', color: 'orange', used: false },
-    { id: 'm5', color: 'orange', used: false },
-    */
+    //use note name for path?
     const path = `${regional}/teams/${teamNumber}/Match-Info/${qualMatch}`;
 
     //S1
