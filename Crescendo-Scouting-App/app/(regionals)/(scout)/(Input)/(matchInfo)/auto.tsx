@@ -2,6 +2,10 @@ import { Link, router, useGlobalSearchParams, useLocalSearchParams, } from "expo
 import { Pressable, Button, Image, Text, View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity, } from "react-native";
 import BackButton from "../../../../backButton";
 import React, { useEffect, useMemo, useState } from "react";
+import { ref, set } from '@firebase/database';
+import { database } from '../../../../../firebaseConfig';
+
+
 
 
 interface Note {
@@ -11,6 +15,33 @@ interface Note {
 }
 
 const matchInfo: React.FC = () => {
+  //Backend Value Constants
+  const IntakeStatus = [
+    { label: 'No Attempt', value: '0' },
+    { label: 'Missed', value: '1' },
+    { label: 'Successful', value: '2' },
+  ];
+
+  const ActionName = [
+    { label: 'No Action', value: '0' },
+    { label: 'Amp Made', value: '1' },
+    { label: 'Amp Missed', value: '2' },
+    { label: 'Speaker Made', value: '3' },
+    { label: 'Speaker Missed', value: '4' },
+  ];
+
+  //Backend Value State vars
+  // const [currentNoteName, setCurrentNoteName] = useState<number>(0);
+  // Might need states for every single note to update all of them at once
+  const [noteName, setNoteName] = useState<string>('');
+
+  // const [action, setAction] = useState<string>('')
+
+  const [intake, setIntake] = useState<number>(0);
+  const [action, setAction] = useState<number>(0);
+  const [taxiStatus, setTaxiStatus] = useState<number>(0);
+
+
   const { alliance } = useGlobalSearchParams<{ alliance: string }>();
   const { regional } = useGlobalSearchParams<{ regional: string }>();
   const { teamNumber } = useGlobalSearchParams<{ teamNumber: string }>();
@@ -94,10 +125,21 @@ const matchInfo: React.FC = () => {
       // Step 3: Mark the note as used and reset its color
       // Note: Since we're directly modifying the state based on the previous state,
       // it's better to use the functional update form of the setState hook.
+
+      //IF THE NOTE IS R, THIS IS ALREADY TRUE, SO IT SHOULD JUST TRIGGER THE INTAKE FUNCTION IMMEDIATELY
       
+
+      //Since we already find the index of the selected note and we have the item its selected for, we can update 
+      //action values when we set the note to used using the greenNoteIndex and item (entry has this)
+      //For intake values, if item = intake -> setIntakeVar to intake successful, if item -> missedIntake -> setIntakeVar to
+      //missed, default to didnt try
+      //For action values, set them to their corresponding action (via item).
+      //OR do this by parsing the list at the end right before submission 
+      //String.split entries in ButtonPresses right before submission, determine note based on first half of split, and use
+      //second half to determine action and intake status
       if(item === 'Intake')
       {
-        //Conditionally resets the color based on intake status of the robot. If the robot intakes a note,
+        //Conditionally resets the color based on intake status of the robot. If the robot isntakes a note,
         //selection of other notes is disabled until another button is pressed. After the second action log for the intake
         //note, the note is marked as used.  
         setNotes(currentNotes =>
@@ -149,6 +191,101 @@ const matchInfo: React.FC = () => {
     // Remove the entry from the list regardless of the type
     setButtonPresses(currentPresses => currentPresses.filter((_, i) => i !== index));
   };
+
+  const handleSendAutoData = () => {
+
+    //each note is a "directory", and stores two sets of values
+    //value 1: didnt use/missed intake/successful intake (0/1/2)
+    //value 2: didnt use/amp made/amp missed/speaker made/speaker missed (0/1/2/3/4) 
+    const path = `${regional}/teams/${teamNumber}/Match-Info/${qualMatch}`;
+
+    const allNotes: string[] = ["S1", "S2", "S3", "M1", "M2", "M3", "M4", "M5", "R"]
+    //value 1: didnt use/missed intake/successful intake (0/1/2)
+    //value 2: didnt use/amp made/amp missed/speaker made/speaker missed (0/1/2/3/4) 
+    //value 3: didnt taxi/taxi (0/1) | will be pushed directly to match qual directory w/o note info because it is independent of note. 
+    let action = 0;
+    let intake = 0;
+    let taxiStatus = 0;
+
+    //sets default values
+    allNotes.map((note) => {
+      if(note === "R") //R starts already in the robot, so no intake data is necessary
+      {
+        set(ref(database, path + `/Auto/${note}/Action`), action); 
+      }
+      else
+      {
+        set(ref(database, path + `/Auto/${note}/Intake`), intake);
+        set(ref(database, path + `/Auto/${note}/Action`), action); 
+      }
+        
+    })
+
+
+    //Goes through buttonPresses array (actions list at the bottom) and assigns values based on what the user has put in the list. 
+    //Each note is its own directory in firebase, where intake and action data is stored. 
+    buttonPresses.map((entry) => { 
+      let entryArr = entry.split(" - ");
+      
+      console.log(entryArr[0] + ", item: " + entryArr[1])
+      if(entryArr[1] === "Intake" && entryArr[0] != "R")
+      {
+        console.log(entryArr[0] + ": Intake");
+        intake = 2;
+        console.log(intake);
+        set(ref(database, path + `/Auto/${entryArr[0]}/Intake`), intake);
+      }
+      else if(entryArr[1] === "MISSED Intake" && entryArr[0] != "R") //since R is the note the robot starts with, it doesn't need intake stats. 
+      {
+        console.log(entryArr[0] + ": Missed Intake");
+        intake = 1;
+        console.log(intake);
+        set(ref(database, path + `/Auto/${entryArr[0]}/Intake`), intake);
+
+      }
+      else if(entryArr[1] === "AMP")
+      {
+        console.log(entryArr[0] + ": AMP");
+        action = 1;
+        console.log(action);
+        set(ref(database, path + `/Auto/${entryArr[0]}/Action`), action);
+
+      }
+      else if(entryArr[1] === "MISSED AMP")
+      {
+        action = 2;
+        console.log(entryArr[0] + ": MISSED AMP");
+        console.log(action);
+        set(ref(database, path + `/Auto/${entryArr[0]}/Action`), action);
+
+      }
+      else if(entryArr[1] === "SPEAKER")
+      {
+        action = 3;
+        console.log(entryArr[0] + ": SPEAKER");
+        console.log(action);
+        set(ref(database, path + `/Auto/${entryArr[0]}/Action`), action);
+
+      }
+      else if(entryArr[1] === "MISSED SPEAKER")
+      {
+        action = 4;
+        console.log(entryArr[0] + ": MISSED SPEAKER");
+        console.log(action);
+        set(ref(database, path + `/Auto/${entryArr[0]}/Action`), action);
+      }
+      else if(entryArr[0] === "TAXI")
+      {
+        taxiStatus = 1;
+        console.log(entryArr[0] + ": TAXI");
+        console.log(taxiStatus);
+        set(ref(database, path + `/Auto/Taxi`), taxiStatus);
+      }
+    })
+
+
+
+  }
 
   return (
     <ScrollView>
@@ -232,7 +369,11 @@ const matchInfo: React.FC = () => {
 
         <Pressable
           style={styles.buttonOne}
-          onPress={() => router.push(`/(matchInfo)/teleop?regional=${regional}&teamNumber=${teamNumber}&qualMatch=${qualMatch}`)}
+          onPress={() => {
+            handleSendAutoData();
+            router.push(`/(matchInfo)/teleop?regional=${regional}&teamNumber=${teamNumber}&qualMatch=${qualMatch}`)
+          }
+        }
         >
           <Text style={styles.buttonOneText}>Teleop</Text>
         </Pressable>

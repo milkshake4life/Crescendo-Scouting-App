@@ -65,6 +65,7 @@ const SliderWithNumbers: React.FC<SliderWithNumbersProps> = ({
 
 
 const Counter = () => {
+
   const ClimbingData = [
     { label: 'Nothing', value: '1' },
     { label: 'Taxi', value: '2' },

@@ -1,5 +1,7 @@
 import { Stack, Tabs } from "expo-router";
 
+
+
 const InputLayout = () => {
     return (
         <Stack screenOptions = {{headerShown: false, contentStyle: {
