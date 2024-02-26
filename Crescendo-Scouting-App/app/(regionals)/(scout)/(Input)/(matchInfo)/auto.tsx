@@ -7,6 +7,7 @@ import { database } from '../../../../../firebaseConfig';
 
 
 
+
 interface Note {
   id: string;
   color: 'orange' | 'green';
@@ -32,9 +33,13 @@ const matchInfo: React.FC = () => {
   //Backend Value State vars
   // const [currentNoteName, setCurrentNoteName] = useState<number>(0);
   // Might need states for every single note to update all of them at once
+  const [noteName, setNoteName] = useState<string>('');
+
+  // const [action, setAction] = useState<string>('')
 
   const [intake, setIntake] = useState<number>(0);
   const [action, setAction] = useState<number>(0);
+  const [taxiStatus, setTaxiStatus] = useState<number>(0);
 
 
   const { alliance } = useGlobalSearchParams<{ alliance: string }>();
@@ -192,44 +197,94 @@ const matchInfo: React.FC = () => {
     //each note is a "directory", and stores two sets of values
     //value 1: didnt use/missed intake/successful intake (0/1/2)
     //value 2: didnt use/amp made/amp missed/speaker made/speaker missed (0/1/2/3/4) 
-    //teamnumber, regional, qualmatch are queries from useGlobalSearchParams
-    //use note name for path?
     const path = `${regional}/teams/${teamNumber}/Match-Info/${qualMatch}`;
 
-    //S1
-    set(ref(database, path + '/Auto/S1/Intake'), madeCountSpeaker)
-    set(ref(database, path + '/Auto/S1/Action'), missCountSpeaker)
+    const allNotes: string[] = ["S1", "S2", "S3", "M1", "M2", "M3", "M4", "M5", "R"]
+    //value 1: didnt use/missed intake/successful intake (0/1/2)
+    //value 2: didnt use/amp made/amp missed/speaker made/speaker missed (0/1/2/3/4) 
+    //value 3: didnt taxi/taxi (0/1) | will be pushed directly to match qual directory w/o note info because it is independent of note. 
+    let action = 0;
+    let intake = 0;
+    let taxiStatus = 0;
 
-    //S2
-    set(ref(database, path + '/Auto/S2/Intake'), madeCountSpeaker)
-    set(ref(database, path + '/Auto/S2/Action'), missCountSpeaker)
+    //sets default values
+    allNotes.map((note) => {
+      if(note === "R") //R starts already in the robot, so no intake data is necessary
+      {
+        set(ref(database, path + `/Auto/${note}/Action`), action); 
+      }
+      else
+      {
+        set(ref(database, path + `/Auto/${note}/Intake`), intake);
+        set(ref(database, path + `/Auto/${note}/Action`), action); 
+      }
+        
+    })
 
-    //S3
-    set(ref(database, path + '/Auto/S2/Intake'), madeCountSpeaker)
-    set(ref(database, path + '/Auto/S2/Action'), missCountSpeaker)
-  
-    //M1
-    set(ref(database, path + '/Auto/S2/Intake'), madeCountSpeaker)
-    set(ref(database, path + '/Auto/S2/Action'), missCountSpeaker)
 
-    //M2
-    set(ref(database, path + '/Auto/S2/Intake'), madeCountSpeaker)
-    set(ref(database, path + '/Auto/S2/Action'), missCountSpeaker)
+    //Goes through buttonPresses array (actions list at the bottom) and assigns values based on what the user has put in the list. 
+    //Each note is its own directory in firebase, where intake and action data is stored. 
+    buttonPresses.map((entry) => { 
+      let entryArr = entry.split(" - ");
+      
+      console.log(entryArr[0] + ", item: " + entryArr[1])
+      if(entryArr[1] === "Intake" && entryArr[0] != "R")
+      {
+        console.log(entryArr[0] + ": Intake");
+        intake = 2;
+        console.log(intake);
+        set(ref(database, path + `/Auto/${entryArr[0]}/Intake`), intake);
+      }
+      else if(entryArr[1] === "MISSED Intake" && entryArr[0] != "R") //since R is the note the robot starts with, it doesn't need intake stats. 
+      {
+        console.log(entryArr[0] + ": Missed Intake");
+        intake = 1;
+        console.log(intake);
+        set(ref(database, path + `/Auto/${entryArr[0]}/Intake`), intake);
 
-    //M3
-    set(ref(database, path + '/Auto/S2/Intake'), madeCountSpeaker)
-    set(ref(database, path + '/Auto/S2/Action'), missCountSpeaker)
+      }
+      else if(entryArr[1] === "AMP")
+      {
+        console.log(entryArr[0] + ": AMP");
+        action = 1;
+        console.log(action);
+        set(ref(database, path + `/Auto/${entryArr[0]}/Action`), action);
 
-    //M4
-    set(ref(database, path + '/Auto/S2/Intake'), madeCountSpeaker)
-    set(ref(database, path + '/Auto/S2/Action'), missCountSpeaker)
+      }
+      else if(entryArr[1] === "MISSED AMP")
+      {
+        action = 2;
+        console.log(entryArr[0] + ": MISSED AMP");
+        console.log(action);
+        set(ref(database, path + `/Auto/${entryArr[0]}/Action`), action);
 
-    //M5
-    set(ref(database, path + '/Auto/S2/Intake'), madeCountSpeaker)
-    set(ref(database, path + '/Auto/S2/Action'), missCountSpeaker)
+      }
+      else if(entryArr[1] === "SPEAKER")
+      {
+        action = 3;
+        console.log(entryArr[0] + ": SPEAKER");
+        console.log(action);
+        set(ref(database, path + `/Auto/${entryArr[0]}/Action`), action);
 
-    //R
-    set(ref(database, path + '/Auto/S2/Action'), missCountSpeaker) //No intake for R because the robot starts with R in the intake position
+      }
+      else if(entryArr[1] === "MISSED SPEAKER")
+      {
+        action = 4;
+        console.log(entryArr[0] + ": MISSED SPEAKER");
+        console.log(action);
+        set(ref(database, path + `/Auto/${entryArr[0]}/Action`), action);
+      }
+      else if(entryArr[0] === "TAXI")
+      {
+        taxiStatus = 1;
+        console.log(entryArr[0] + ": TAXI");
+        console.log(taxiStatus);
+        set(ref(database, path + `/Auto/Taxi`), taxiStatus);
+      }
+    })
+
+
+
   }
 
   return (
@@ -314,7 +369,11 @@ const matchInfo: React.FC = () => {
 
         <Pressable
           style={styles.buttonOne}
-          onPress={() => router.push(`/(matchInfo)/teleop?regional=${regional}&teamNumber=${teamNumber}&qualMatch=${qualMatch}`)}
+          onPress={() => {
+            handleSendAutoData();
+            router.push(`/(matchInfo)/teleop?regional=${regional}&teamNumber=${teamNumber}&qualMatch=${qualMatch}`)
+          }
+        }
         >
           <Text style={styles.buttonOneText}>Teleop</Text>
         </Pressable>
