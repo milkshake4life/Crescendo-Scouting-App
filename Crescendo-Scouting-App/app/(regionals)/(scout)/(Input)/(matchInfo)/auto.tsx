@@ -209,6 +209,7 @@ const matchInfo: React.FC = () => {
 
     //sets default values
     allNotes.map((note) => {
+
       if(note === "R") //R starts already in the robot, so no intake data is necessary
       {
         set(ref(database, path + `/Auto/${note}/Action`), action); 
@@ -220,6 +221,9 @@ const matchInfo: React.FC = () => {
       }
         
     })
+
+    // Handle Taxi separately
+    set(ref(database, path + `/Auto/Taxi`), taxiStatus);
 
 
     //Goes through buttonPresses array (actions list at the bottom) and assigns values based on what the user has put in the list. 
@@ -273,13 +277,6 @@ const matchInfo: React.FC = () => {
         console.log(entryArr[0] + ": MISSED SPEAKER");
         console.log(action);
         set(ref(database, path + `/Auto/${entryArr[0]}/Action`), action);
-      }
-      else if(entryArr[0] === "TAXI")
-      {
-        taxiStatus = 1;
-        console.log(entryArr[0] + ": TAXI");
-        console.log(taxiStatus);
-        set(ref(database, path + `/Auto/Taxi`), taxiStatus);
       }
     })
 
