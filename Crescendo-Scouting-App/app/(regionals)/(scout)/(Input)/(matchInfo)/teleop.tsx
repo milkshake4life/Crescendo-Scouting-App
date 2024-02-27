@@ -65,6 +65,7 @@ const SliderWithNumbers: React.FC<SliderWithNumbersProps> = ({
 
 
 const Counter = () => {
+
   const ClimbingData = [
     { label: 'Nothing', value: '1' },
     { label: 'Taxi', value: '2' },
@@ -79,6 +80,7 @@ const Counter = () => {
   const [groundCount, setGroundCount] = useState<number>(0);
   const [sourceCount, setSourceCount] = useState<number>(0);
   const [isFocus, setIsFocus] = useState(false);
+  const [selectedTrapValue, setSelectedTrapValue] = useState<number | null>(null);
   const [selectedClimbingValue, setSelectedClimbingValue] = useState<string | null>(null);
   const { regional } = useGlobalSearchParams<{ regional: string }>();
   const { teamNumber } = useGlobalSearchParams<{ teamNumber: string }>();
@@ -158,23 +160,10 @@ const Counter = () => {
     set(ref(database, path + '/Teleop/Amp/Miss'), missCountAmp)
     set(ref(database, path + '/Teleop/Intake/Ground'), groundCount)
     set(ref(database, path + '/Teleop/Intake/Source'), sourceCount)
-    set(ref(database, path + '/Climb'), selectedClimbingValue)
+    set(ref(database, path + '/Endgame/Trap'), selectedTrapValue)
+    set(ref(database, path + '/Endgame/Climb'), selectedClimbingValue)
   }
-  // const fontSize = sliderWidth / markers.length;
-
-
-  // const SliderWithNumbers: React.FC<SliderWithNumbersProps> = ({
-  //   value,
-  //   onValueChange,
-  //   minValue,
-  //   maxValue,
-  //   step,
-  //   sliderWidth,
-  // }) => {
-  //   const markers = Array.from(
-  //     { length: (maxValue - minValue) / step + 1 },
-  //     (_, index) => minValue + index * step
-  //   );
+  
   return (
     <ScrollView>
       <View>
@@ -217,7 +206,9 @@ const Counter = () => {
                     </View>
                     <SliderWithNumbers
                       value={sliderValue}
-                      onValueChange={(value) => setSliderValue(value)}
+                      onValueChange={(value) => {
+                        setSelectedTrapValue(value); // Set the slider value to your trap value
+                      }}
                       minValue={0}
                       maxValue={3}
                       step={1}

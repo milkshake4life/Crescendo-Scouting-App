@@ -33,6 +33,8 @@ const SliderWithNumbers: React.FC<SliderWithNumbersProps> = ({
 
   return (
     <View style={styles.sliderContainer}>
+    <View style={styles.border}>
+      <View style={styles.counterContainer}>
       <Slider
         style={styles.slider}
         minimumValue={minValue}
@@ -49,6 +51,8 @@ const SliderWithNumbers: React.FC<SliderWithNumbersProps> = ({
         ))}
       </View>
     </View>
+    </View>
+    </View>
   );
 };
 const DrivingRatingSlider: React.FC = () => {
@@ -63,30 +67,30 @@ const DrivingRatingSlider: React.FC = () => {
         minValue={1}
         maxValue={5}
         step={1}
-        sliderWidth={110} // Adjust the slider width as needed
+        sliderWidth={100} // Adjust the slider width as needed
       />
       
     </>
   );
 };
-const DefenseSlider: React.FC = () => {
-  const [sliderValue, setSliderValue] = React.useState(1);
+// const DefenseSlider: React.FC = () => {
+//   const [sliderValue, setSliderValue] = React.useState(1);
 
-  return (
-    <>
-      <Text style={styles.subtitle}>Defense</Text>
-      <SliderWithNumbers
-        value={sliderValue}
-        onValueChange={(value) => setSliderValue(value)}
-        minValue={1}
-        maxValue={5}
-        step={1}
-        sliderWidth={110} 
-      />
+//   return (
+//     <>
+//       <Text style={styles.subtitle}>Defense</Text>
+//       <SliderWithNumbers
+//         value={sliderValue}
+//         onValueChange={(value) => setSliderValue(value)}
+//         minValue={1}
+//         maxValue={5}
+//         step={1}
+//         sliderWidth={110} 
+//       />
      
-    </>
-  );
-};
+//     </>
+//   );
+// };
 
 const MatchInfo: React.FC = () => {
   const [isChecked, setIsChecked] = React.useState(false);
@@ -117,48 +121,42 @@ const MatchInfo: React.FC = () => {
         <DrivingRatingSlider />
 
         {/* Checkbox with margin */}
-        <CheckBox
-          title="Defense"
-          checked={isChecked}
-          onPress={() => setIsChecked(!isChecked)}
-          containerStyle={styles.checkboxContainer}
-        />
 
-        {isChecked && <DefenseSlider />}
         <Text style={styles.subtitle}>Penalties</Text>
 
-        <View style={styles.buttonContainer}>
-        
-        <TouchableOpacity
-           onPress={decrementCounter}
-           style={styles.buttonTwo}
-         >
-           <Text style={styles.buttonTwoText}>-</Text>
-         </TouchableOpacity>
-      
+        <View style={styles.border}>
+          <View style={styles.buttonContainer}>
+            <View style={styles.buttonWrapper}>
+              <TouchableOpacity
+                onPress={decrementCounter}
+                style={styles.buttonTwo}
+              >
+                <Text style={styles.buttonTwoText}>-</Text>
+              </TouchableOpacity>
+            </View>
 
+            <Text style={styles.counterText}>{counter}</Text>
 
-         <Text style={styles.counterText}>{counter}</Text>
-
-
-         <TouchableOpacity
-           onPress={incrementCounter}
-           style={styles.buttonTwo}
-         >
-           <Text style={styles.buttonTwoText}>+</Text>
-         </TouchableOpacity>
-         </View>
-
-        
+            <View style={styles.buttonWrapper}>
+              <TouchableOpacity
+                onPress={incrementCounter}
+                style={styles.buttonTwo}
+              >
+                <Text style={styles.buttonTwoText}>+</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
 
         {/* Conditional Defense Slider based on checkbox state */}
-        
 
         <Pressable style={styles.submitButton} onPress={handleSubmit}>
           <Text 
-          style={styles.submitButtonText}
-          onPress={() => router.push(`/(matchInfo)/review`)}>Review</Text>
-
+            style={styles.submitButtonText}
+            onPress={() => router.push(`/(matchInfo)/thanks`)}
+          >
+            Review
+          </Text>
         </Pressable>
       </View>
     </ScrollView>
@@ -173,10 +171,13 @@ const styles = StyleSheet.create({
       padding: 20, // Optional: Adds padding to the container
   },
   title: {
+    // fontFamily: 'BPoppins',
+    // fontSize: 32,
+    // marginBottom: 20,
+    // marginTop: 70,
     fontFamily: 'BPoppins',
-    fontSize: 32,
-    marginBottom: 20,
-    marginTop: 70,
+    fontSize: 36,
+    textAlign: 'center',
   },
   // checkBox: {
   //   color: 'white',
@@ -190,10 +191,15 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   subtitle: {
+    // fontFamily: 'BPoppins',
+    // fontSize: 15,
+    // color: 'rgba(127, 127, 127, 255)',
+    // marginTop: 10,
     fontFamily: 'BPoppins',
-    fontSize: 15,
-    color: 'rgba(127, 127, 127, 255)',
-    marginTop: 10,
+    fontSize: 30,
+    textAlign: 'center',
+    color: 'rgba(0, 130, 190, 255)',
+    marginTop: '10%',
   },
   submitButton: {
     marginTop: 20,
@@ -231,11 +237,11 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "white",
   },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '70%',
-  },
+  // buttonContainer: {
+  //   flexDirection: 'row',
+  //   justifyContent: 'space-between',
+  //   width: '70%',
+  // },
   buttonOneText: {
     fontSize: 16,
     lineHeight: 21,
@@ -245,34 +251,34 @@ const styles = StyleSheet.create({
     fontFamily: "BPoppins",
   },
   buttonTwo: {
-    marginTop: 5,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingVertical: 12,
-    paddingHorizontal: 53,
-    // borderRadius: 4,
-    // elevation: 3,
-    // backgroundColor: "rgba(0, 130, 190, 255)",
-    // borderWidth: 2,
-    // borderColor: "white",
+    paddingHorizontal: 20, // Adjust as needed
+    borderRadius: 4,
+    backgroundColor: 'transparent', // Set to 'transparent' or remove
   },
   buttonTwoText: {
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: "bold",
+    fontSize: 30,
+    lineHeight: 30,
+    fontWeight: 'bold',
     letterSpacing: 0.25,
-    color: "black",
-    fontFamily: "BPoppins",
+    color: 'black',
+    fontFamily: 'BPoppins',
   },
-  counterText: {
-    fontSize: 16,
-    marginTop: 19,
-    lineHeight: 21,
-    fontWeight: "bold",
-    letterSpacing: 0.25,
-    color: "black",
-    fontFamily: "BPoppins",
+  buttonWrapper: {
+    backgroundColor: 'transparent', // Set to 'transparent' or remove
+    overflow: 'hidden', // This line helps to hide the potential overflow
   },
+  // counterText: {
+  //   fontSize: 25,
+  //   marginTop: 19,
+  //   lineHeight: 21,
+  //   fontWeight: "bold",
+  //   letterSpacing: 0.25,
+  //   color: "black",
+  //   fontFamily: "BPoppins",
+  // },
   sliderContainer: {
     width: '100%',
     alignItems: 'center',
@@ -285,12 +291,44 @@ const styles = StyleSheet.create({
   sliderMarkers: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '50%',
-    paddingHorizontal: 20,
+    width: '62%',
+    paddingHorizontal: 25,
+    marginLeft: 35,
   },
   markerText: {
     fontSize: 12,
     color: 'rgba(127, 127, 127, 255)',
+  },
+  border: {
+    padding: 20,
+    borderRadius: 10,
+    borderWidth: 3,
+    borderColor: 'rgba(0, 130, 190, 255)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    maxWidth: '95%',
+    marginVertical: 10,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '70%',
+    marginTop: 10,
+  },
+  counterText: {
+  fontSize: 30,
+  fontWeight: 'bold',
+  color: 'black',
+  fontFamily: 'BPoppins',
+  alignSelf: 'center',
+  marginLeft: 10, // Adjust as needed
+  marginRight: 10, // Adjust as needed
+  marginBottom: 20, // Adjust as needed
+},
+  counterContainer: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
  
   
