@@ -1,5 +1,5 @@
 import { Link, router, useGlobalSearchParams } from "expo-router";
-import { Pressable, Button, Text, View, StyleSheet, ScrollView } from "react-native";
+import { Pressable, Button, Text, View, StyleSheet, ScrollView  } from "react-native";
 import BackButton from "../../../backButton";
 import React, { useContext, useEffect, useState } from "react";
 //contexts
@@ -130,7 +130,7 @@ const matchDisplay = () => {
       } else {
         setRegional(result);
       }
-
+      
       const num = await retrieveTeam();
       if (!num) {
         console.log("no team found");
@@ -147,6 +147,18 @@ const matchDisplay = () => {
   }, [teamNumber, regional])
   //I think having these as dependencies ensures that they will have a value before the rest of the code runs, but I'm not sure
   //added a line which displays stored info to ensure it is being retrieved
+
+  const InfoItem: React.FC<ItemProps> = ({ title, info }) => (
+    <View style={styles.infoItem}>
+      <Text style={styles.titleText}>{title}</Text>
+      <Text style={styles.infoText}>{info}</Text>
+    </View>
+  );
+
+  type ItemProps = {
+    title: string;
+    info: string;
+  };
 
   return (
     <ScrollView>
@@ -196,7 +208,6 @@ const matchDisplay = () => {
 
       </View>
     </ScrollView>
-
   );
 };
 
@@ -208,57 +219,73 @@ const styles = StyleSheet.create({
     padding: 20, // Optional: Adds padding to the container
   },
   teamNumber: {
+    fontSize: 50,
+    color: 'rgba(0, 130, 190, 255)',
+    alignSelf: 'center',
     fontFamily: 'BPoppins',
-    fontSize: 32,  //font size differs from regional page. Regional = 25. 
-    // marginBottom: 110,
-    // marginTop: 30, //adding top margin to move down the page. 
+    marginTop: -40,
   },
-  title: {
-    fontFamily: 'BPoppins',
-    fontSize: 32,  //font size differs from regional page. Regional = 25. 
-    // marginBottom: 110,
-    // marginTop: 30, //adding top margin to move down the page. 
+  heading: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: 'black',
+    marginTop: -20,
+    alignSelf: 'center',
+  },
+  subtitle: {
+    // fontFamily: 'BPoppins',
+    fontSize: 20,  //font size differs from regional page. Regional = 25. 
+    marginBottom: -10,
+    marginTop: 5, //adding top margin to move down the page.
+    color: '#737373',
   },
   border: {
-    padding: 20,
-    borderRadius: 10,
+    padding: 10,
+    borderRadius: 10, //curves
     borderWidth: 3,
     borderColor: 'rgba(0, 130, 190, 255)',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
-    maxWidth: '95%',
+    width: '100%',
   },
-  subtitle: {
-    fontFamily: 'BPoppins',
+  autoBorder: {
+    padding: 10,
+    borderRadius: 10, //curves
+    borderWidth: 3,
+    borderColor: 'rgba(0, 130, 190, 255)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    width: '100%',
+    marginVertical: 10,
+  },
+  itemTitle: {
     fontSize: 30,
-    textAlign: 'center',
+    fontFamily: 'BPoppins',
     color: 'rgba(0, 130, 190, 255)',
-    marginTop: '10%',
+    marginTop: 30,
+  },
+  titleText: {
+    fontSize: 20,
+    marginLeft: 10,
+    fontFamily: 'BPoppins',
+  },
+  infoText: {
+    fontSize: 20,
+    marginLeft: 10,
+    fontFamily: 'BPoppins',
+    color: '#737373',
+  },
+  infoItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 0,
+  },
+  infoBox: {
+    backgroundColor: 'white',
+    paddingHorizontal: 15,
   },
 });
 
 export default matchDisplay;
-
-//storage:
-/*
-from retReg:    
-  let result = await SecureStore.getItemAsync("regional");
-  setRegional(result);
-from retTea:
-    let team = await SecureStore.getItemAsync("team")
-    setTeam(team);
-from uSS:
-const [regional, setRegional] = React.useState<string | null>(null);
-const [team, setTeam] = React.useState<string | null>(null);    
-export regional, team
-
-from MD:
-  let teamNumber = team;
-  let reg = regional;
-
-          <Text>team: {teamNumber} regional: {reg}</Text>
-        <Pressable onPress={deleteTeamKeys}>
-          <Text>Delete stuff</Text>
-        </Pressable>
-  */
