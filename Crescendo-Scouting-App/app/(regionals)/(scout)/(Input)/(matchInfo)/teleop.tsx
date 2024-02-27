@@ -67,11 +67,11 @@ const SliderWithNumbers: React.FC<SliderWithNumbersProps> = ({
 const Counter = () => {
 
   const ClimbingData = [
-    { label: 'Nothing', value: '1' },
-    { label: 'Taxi', value: '2' },
-    { label: 'Single Climb', value: '3' },
-    { label: 'Double Climb', value: '4' },
-    { label: 'Triple Climb', value: '5' },
+    { label: 'Nothing', value: 1 },
+    { label: 'Taxi', value: 2 },
+    { label: 'Single Climb', value: 3 },
+    { label: 'Double Climb', value: 4 },
+    { label: 'Triple Climb', value: 5 },
   ];
   const [madeCountSpeaker, setMadeCountSpeaker] = useState<number>(0);
   const [missCountSpeaker, setMissCountSpeaker] = useState<number>(0);
@@ -227,6 +227,7 @@ const Counter = () => {
                       selectedTextStyle={styles.selectedTextStyle}
                       inputSearchStyle={styles.inputSearchStyle}
                       iconStyle={styles.iconStyle}
+                      //dont know why this below is an error
                       data={ClimbingData}
                       search
                       maxHeight={300}
