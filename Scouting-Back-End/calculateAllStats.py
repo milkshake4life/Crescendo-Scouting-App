@@ -15,6 +15,7 @@ ref = db.reference('/ISR/teams')
 #Dictionaries
 StartingPosition = {1: "Amp", 2: "Middle", 3: "Source"}
 Teleop = {1: "Amp", 2: "Ground Intake", 3: "Source Intake", 4: "Speaker"}
+Climb = {1: "Nothing", 2: "Park", 3: "Single Climb", 4: "Double Climb", 5: "Triple Climb"}
 
 
 
@@ -136,10 +137,7 @@ def calculateAutoStats(path): # done
                             intakeCounts[k] = intakeCounts[k] + 1
                             totalIntakeCounts[k] = totalIntakeCounts[k] + 1
     
-    #Start here and start working on the percentages
-    #make a new dictionary of percentages
-    #Dont forget to check if total is equal to zero and set percentage to zero for divide by zero error.
-
+    #calculate statistics
     ampPercentages = {key: int(actionAmpCounts[key] / totalActionAmpCounts[key] * 100) if totalActionAmpCounts[key] != 0 else 0 for key in actionAmpCounts}
     speakerPercentages = {key: int(actionSpeakerCounts[key] / totalActionSpeakerCounts[key] * 100) if totalActionSpeakerCounts[key] != 0 else 0 for key in actionSpeakerCounts}
     intakePercentages = {key: int(intakeCounts[key] / totalIntakeCounts[key] * 100) if totalIntakeCounts[key] != 0 else 0 for key in intakeCounts}
@@ -214,7 +212,10 @@ def calculateTeleopStats(path): # done
         firebase.put(statsPath + 'Stats/Teleop/', Teleop[i], data=percentage[i])
                     
 
-# def calculateEndGameStats(path):
+def calculateEndGameStats(path):
+    methodPath = '/ISR/teams' + path
+    result = firebase.get(methodPath, '')
+    climbCounts = [0, 0, 0, 0, 0] # index 0 is amp, index 1 is ground, index 2 is source, index 3 is speaker
 
 # def calculatePostGameStats(path):
 

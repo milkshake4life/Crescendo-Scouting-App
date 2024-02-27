@@ -7,33 +7,62 @@ import { TeamProvider, useTeam } from './TeamContext';
 import { retrieveRegional, retrieveTeam, deleteTeamKeys, } from "../../../Contexts/TeamSecureCache";
 import { onValue, off, ref, DataSnapshot, DatabaseReference, getDatabase } from '@firebase/database';
 
-
-
-
 const matchDisplay = () => {
   //defining teamNumber and regional as state variables, because this allows their values to change.
   const [teamNumber, setTeamNumber] = useState<any>();
   const [regional, setRegional] = useState<any>();
-  const [preGamePositionOne, setPreGamePositionOne] = useState<string | null>(null);
-  const [preGamePositionTwo, setPreGamePositionTwo] = useState<string | null>(null);
-  const [preGamePositionThree, setPreGamePositionThree] = useState<string | null>(null);
+
+  //pregame constants
+  const [pregamePositionOne, setPregamePositionOne] = useState<string | null>(null);
+  const [pregamePositionTwo, setPregamePositionTwo] = useState<string | null>(null);
+  const [pregamePositionThree, setPregamePositionThree] = useState<string | null>(null);
+
+  //auto constants
+  // const [autoSpeakerPercent, setTeleopSpeakerPercent] = useState<string | null>(null);
+  // const [autoSpeakerPercent, setTeleopSpeakerPercent] = useState<string | null>(null);
+
+  //teleop constants
   const [teleopAmpPercent, setTeleopAmpPercent] = useState<string | null>(null);
-  const [teleopGroundIntakePercent, setGroundIntakePercent] = useState<string | null>(null);
-  const [teleopSourceIntakePercent, setSourceIntakePercent] = useState<string | null>(null);
+  const [teleopGroundIntakePercent, setTeleopGroundIntakePercent] = useState<string | null>(null);
+  const [teleopSourceIntakePercent, setTeleopSourceIntakePercent] = useState<string | null>(null);
   const [teleopSpeakerPercent, setTeleopSpeakerPercent] = useState<string | null>(null);
 
-  //accessing Pregame data
+  //endgame constants
+  const [endgameNothingPercent, setEndgameNothingPercent] = useState<string | null>(null);
+  const [endgameParkPercent, setEndgameParkPercent] = useState<string | null>(null);
+  const [endgameSingleClimbPercent, setEndgameSingleClimbPercent] = useState<string | null>(null);
+  const [endgameDoubleClimbPercent, setEndgameDoubleClimbPercent] = useState<string | null>(null);
+  const [endgameTripleClimbPercent, setEndgameTripleClimbPercent] = useState<string | null>(null);
+
+  const [endgameNoTrapPercent, setEndgameNoTrapPercent] = useState<string | null>(null);
+  const [endgameOneTrapPercent, setEndgameOneTrapPercent] = useState<string | null>(null);
+  const [endgameTwoTrapPercent, setEndgameTwoTrapPercent] = useState<string | null>(null);
+  const [endgameThreeTrapPercent, setEndgameThreeTrapPercent] = useState<string | null>(null);
+
+  //accessing data
   useEffect(() => {
     const database = getDatabase();
 
-    // Reference paths for each pregame position
-    const positionOneRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Pregame/Amp');
-    const positionTwoRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Pregame/Middle');
-    const positionThreeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Pregame/Source');
-    const ampPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Teleop/Amp')
-    const groundPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Teleop/Source Intake')
-    const sourcePercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Teleop/Ground Intake')
-    const speakerPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Teleop/Speaker')
+    // reference paths for each data
+    // pregame paths
+    const pregamePositionOneRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Pregame/Amp');
+    const pregamePositionTwoRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Pregame/Middle');
+    const pregamePositionThreeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Pregame/Source');
+
+    // auto paths
+
+    // teleop paths
+    const teleopAmpPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Teleop/Amp')
+    const teleopGroundPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Teleop/Source Intake')
+    const teleopSourcePercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Teleop/Ground Intake')
+    const teleopSpeakerPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Teleop/Speaker')
+
+    // endgame paths
+    const endgameNothingPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Endgame/Climb/Nothing')
+    const endgameParkPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Endgame/Climb/Park')
+    const endgameSingleClimbPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Endgame/Climb/Dingle')
+    const endgameDoubleClimbPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Endgame/Climb/Double')
+    const endgameTripleClimbPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Endgame/Climb/Triple')
 
     // Callback function to handle snapshot changes
     const handleSnapshot = (snapshot: DataSnapshot, setPosition: React.Dispatch<React.SetStateAction<string | null>>) => {
@@ -45,24 +74,45 @@ const matchDisplay = () => {
       }
     };
 
-    // Set up listeners for each pregame position
-    const positionOneListener = onValue(positionOneRef, (snapshot) => handleSnapshot(snapshot, setPreGamePositionOne));
-    const positionTwoListener = onValue(positionTwoRef, (snapshot) => handleSnapshot(snapshot, setPreGamePositionTwo));
-    const positionThreeListener = onValue(positionThreeRef, (snapshot) => handleSnapshot(snapshot, setPreGamePositionThree));
-    const ampPercentListener = onValue(ampPercentRef, (snapshot) => handleSnapshot(snapshot, setTeleopAmpPercent))
-    const groundPercentListener = onValue(groundPercentRef, (snapshot) => handleSnapshot(snapshot, setGroundIntakePercent))
-    const sourcePercentListener = onValue(sourcePercentRef, (snapshot) => handleSnapshot(snapshot, setSourceIntakePercent))
-    const speakerPercentListener = onValue(speakerPercentRef, (snapshot) => handleSnapshot(snapshot, setTeleopSpeakerPercent))
+    // Set up listeners for each data
+    // pregame
+    const pregamePositionOneListener = onValue(pregamePositionOneRef, (snapshot) => handleSnapshot(snapshot, setPregamePositionOne));
+    const pregamePositionTwoListener = onValue(pregamePositionTwoRef, (snapshot) => handleSnapshot(snapshot, setPregamePositionTwo));
+    const pregamePositionThreeListener = onValue(pregamePositionThreeRef, (snapshot) => handleSnapshot(snapshot, setPregamePositionThree));
+
+    // teleop
+    const teleopAmpPercentListener = onValue(teleopAmpPercentRef, (snapshot) => handleSnapshot(snapshot, setTeleopAmpPercent))
+    const teleopGroundPercentListener = onValue(teleopGroundPercentRef, (snapshot) => handleSnapshot(snapshot, setTeleopGroundIntakePercent))
+    const teleopSourcePercentListener = onValue(teleopSourcePercentRef, (snapshot) => handleSnapshot(snapshot, setTeleopSourceIntakePercent))
+    const teleopSpeakerPercentListener = onValue(teleopSpeakerPercentRef, (snapshot) => handleSnapshot(snapshot, setTeleopSpeakerPercent))
+
+    // endgame
+    const endgameNothingPercentListener = onValue(endgameNothingPercentRef, (snapshot) => handleSnapshot(snapshot, setEndgameNothingPercent))
+    const endgameParkPercentListener = onValue(endgameParkPercentRef, (snapshot) => handleSnapshot(snapshot, setEndgameParkPercent))
+    const endgameSingleClimbPercentListener = onValue(endgameSingleClimbPercentRef, (snapshot) => handleSnapshot(snapshot, setEndgameSingleClimbPercent))
+    const endgameDoubleClimbPercentListener = onValue(endgameDoubleClimbPercentRef, (snapshot) => handleSnapshot(snapshot, setEndgameDoubleClimbPercent))
+    const endgameTripleClimbPercentListener = onValue(endgameTripleClimbPercentRef, (snapshot) => handleSnapshot(snapshot, setEndgameTripleClimbPercent))
+
 
     // Clean up listeners on component unmount
     return () => {
-      off(positionOneRef, 'value', positionOneListener);
-      off(positionTwoRef, 'value', positionTwoListener);
-      off(positionThreeRef, 'value', positionThreeListener);
-      off(ampPercentRef, 'value', ampPercentListener);
-      off(groundPercentRef, 'value', groundPercentListener);
-      off(sourcePercentRef, 'value', sourcePercentListener);
-      off(speakerPercentRef, 'value', speakerPercentListener);
+      // pregame listeners
+      off(pregamePositionOneRef, 'value', pregamePositionOneListener);
+      off(pregamePositionTwoRef, 'value', pregamePositionTwoListener);
+      off(pregamePositionThreeRef, 'value', pregamePositionThreeListener);
+
+      //teleop listeners
+      off(teleopAmpPercentRef, 'value', teleopAmpPercentListener);
+      off(teleopGroundPercentRef, 'value', teleopGroundPercentListener);
+      off(teleopSourcePercentRef, 'value', teleopSourcePercentListener);
+      off(teleopSpeakerPercentRef, 'value', teleopSpeakerPercentListener);
+
+      // endgame listeners
+      off(endgameNothingPercentRef, 'value', endgameNothingPercentListener);
+      off(endgameParkPercentRef, 'value', endgameParkPercentListener);
+      off(endgameSingleClimbPercentRef, 'value', endgameSingleClimbPercentListener);
+      off(endgameDoubleClimbPercentRef, 'value', endgameDoubleClimbPercentListener);
+      off(endgameTripleClimbPercentRef, 'value', endgameTripleClimbPercentListener);
     };
 
   }, [teamNumber, regional]);
@@ -109,16 +159,17 @@ const matchDisplay = () => {
         <Text style={styles.subtitle}>Pregame</Text>
         <View style={styles.container}>
           <View style={styles.border}>
-            <Text>Amp: {preGamePositionOne}%</Text>
-            <Text>Middle: {preGamePositionTwo}%</Text>
-            <Text>Source: {preGamePositionThree}%</Text>
+            <Text>Amp: {pregamePositionOne}%</Text>
+            <Text>Middle: {pregamePositionTwo}%</Text>
+            <Text>Source: {pregamePositionThree}%</Text>
           </View>
         </View>
 
         <Text style={styles.subtitle}>Auto</Text>
         <View style={styles.container}>
           <View style={styles.border}>
-            <Text>Amp: {preGamePositionOne}%</Text>
+            <Text>Amp: {pregamePositionOne}%</Text>
+
           </View>
         </View>
 
@@ -129,6 +180,17 @@ const matchDisplay = () => {
             <Text>Speaker: {teleopSpeakerPercent}%</Text>
             <Text>Ground Intake: {teleopGroundIntakePercent}%</Text>
             <Text>Source Intake: {teleopSourceIntakePercent}%</Text>
+          </View>
+        </View>
+
+        <Text style={styles.subtitle}>Endgame</Text>
+        <View style={styles.container}>
+          <View style={styles.border}>
+            <Text>Nothing: {endgameNothingPercent}%</Text>
+            <Text>Park: {endgameParkPercent}%</Text>
+            <Text>Single Climb: {endgameSingleClimbPercent}%</Text>
+            <Text>Double Climb: {endgameDoubleClimbPercent}%</Text>
+            <Text>Triple Climb: {endgameTripleClimbPercent}%</Text>
           </View>
         </View>
 
