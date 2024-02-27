@@ -94,7 +94,7 @@ const Counter = () => {
       [dropdownKey]: true,
     }));
   };
-  const [sliderValue, setSliderValue] = useState<number>(1);
+  const [sliderValue, setSliderValue] = useState<number>(0);
 
 
   const incrementSpeaker = (type: 'made' | 'miss') => {

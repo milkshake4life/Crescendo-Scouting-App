@@ -216,6 +216,11 @@ def calculateEndGameStats(path):
     methodPath = '/ISR/teams' + path
     result = firebase.get(methodPath, '')
     climbCounts = [0, 0, 0, 0, 0] # index 0 is amp, index 1 is ground, index 2 is source, index 3 is speaker
+    for i in result.keys():
+        specificPath = methodPath + i
+        specificResult = firebase.get(specificPath, '')
+        for j in specificResult.keys():
+            if(j == "Teleop"):
 
 # def calculatePostGameStats(path):
 
