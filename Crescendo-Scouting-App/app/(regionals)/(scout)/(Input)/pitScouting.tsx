@@ -240,6 +240,7 @@ const styles = StyleSheet.create({
   buttontitle:{
     fontFamily: 'BPoppins',
     fontSize: 12,
+    color: 'rgba(0, 130, 190, 255)',
    
   },
   questiontitle:{

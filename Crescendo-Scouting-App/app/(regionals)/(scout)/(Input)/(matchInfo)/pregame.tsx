@@ -62,7 +62,9 @@ const matchInfo = () => {
     <ScrollView>
       <View>
         <BackButton buttonName="Home Page" />
-        <Text>Plese Input the Pre Game Information!</Text>
+        <Text style={ styles.title }>Pregame</Text>
+        <Text style={ styles.subtitle }>Please input the Pregame Information.</Text>
+      
         <Text>Qualification Match</Text>
         <Dropdown
           style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
@@ -153,6 +155,16 @@ const matchInfo = () => {
 };
 
 const styles = StyleSheet.create({
+  title: {
+    fontFamily: 'BPoppins',
+    fontSize: 36,
+    textAlign: 'center',
+  },
+  subtitle:{
+    fontFamily: 'BPoppins',
+    fontSize:15,
+    color: 'rgba(0, 130, 190, 255)',
+  },
   backButtonText: {
     fontFamily: 'BPoppins',
     fontSize: 15,

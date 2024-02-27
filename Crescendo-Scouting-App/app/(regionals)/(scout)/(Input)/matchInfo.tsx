@@ -7,7 +7,7 @@ const matchInfo = () => {
   return (
     <View>
       <BackButton buttonName="Home Page" />
-      <Text>Plese Input the Match Information!</Text>
+      <Text>Please input the match information.</Text>
     </View>
   );
 };

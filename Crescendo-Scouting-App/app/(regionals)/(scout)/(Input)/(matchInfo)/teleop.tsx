@@ -221,7 +221,7 @@ const Counter = () => {
                       minValue={0}
                       maxValue={3}
                       step={1}
-                      sliderWidth={90} // Adjust the slider width as needed
+                      sliderWidth={90} // changes number size
                     />
                   </View>
                 </View>
@@ -398,20 +398,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   submitButton: {
-    marginTop: 20,
-    marginBottom: 30,
+    marginTop: 40,
+    marginBottom:40,
     backgroundColor: 'rgba(0, 130, 190, 255)',
     paddingVertical: 12,
     paddingHorizontal: 53,
     borderRadius: 4,
-    elevation: 3,
     borderWidth: 2,
-    borderColor: 'white',
+    borderColor: 'rgba(0, 130, 190, 255)',
   },
   submitButtonText: {
     fontSize: 16,
     lineHeight: 21,
-    fontWeight: 'bold',
     letterSpacing: 0.25,
     color: 'white',
     fontFamily: 'BPoppins',
@@ -443,6 +441,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: 'rgba(127, 127, 127, 255)',
   },
+  
 });
 
 export default Counter;
