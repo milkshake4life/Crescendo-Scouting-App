@@ -127,16 +127,6 @@ const matchInfo: React.FC = () => {
       // it's better to use the functional update form of the setState hook.
 
       //IF THE NOTE IS R, THIS IS ALREADY TRUE, SO IT SHOULD JUST TRIGGER THE INTAKE FUNCTION IMMEDIATELY
-      
-
-      //Since we already find the index of the selected note and we have the item its selected for, we can update 
-      //action values when we set the note to used using the greenNoteIndex and item (entry has this)
-      //For intake values, if item = intake -> setIntakeVar to intake successful, if item -> missedIntake -> setIntakeVar to
-      //missed, default to didnt try
-      //For action values, set them to their corresponding action (via item).
-      //OR do this by parsing the list at the end right before submission 
-      //String.split entries in ButtonPresses right before submission, determine note based on first half of split, and use
-      //second half to determine action and intake status
       if(item === 'Intake')
       {
         //Conditionally resets the color based on intake status of the robot. If the robot isntakes a note,
@@ -195,8 +185,6 @@ const matchInfo: React.FC = () => {
   const handleSendAutoData = () => {
 
     //each note is a "directory", and stores two sets of values
-    //value 1: didnt use/missed intake/successful intake (0/1/2)
-    //value 2: didnt use/amp made/amp missed/speaker made/speaker missed (0/1/2/3/4) 
     const path = `${regional}/teams/${teamNumber}/Match-Info/${qualMatch}`;
 
     const allNotes: string[] = ["S1", "S2", "S3", "M1", "M2", "M3", "M4", "M5", "R"]
