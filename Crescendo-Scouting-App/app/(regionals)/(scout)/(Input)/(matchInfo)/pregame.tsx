@@ -30,7 +30,7 @@ const matchInfo = () => {
     value: string;
   }
 
-  const startingPosition = [
+  const startingPosition: DropdownItem[] = [
     { label: "Amp", value: "1" },
     { label: "Middle", value: "2" },
     { label: "Source", value: "3" },
@@ -38,18 +38,27 @@ const matchInfo = () => {
 
   const [qualMatch, setQualMatch] = useState<DropdownItem[]>([]);
   const [isFocus, setIsFocus] = useState(false);
-  const [selectedQualMatch, setSelectedQualMatch] = useState<string | null>(
-    null
-  );
-  const [selectedAlliance, setSelectedAlliance] = useState<
-    "Red" | "Blue" | null
-  >(null);
-  const [selectedSeating, setSelectedSeating] = useState<
-    "Amp" | "Source" | null
-  >(null);
+  const [selectedQualMatch, setSelectedQualMatch] = useState<string | null>(null);
+
+  const [selectedAlliance, setSelectedAlliance] = useState< "Red" | "Blue" | null >("Blue");
+  //state var for alliance slider
+  const [isOn, toggleIsOn] = useState<boolean>(true);
+
+  //defaults to source, since the slider starts on source
+  const [selectedSeating, setSelectedSeating] = useState< "Amp" | "Source" | null >("Amp");  //defaults to amp, since slider switched
+  //state var for the slider
+  const [seating, toggleSeating] = useState<boolean>(true);
+
+  //issue might involve how startingPosition isn't a dropdown item
   const [selectedStartingPosition, setSelectedStartingPosition] = useState<
-    1 | 2 | 3 | null
+    1 | 2 | 3 | null 
   >(null);
+
+  //making another selected starting position string for displaying
+  const [selectedStartingPositionString, setSelectedStartingPositionString] = useState<string | null>("Starting Position");
+
+
+
 
   const fetchTeams = () => {
     const qualMatchRef = ref(
@@ -82,10 +91,8 @@ const matchInfo = () => {
     set(ref(database, path), selectedStartingPosition);
   };
 
-  const [isOn, setIson] = React.useState(false);
   const onColor = "rgba(0, 130, 190, 255)";
   const offColor = "red";
-  const [seating, setSeating] = React.useState(false);
 
   return (
     <ScrollView>
@@ -130,18 +137,35 @@ const matchInfo = () => {
                   borderRadius: 5,
                   borderWidth: 2,
                   overflow: "hidden",
-                  borderColor: isOn ? onColor : offColor,
+                  borderColor: isOn ? offColor : onColor,
                 }}
                 onPress={() => {
                   LayoutAnimation.easeInEaseOut();
-                  setIson(!isOn);
+                  
+                  let displayedText: string | null = selectedAlliance;
+                  if(displayedText === "Red")
+                  {
+                    displayedText = "Blue"
+                    toggleIsOn(!isOn);
+                    console.log(selectedAlliance + " = red, switched to " + displayedText + ", switching toggle to " + seating);  
+                  }
+                  else
+                  {
+                    displayedText = "Red"
+                    //this isnt updating on time probably due to batching. 
+                    toggleIsOn(!isOn);
+                    console.log(selectedAlliance + " = blue, switched to " + displayedText + ", switching toggle to " + seating);
+                  }
+
+                  setSelectedAlliance(displayedText as "Red" | "Blue" | null)
+                  console.log(selectedAlliance);
                 }}
               >
                 <View
                   style={{
                     height: "100%",
                     width: "50%",
-                    backgroundColor: isOn ? onColor : offColor,
+                    backgroundColor: isOn ? offColor : onColor,
                     alignSelf: isOn ? "flex-end" : "flex-start",
                     alignItems: "center",
                     justifyContent: "center",
@@ -150,7 +174,7 @@ const matchInfo = () => {
                   <Text
                     style={{ color: "white", fontSize: 12, fontWeight: "500" }}
                   >
-                    {isOn ? "Blue" : "Red"}
+                    {isOn ? "Red" : "Blue"}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -173,7 +197,29 @@ const matchInfo = () => {
                 }}
                 onPress={() => {
                   LayoutAnimation.easeInEaseOut();
-                  setSeating(!seating);
+                  //source = false, amp = true | determined by logging
+                  //starts on source: on first press it should switch to amp
+                  //then it should switch via toggle?
+
+                  //first press
+                  let displayedText: string | null = selectedSeating;
+                  if(displayedText === "Source")
+                  {
+                    displayedText = "Amp"
+                    toggleSeating(!seating);
+                    console.log(selectedSeating + " = source, switched to " + displayedText + ", switching toggle to " + seating);  
+                  }
+                  else
+                  {
+                    displayedText = "Source"
+                    //this isnt updating on time probably due to batching. 
+                    toggleSeating(!seating);
+
+                    console.log(selectedSeating + " = amp, switched to " + displayedText + ", switching toggle to " + seating);
+                  }
+
+                  setSelectedSeating(displayedText as "Amp" | "Source" | null)
+                  console.log(selectedSeating);
                 }}
               >
                 <View
@@ -189,7 +235,7 @@ const matchInfo = () => {
                   <Text
                     style={{ color: "white", fontSize: 12, fontWeight: "500" }}
                   >
-                    {seating ? "Amp" : "Source"}
+                    {seating ? "Source" : "Amp"}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -208,6 +254,7 @@ const matchInfo = () => {
                 inputSearchStyle={styles.inputSearchStyle}
                 iconStyle={styles.iconStyle}
                 data={startingPosition}
+                value={selectedStartingPositionString}
                 search
                 maxHeight={300}
                 labelField="label"
@@ -216,8 +263,11 @@ const matchInfo = () => {
                 searchPlaceholder="Search..."
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
-                onChange={(item) => {
-                  setSelectedQualMatch(item.value); // Update the state to the new value
+                onChange={item => {
+                  setSelectedStartingPositionString(item.value); //sets the displayed item
+                  setSelectedStartingPosition(+item.value as 1 | 2 | 3 | null); //sets the value we are going to push to the backend
+                  //debugging log
+                  console.log(item.value + " label: " + item.label) 
                   setIsFocus(false); // Assuming you want to unfocus the dropdown after selection
                 }}
               />
@@ -227,6 +277,7 @@ const matchInfo = () => {
         <Pressable
           style={styles.buttonOne}
           onPress={() => {
+            //console.log("Alliance: "+ selectedAlliance + " startingPos: " + selectedStartingPosition + ", qualification match: " + selectedQualMatch)
             if (
               selectedAlliance &&
               selectedSeating &&
