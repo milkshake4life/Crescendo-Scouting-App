@@ -67,11 +67,11 @@ const SliderWithNumbers: React.FC<SliderWithNumbersProps> = ({
 const Counter = () => {
 
   const ClimbingData = [
-    { label: 'Nothing', value: '1' },
-    { label: 'Taxi', value: '2' },
-    { label: 'Single Climb', value: '3' },
-    { label: 'Double Climb', value: '4' },
-    { label: 'Triple Climb', value: '5' },
+    { label: 'Nothing', value: 1 },
+    { label: 'Taxi', value: 2 },
+    { label: 'Single Climb', value: 3 },
+    { label: 'Double Climb', value: 4 },
+    { label: 'Triple Climb', value: 5 },
   ];
   const [madeCountSpeaker, setMadeCountSpeaker] = useState<number>(0);
   const [missCountSpeaker, setMissCountSpeaker] = useState<number>(0);
@@ -80,6 +80,7 @@ const Counter = () => {
   const [groundCount, setGroundCount] = useState<number>(0);
   const [sourceCount, setSourceCount] = useState<number>(0);
   const [isFocus, setIsFocus] = useState(false);
+  const [selectedTrapValue, setSelectedTrapValue] = useState<number | null>(null);
   const [selectedClimbingValue, setSelectedClimbingValue] = useState<string | null>(null);
   const { regional } = useGlobalSearchParams<{ regional: string }>();
   const { teamNumber } = useGlobalSearchParams<{ teamNumber: string }>();
@@ -93,7 +94,7 @@ const Counter = () => {
       [dropdownKey]: true,
     }));
   };
-  const [sliderValue, setSliderValue] = useState<number>(1);
+  const [sliderValue, setSliderValue] = useState<number>(0);
 
 
   const incrementSpeaker = (type: 'made' | 'miss') => {
@@ -159,23 +160,10 @@ const Counter = () => {
     set(ref(database, path + '/Teleop/Amp/Miss'), missCountAmp)
     set(ref(database, path + '/Teleop/Intake/Ground'), groundCount)
     set(ref(database, path + '/Teleop/Intake/Source'), sourceCount)
-    set(ref(database, path + '/Climb'), selectedClimbingValue)
+    set(ref(database, path + '/Endgame/Trap'), selectedTrapValue)
+    set(ref(database, path + '/Endgame/Climb'), selectedClimbingValue)
   }
-  // const fontSize = sliderWidth / markers.length;
-
-
-  // const SliderWithNumbers: React.FC<SliderWithNumbersProps> = ({
-  //   value,
-  //   onValueChange,
-  //   minValue,
-  //   maxValue,
-  //   step,
-  //   sliderWidth,
-  // }) => {
-  //   const markers = Array.from(
-  //     { length: (maxValue - minValue) / step + 1 },
-  //     (_, index) => minValue + index * step
-  //   );
+  
   return (
     <ScrollView>
       <View>
@@ -218,11 +206,13 @@ const Counter = () => {
                     </View>
                     <SliderWithNumbers
                       value={sliderValue}
-                      onValueChange={(value) => setSliderValue(value)}
+                      onValueChange={(value) => {
+                        setSelectedTrapValue(value); // Set the slider value to your trap value
+                      }}
                       minValue={0}
                       maxValue={3}
                       step={1}
-                      sliderWidth={90} // Adjust the slider width as needed
+                      sliderWidth={90} // changes number size
                     />
                   </View>
                 </View>
@@ -237,6 +227,7 @@ const Counter = () => {
                       selectedTextStyle={styles.selectedTextStyle}
                       inputSearchStyle={styles.inputSearchStyle}
                       iconStyle={styles.iconStyle}
+                      //dont know why this below is an error
                       data={ClimbingData}
                       search
                       maxHeight={300}
@@ -399,20 +390,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   submitButton: {
-    marginTop: 20,
-    marginBottom: 30,
+    marginTop: 40,
+    marginBottom:40,
     backgroundColor: 'rgba(0, 130, 190, 255)',
     paddingVertical: 12,
     paddingHorizontal: 53,
     borderRadius: 4,
-    elevation: 3,
     borderWidth: 2,
-    borderColor: 'white',
+    borderColor: 'rgba(0, 130, 190, 255)',
   },
   submitButtonText: {
     fontSize: 16,
     lineHeight: 21,
-    fontWeight: 'bold',
     letterSpacing: 0.25,
     color: 'white',
     fontFamily: 'BPoppins',
@@ -444,6 +433,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: 'rgba(127, 127, 127, 255)',
   },
+  
 });
 
 export default Counter;

@@ -16,9 +16,9 @@ interface DropdownItem{
 const robotInfo = () => {
   const ScoringData = [
     { label: 'No Scoring', value: '1' },
-    { label: 'Amp Only', value: '2' },
-    { label: 'Speaker Only', value: '3' },
-    { label: 'Both', value: '4' },
+    { label: 'Amp', value: '2' },
+    { label: 'Speaker', value: '3' },
+    { label: 'Speaker and Amp', value: '4' },
   ];
   const ClimbingData = [
     { label: 'No Climb', value: '5' },
@@ -27,12 +27,12 @@ const robotInfo = () => {
   ];
   const IntakeData = [
     { label: 'No Intake', value: '8' },
-    { label: 'Ground Only', value: '9' },
-    { label: 'Source Only', value: '10' },
-    { label: 'Both', value: '11' },
+    { label: 'Ground', value: '9' },
+    { label: 'Source', value: '10' },
+    { label: 'Ground and Source', value: '11' },
   ];
   const DrivingData = [
-    { label: 'N/A', value: '12' },
+    { label: 'Restricted', value: '12' },
     { label: 'Drive Over Notes', value: '13' },
     { label: 'Drive Under Stage', value: '14' },
     { label: 'Both', value: '15' },
@@ -240,6 +240,7 @@ const styles = StyleSheet.create({
   buttontitle:{
     fontFamily: 'BPoppins',
     fontSize: 12,
+    color: 'rgba(0, 130, 190, 255)',
    
   },
   questiontitle:{

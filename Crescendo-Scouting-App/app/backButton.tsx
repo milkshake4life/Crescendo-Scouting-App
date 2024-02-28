@@ -53,7 +53,6 @@ buttonOne: {
     paddingVertical: 12,
     paddingHorizontal: 82,
     borderRadius: 4,
-    elevation: 3,
     backgroundColor: 'rgba(0, 130, 190, 255)',
     borderWidth: 1,
     borderColor: 'white',
@@ -64,7 +63,6 @@ buttonTwo: {
     paddingVertical: 12,
     paddingHorizontal: 30,
     borderRadius: 4,
-    elevation: 3,
     backgroundColor: 'white',
     borderWidth: 1,
     borderColor: 'rgba(0, 130, 190, 255)',
@@ -94,14 +92,13 @@ backButtonText:{
 },
 backButton: {
     marginTop: 50,
-    marginBottom: 50, //adding bottom margins to avoid changing the title style
+    marginBottom: 40, //adding bottom margins to avoid changing the title style
     //alignItems: 'center',
     //justifyContent: 'center',
     //paddingVertical: 12,
     //paddingHorizontal: 82,
     paddingRight: 350,
     borderRadius: 4,
-    elevation: 3,
     //backgroundColor: 'rgba(0, 130, 190, 255)', //removing background color so we can use an image. 
     //borderWidth: 1,                            //removing border for same reason as above
     borderColor: 'white',

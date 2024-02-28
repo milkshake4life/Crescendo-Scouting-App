@@ -91,7 +91,6 @@ const matchInfo = () => {
     <ScrollView>
       <View>
         <BackButton buttonName="Home Page" />
-
         <Text style={styles.title}> Pre-Game </Text>
         <Text style={styles.subtitle}>Qualification Match</Text>
         <View style={styles.container}>
@@ -225,7 +224,6 @@ const matchInfo = () => {
             </View>
           </View>
         </View>
-
         <Pressable
           style={styles.buttonOne}
           onPress={() => {
@@ -252,6 +250,16 @@ const matchInfo = () => {
 };
 
 const styles = StyleSheet.create({
+  title: {
+    fontFamily: 'BPoppins',
+    fontSize: 36,
+    textAlign: 'center',
+  },
+  subtitle:{
+    fontFamily: 'BPoppins',
+    fontSize:15,
+    color: 'rgba(0, 130, 190, 255)',
+  },
   backButtonText: {
     fontFamily: "BPoppins",
     fontSize: 15,
