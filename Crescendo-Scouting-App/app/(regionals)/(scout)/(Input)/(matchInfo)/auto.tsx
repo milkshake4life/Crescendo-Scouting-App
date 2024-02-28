@@ -127,7 +127,7 @@ const matchInfo: React.FC = () => {
       // it's better to use the functional update form of the setState hook.
 
       //IF THE NOTE IS R, THIS IS ALREADY TRUE, SO IT SHOULD JUST TRIGGER THE INTAKE FUNCTION IMMEDIATELY
-      if(item === 'Intake')
+      if(item === 'Intake' || greenNote.id.toUpperCase() === 'R')
       {
         //Conditionally resets the color based on intake status of the robot. If the robot isntakes a note,
         //selection of other notes is disabled until another button is pressed. After the second action log for the intake
