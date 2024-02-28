@@ -279,7 +279,7 @@ const matchInfo: React.FC = () => {
 
 
   }
-
+  console.log(qualMatch + " seating: " + alliance);
   return (
     <ScrollView>
       <View style={styles.mainContainer}>
