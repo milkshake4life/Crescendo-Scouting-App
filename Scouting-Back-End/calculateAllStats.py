@@ -140,9 +140,8 @@ def calculateEverything(path):
                     endgameTotalCounts = endgameTotalCounts + 1
             elif j == "Driving Rating":
                 drivingRatingResult = firebase.get(specificPath + '/' + j, '')
-                for value in drivingRatingResult.values():
-                    endgameCounts[value - 1] = endgameCounts[value - 1] + 1
-                    endgameTotalCounts = endgameTotalCounts + 1
+                postgameSumDrivingRating = postgameSumDrivingRating + drivingRatingResult
+                postgameTotalDrivingRating = postgameTotalDrivingRating + 1
 
 
 
@@ -190,6 +189,10 @@ def calculateEverything(path):
             int(endgameCounts[3] / endgameTotalCounts * 100),
             int(endgameCounts[4] / endgameTotalCounts * 100)
         ]
+    
+    #postgame
+    
+    postgameAverageRating = round(postgameSumDrivingRating / postgameTotalDrivingRating)
 
 
     #Pushing the data
@@ -211,6 +214,8 @@ def calculateEverything(path):
     #Endgame
     for i in range(len(endgamePercentage)):
         firebase.put(statsPath + 'Stats/Endgame/Climb', Climb[i + 1], data=endgamePercentage[i])
+    #Post game
+    firebase.put(statsPath + 'Stats/Postgame/', "Driving Rating", postgameAverageRating)
 
 # def calculatePreGameStats(path): # done
 #     methodPath = '/ISR/teams' + path
