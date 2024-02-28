@@ -23,21 +23,21 @@ const HomePage = () => {
         style={styles.buttonOne}
         onPress={() => router.push("/(regionals)/Ventura")}
       >
-        <Text style={styles.buttonOneText}>Ventura</Text>
+        <Text style={styles.buttonText}>Ventura</Text>
       </Pressable>
 
       <Pressable 
         style={styles.buttonTwo}
         onPress={() => router.push("/(regionals)/Orange County")}
       >
-        <Text style={styles.buttonTwoText}>Orange County</Text>
+        <Text style={styles.buttonText}>Orange County</Text>
       </Pressable>
 
       <Pressable 
         style={styles.buttonTwo}
         onPress={() => router.push("/(regionals)/ISR")}
       >
-        <Text style={styles.buttonTwoText}>ISR</Text>
+        <Text style={styles.buttonText}>ISR</Text>
       </Pressable>
 
     </View>
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     backgroundColor: 'rgba(0, 130, 190, 255)',
     borderWidth: 1,
-    borderColor: 'white',
+    borderColor: 'rgba(0, 130, 190, 255)',
   },
   buttonTwo: {
     alignItems: 'center',
@@ -89,25 +89,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 52,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: 'white',
+    backgroundColor: 'rgba(0, 130, 190, 255)',
     borderWidth: 1,
     borderColor: 'rgba(0, 130, 190, 255)',
     marginTop: 10, // Adds space between buttons
   },
-  buttonOneText: {
+  buttonText: {
     fontSize: 16,
     lineHeight: 21,
     letterSpacing: 0.25,
     color: 'white',
     fontFamily: 'BPoppins',
   },
-  buttonTwoText: {
-    fontSize: 16,
-    lineHeight: 21,
-    letterSpacing: 0.25,
-    color: 'rgba(0, 130, 190, 255)',
-    fontFamily: 'BPoppins',
-  },
+  
 });
 
 export default HomePage;

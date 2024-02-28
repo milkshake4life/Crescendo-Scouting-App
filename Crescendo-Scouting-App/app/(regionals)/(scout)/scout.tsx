@@ -18,14 +18,14 @@ const Scout = () => {
             style={styles.buttonOne}
             onPress={() => router.push(`/(Input)/pitScouting?regional=${regional}&teamNumber=${teamNumber}`)}
             >
-                <Text style={styles.buttonOneText}>Pit Scouting</Text>
+                <Text style={styles.buttonText}>Pit Scouting</Text>
             </Pressable>
 
             <Pressable
             style={styles.buttonTwo}
             onPress={() => router.push(`/(Input)/(matchInfo)/pregame?regional=${regional}&teamNumber=${teamNumber}`)}
             >
-                <Text style={styles.buttonTwoText}>Match Scouting</Text>
+                <Text style={styles.buttonText}>Match Scouting</Text>
             </Pressable>
 
         </View>
@@ -59,16 +59,15 @@ const styles = StyleSheet.create({
       // add other styling as needed
     },
     buttonOne: {
-      marginTop: 0,
+      marginTop: 5,
       alignItems: 'center',
       justifyContent: 'center',
       paddingVertical: 12,
       paddingHorizontal: '20.5%',
       borderRadius: 4,
-      elevation: 3,
       backgroundColor: 'rgba(0, 130, 190, 255)',
-      borderWidth: 2,
-      borderColor: 'white',
+      borderWidth: 1,
+      borderColor: 'rgba(0, 130, 190, 255)',
     },
     buttonTwo: {
       alignItems: 'center',
@@ -76,24 +75,16 @@ const styles = StyleSheet.create({
       paddingVertical: 12,
       paddingHorizontal: '15.8%',
       borderRadius: 4,
-      elevation: 3,
-      backgroundColor: 'white',
+      backgroundColor: 'rgba(0, 130, 190, 255)',
       borderWidth: 1,
       borderColor: 'rgba(0, 130, 190, 255)',
       marginTop: 10, // Adds space between buttons
     },
-    buttonOneText: {
+    buttonText: {
       fontSize: 16,
       lineHeight: 21,
       letterSpacing: 0.25,
       color: 'white',
-      fontFamily: 'BPoppins',
-    },
-    buttonTwoText: {
-      fontSize: 16,
-      lineHeight: 21,
-      letterSpacing: 0.25,
-      color: 'rgba(0, 130, 190, 255)',
       fontFamily: 'BPoppins',
     },
     backButtonText:{

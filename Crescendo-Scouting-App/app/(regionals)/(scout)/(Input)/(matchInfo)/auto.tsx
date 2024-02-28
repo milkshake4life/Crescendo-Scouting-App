@@ -197,6 +197,7 @@ const matchInfo: React.FC = () => {
 
     //sets default values
     allNotes.map((note) => {
+
       if(note === "R") //R starts already in the robot, so no intake data is necessary
       {
         set(ref(database, path + `/Auto/${note}/Action`), action); 
@@ -208,6 +209,9 @@ const matchInfo: React.FC = () => {
       }
         
     })
+
+    // Handle Taxi separately
+    set(ref(database, path + `/Auto/Taxi`), taxiStatus);
 
 
     //Goes through buttonPresses array (actions list at the bottom) and assigns values based on what the user has put in the list. 
@@ -280,7 +284,7 @@ const matchInfo: React.FC = () => {
     <ScrollView>
       <View style={styles.mainContainer}>
         <BackButton buttonName="Home Page" />
-        <Text style={styles.title}>Auto</Text>
+        <Text style={styles.title}>Autonomous</Text>
 
         <View style={styles.buttonGroup}>
           <Pressable onPress={() => handlePress('TAXI')} style={styles.button}>
@@ -364,7 +368,7 @@ const matchInfo: React.FC = () => {
           }
         }
         >
-          <Text style={styles.buttonOneText}>Teleop</Text>
+          <Text style={styles.buttonOneText}>Teleoperation</Text>
         </Pressable>
       </View>
     </ScrollView >
@@ -377,7 +381,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
   },
   buttonOne: {
-    marginTop: 5,
+    marginTop: 30,
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 12,
@@ -386,12 +390,11 @@ const styles = StyleSheet.create({
     elevation: 3,
     backgroundColor: "rgba(0, 130, 190, 255)",
     borderWidth: 2,
-    borderColor: "white",
+    borderColor: "rgba(0, 130, 190, 255)",
   },
   buttonOneText: {
     fontSize: 16,
     lineHeight: 21,
-    fontWeight: "bold",
     letterSpacing: 0.25,
     color: "white",
     fontFamily: "BPoppins",
@@ -437,7 +440,7 @@ const styles = StyleSheet.create({
     // flexDirection: 'row',
   },
   button: {
-    backgroundColor: '#00f', // Button color
+    backgroundColor: 'rgba(0, 130, 190, 255)', // Button color
     paddingHorizontal: 20,
     paddingVertical: 10,
     marginVertical: 5, // Adjust for space between buttons

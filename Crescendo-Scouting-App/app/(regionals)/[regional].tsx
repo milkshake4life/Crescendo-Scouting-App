@@ -77,7 +77,7 @@ const RegionalPage = () => {
             maxHeight={300}
             labelField="label"
             valueField="value"
-            placeholder={!isFocus ? 'Select item' : '...'}
+            placeholder={!isFocus ? 'Select team' : '...'}
             searchPlaceholder="Search..."
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
@@ -99,7 +99,7 @@ const RegionalPage = () => {
               }
             }}
           >
-            <Text style={styles.buttonOneText}>Scouting Forms</Text>
+            <Text style={styles.buttonText}>Scouting Forms</Text>
           </Pressable>
           <Pressable
             style={styles.buttonTwo}
@@ -127,7 +127,7 @@ const RegionalPage = () => {
               }
             }}
               > 
-            <Text style={styles.buttonTwoText}>Team Information</Text>
+            <Text style={styles.buttonText}>Team Information</Text>
           </Pressable>
         </View>
     ); //swapped '(ScoutingDisplay)/robotDisplay' to '(ScoutingDisplay)/matchDisplay' to match the tabs. 
@@ -166,7 +166,6 @@ const styles = StyleSheet.create({
       paddingVertical: 12,
       paddingHorizontal: '13%',
       borderRadius: 4,
-      elevation: 3,
       backgroundColor: 'rgba(0, 130, 190, 255)',
       borderWidth: 1,
       borderColor: 'white',
@@ -177,13 +176,12 @@ const styles = StyleSheet.create({
       paddingVertical: 12,
       paddingHorizontal: '10%',
       borderRadius: 4,
-      elevation: 3,
-      backgroundColor: 'white',
+      backgroundColor: 'rgba(0, 130, 190, 255)',
       borderWidth: 1,
       borderColor: 'rgba(0, 130, 190, 255)',
       marginTop: 10, // Adds space between buttons
     },
-    buttonOneText: {
+    buttonText: {
       fontSize: 15,
       lineHeight: 21,
       letterSpacing: 0.25,
