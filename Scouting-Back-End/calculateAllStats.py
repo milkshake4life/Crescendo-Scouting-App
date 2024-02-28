@@ -67,6 +67,10 @@ def calculateEverything(path):
     endgameCounts = [0, 0, 0, 0, 0]
     endgameTotalCounts = 0
 
+    #Postgame variables
+    postgameSumDrivingRating = 0
+    postgameTotalDrivingRating = 0
+
 
     #getting data
     for i in result.keys():
@@ -132,6 +136,11 @@ def calculateEverything(path):
             elif j == "Endgame":
                 endgameResult = firebase.get(specificPath + '/' + j, '')
                 for value in endgameResult.values():
+                    endgameCounts[value - 1] = endgameCounts[value - 1] + 1
+                    endgameTotalCounts = endgameTotalCounts + 1
+            elif j == "Driving Rating":
+                drivingRatingResult = firebase.get(specificPath + '/' + j, '')
+                for value in drivingRatingResult.values():
                     endgameCounts[value - 1] = endgameCounts[value - 1] + 1
                     endgameTotalCounts = endgameTotalCounts + 1
 

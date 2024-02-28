@@ -3,7 +3,9 @@ import {Pressable, Button, Image, Text, View, StyleSheet, ScrollView, KeyboardAv
 import BackButton from '../../../../backButton';
 import { CheckBox } from 'react-native-elements';
 import Slider from '@react-native-community/slider';
-import { router } from 'expo-router'
+import { router, useGlobalSearchParams } from 'expo-router'
+import { ref, set } from "@firebase/database";
+import { database } from "../../../../../firebaseConfig";
 
 
 
@@ -55,46 +57,48 @@ const SliderWithNumbers: React.FC<SliderWithNumbersProps> = ({
     </View>
   );
 };
-const DrivingRatingSlider: React.FC = () => {
-  const [sliderValue, setSliderValue] = useState<number>(1);
+
+const DrivingRatingSlider: React.FC<{ value: number; onValueChange: (value: number) => void }> = ({ value, onValueChange }) => {
+  const markers = Array.from(
+    { length: (5 - 1) / 1 + 1 },
+    (_, index) => 1 + index * 1
+  );
+
+  const fontSize = 100 / markers.length;
 
   return (
-    <>
-      <Text style={styles.subtitle}>Driving Rating</Text>
-      <SliderWithNumbers
-        value={sliderValue}
-        onValueChange={(value) => setSliderValue(value)}
-        minValue={1}
-        maxValue={5}
-        step={1}
-        sliderWidth={100} // Adjust the slider width as needed
-      />
-      
-    </>
+    <View style={styles.sliderContainer}>
+      <View style={styles.border}>
+        <View style={styles.counterContainer}>
+          <Slider
+            style={styles.slider}
+            minimumValue={1}
+            maximumValue={5}
+            step={1}
+            value={value}
+            onValueChange={onValueChange}
+          />
+          <View style={[styles.sliderMarkers, { paddingHorizontal: 0 }]}>
+            {markers.map((marker, index) => (
+              <Text key={marker} style={[styles.markerText, { fontSize }]}>
+                {marker}
+              </Text>
+            ))}
+          </View>
+        </View>
+      </View>
+    </View>
   );
 };
-// const DefenseSlider: React.FC = () => {
-//   const [sliderValue, setSliderValue] = React.useState(1);
 
-//   return (
-//     <>
-//       <Text style={styles.subtitle}>Defense</Text>
-//       <SliderWithNumbers
-//         value={sliderValue}
-//         onValueChange={(value) => setSliderValue(value)}
-//         minValue={1}
-//         maxValue={5}
-//         step={1}
-//         sliderWidth={110} 
-//       />
-     
-//     </>
-//   );
-// };
 
 const MatchInfo: React.FC = () => {
+  const [sliderValue, setSliderValue] = useState<number>(1);
   const [isChecked, setIsChecked] = React.useState(false);
   const [counter,setCounter] =useState(0)
+  const { regional } = useGlobalSearchParams<{ regional: string }>();
+  const { teamNumber } = useGlobalSearchParams<{ teamNumber: string }>();
+  const { qualMatch } = useGlobalSearchParams<{ qualMatch: string }>();
 
   const incrementCounter = () => {
     setCounter(counter+1)
@@ -108,7 +112,9 @@ const MatchInfo: React.FC = () => {
 
   const handleSubmit = () => {
     // Add your submission logic here
-    console.log('Submitting:', { isChecked });
+    const path = `${regional}/teams/${teamNumber}/Match-Info/${qualMatch}`;
+    set(ref(database, path + '/Driving Rating'), sliderValue)
+    console.log("====================================")
   };
 
   return (
@@ -118,11 +124,12 @@ const MatchInfo: React.FC = () => {
         <Text style={styles.title}>Match Info</Text>
 
         {/* Driving Rating Slider */}
-        <DrivingRatingSlider />
+        <Text style={styles.subtitle}>Driving Rating</Text>
+        <DrivingRatingSlider value={sliderValue} onValueChange={(value) => setSliderValue(value)} />
 
         {/* Checkbox with margin */}
 
-        <Text style={styles.subtitle}>Penalties</Text>
+        {/* <Text style={styles.subtitle}>Penalties</Text>
 
         <View style={styles.border}>
           <View style={styles.buttonContainer}>
@@ -146,16 +153,16 @@ const MatchInfo: React.FC = () => {
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+        </View> */}
 
         {/* Conditional Defense Slider based on checkbox state */}
 
-        <Pressable style={styles.submitButton} onPress={handleSubmit}>
+        <Pressable style={styles.submitButton}>
           <Text 
             style={styles.submitButtonText}
-            onPress={() => router.push(`/(matchInfo)/thanks`)}
+            onPress={() => {router.push(`/(matchInfo)/thanks`); handleSubmit()}}
           >
-            Review
+            Submit
           </Text>
         </Pressable>
       </View>

@@ -251,7 +251,7 @@ const Counter = () => {
                     style={styles.submitButtonText}
                     onPress={() => {
                       handleSendAllData();
-                      router.push(`/(matchInfo)/postgame`)
+                      router.push(`/(matchInfo)/postgame?regional=${regional}&teamNumber=${teamNumber}&qualMatch=${qualMatch}`)
                     }}>Post Game</Text>
 
                 </Pressable>
