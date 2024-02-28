@@ -217,8 +217,24 @@ const matchInfo = () => {
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
                 onChange={(item) => {
-                  setSelectedQualMatch(item.value); // Update the state to the new value
+                  //setSelectedQualMatch(item.value); // Update the state to the new value
+                  //I think the issue is that this is setting the selected qualification match to item instead of the alliance
+                  //and the seating.
+                  //issue is with item.value not conforming to setSelectedStartingPosition. I could change this by just making setSelectedStartingPosition
+                  //take numbers, or I could fix this by reading item value and setting selected starting position based on that. 
+                  //going to do the second one. 
+
+                  //Amp = 1
+                  //Middle = 2
+                  //Source = 3
+                  //if item.value = 1 => setSelectedStartingPosition(1)
+                  //continue as above
+
+
+                  //setSelectedStartingPosition(+item.value);
+                  console.log(item.value) 
                   setIsFocus(false); // Assuming you want to unfocus the dropdown after selection
+                  //pray?
                 }}
               />
             </View>
