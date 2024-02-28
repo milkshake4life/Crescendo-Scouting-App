@@ -30,7 +30,7 @@ const matchInfo = () => {
     value: string;
   }
 
-  const startingPosition = [
+  const startingPosition: DropdownItem[] = [
     { label: "Amp", value: "1" },
     { label: "Middle", value: "2" },
     { label: "Source", value: "3" },
@@ -47,9 +47,13 @@ const matchInfo = () => {
   const [selectedSeating, setSelectedSeating] = useState<
     "Amp" | "Source" | null
   >(null);
+  //issue might involve how startingPosition isn't a dropdown item
   const [selectedStartingPosition, setSelectedStartingPosition] = useState<
-    1 | 2 | 3 | null
+    1 | 2 | 3 | null 
   >(null);
+
+  //making another selected starting position string for displaying
+  const [selectedStartingPositionString, setSelectedStartingPositionString] = useState<string | null>("Starting Position");
 
   const fetchTeams = () => {
     const qualMatchRef = ref(
@@ -208,6 +212,7 @@ const matchInfo = () => {
                 inputSearchStyle={styles.inputSearchStyle}
                 iconStyle={styles.iconStyle}
                 data={startingPosition}
+                value={selectedStartingPositionString}
                 search
                 maxHeight={300}
                 labelField="label"
@@ -216,25 +221,12 @@ const matchInfo = () => {
                 searchPlaceholder="Search..."
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
-                onChange={(item) => {
-                  //setSelectedQualMatch(item.value); // Update the state to the new value
-                  //I think the issue is that this is setting the selected qualification match to item instead of the alliance
-                  //and the seating.
-                  //issue is with item.value not conforming to setSelectedStartingPosition. I could change this by just making setSelectedStartingPosition
-                  //take numbers, or I could fix this by reading item value and setting selected starting position based on that. 
-                  //going to do the second one. 
-
-                  //Amp = 1
-                  //Middle = 2
-                  //Source = 3
-                  //if item.value = 1 => setSelectedStartingPosition(1)
-                  //continue as above
-
-
-                  //setSelectedStartingPosition(+item.value);
-                  console.log(item.value) 
+                onChange={item => {
+                  setSelectedStartingPositionString(item.value); //sets the displayed item
+                  setSelectedStartingPosition(+item.value as 1 | 2 | 3 | null); //sets the value we are going to push to the backend
+                  //debugging log
+                  console.log(item.value + " label: " + item.label) 
                   setIsFocus(false); // Assuming you want to unfocus the dropdown after selection
-                  //pray?
                 }}
               />
             </View>
@@ -243,6 +235,7 @@ const matchInfo = () => {
         <Pressable
           style={styles.buttonOne}
           onPress={() => {
+            //console.log("Alliance: "+ selectedAlliance + " startingPos: " + selectedStartingPosition + ", qualification match: " + selectedQualMatch)
             if (
               selectedAlliance &&
               selectedSeating &&
