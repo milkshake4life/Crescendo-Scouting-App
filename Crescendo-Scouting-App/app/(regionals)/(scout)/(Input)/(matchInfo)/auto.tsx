@@ -269,6 +269,7 @@ const matchInfo: React.FC = () => {
         console.log(taxiStatus);
         set(ref(database, path + `/Auto/Taxi`), taxiStatus);
       }
+      
     })
 
 
