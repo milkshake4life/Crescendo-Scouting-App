@@ -41,6 +41,9 @@ const matchDisplay = () => {
   const [endgameTwoTrapPercent, setEndgameTwoTrapPercent] = useState<string | null>(null);
   const [endgameThreeTrapPercent, setEndgameThreeTrapPercent] = useState<string | null>(null);
 
+  //postgame constants
+  const [postgameAverageDriverRating, setPostgameAverageDriverRating] = useState<string | null>(null);
+
   //accessing data
   useEffect(() => {
     const database = getDatabase();
@@ -65,6 +68,9 @@ const matchDisplay = () => {
     const endgameSingleClimbPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Endgame/Climb/Single Climb')
     const endgameDoubleClimbPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Endgame/Climb/Double Climb')
     const endgameTripleClimbPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Endgame/Climb/Triple Climb')
+
+    //postgame paths
+    const postgameAverageDriverRatingRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Postgame/DrivingRating')
 
     // Callback function to handle snapshot changes
     const handleSnapshot = (snapshot: DataSnapshot, setPosition: React.Dispatch<React.SetStateAction<string | null>>) => {
@@ -95,6 +101,8 @@ const matchDisplay = () => {
     const endgameDoubleClimbPercentListener = onValue(endgameDoubleClimbPercentRef, (snapshot) => handleSnapshot(snapshot, setEndgameDoubleClimbPercent))
     const endgameTripleClimbPercentListener = onValue(endgameTripleClimbPercentRef, (snapshot) => handleSnapshot(snapshot, setEndgameTripleClimbPercent))
 
+    //postgame
+    const postgameAverageDriverRatingListener = onValue(postgameAverageDriverRatingRef, (snapshot) => handleSnapshot(snapshot, setPostgameAverageDriverRating))
 
     // Clean up listeners on component unmount
     return () => {
@@ -115,6 +123,9 @@ const matchDisplay = () => {
       off(endgameSingleClimbPercentRef, 'value', endgameSingleClimbPercentListener);
       off(endgameDoubleClimbPercentRef, 'value', endgameDoubleClimbPercentListener);
       off(endgameTripleClimbPercentRef, 'value', endgameTripleClimbPercentListener);
+
+      //postgame listeners
+      off(postgameAverageDriverRatingRef, 'value', postgameAverageDriverRatingListener);
     };
 
   }, [teamNumber, regional]);
@@ -252,10 +263,8 @@ const matchDisplay = () => {
 
         <Text style={styles.itemTitle}>Overall</Text>
         <View style={styles.border}>
-          <InfoItem title="Driver Rating:" info="filler" />
+          <InfoItem title="Driver Rating:" info={postgameAverageDriverRating} />
         </View>
-
-
       </View>
     </ScrollView>
   );
