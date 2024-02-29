@@ -160,7 +160,7 @@ const MatchInfo: React.FC = () => {
         <Pressable style={styles.submitButton}>
           <Text 
             style={styles.submitButtonText}
-            onPress={() => {router.push(`/(matchInfo)/thanks`); handleSubmit()}}
+            onPress={() => {router.push(`/(matchInfo)/thanks?regional=${regional}`); handleSubmit()}}
           >
             Submit
           </Text>

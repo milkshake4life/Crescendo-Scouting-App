@@ -1,32 +1,51 @@
-import { Link, router } from "expo-router";
-import { Pressable, Button, Text, View, StyleSheet } from "react-native";
+import { Link, router, useGlobalSearchParams } from "expo-router";
+import { Pressable, Button, Text, View, StyleSheet, Image } from "react-native";
 import BackButton from "../../../../backButton";
 
 
 const matchInfo = () => {
+  const { regional } = useGlobalSearchParams<{ regional: string }>();
+
   return (
-    <View>
-      <BackButton buttonName="Home Page" />
-      <Text>Thank you for the Inputs!</Text>
+    <View style={styles.container}>
+      <Image source={require('../../../../../assets/images/589Logo.png')} style={styles.logo} />
+      <Text style={styles.title}>Thank you!</Text>
       <Pressable
             style={styles.buttonOne}
-            onPress={() => router.push(`/(scout)/scout`)}
+            onPress={() => router.push(`/(regionals)/${regional}`)}
             >
-                <Text style={styles.buttonOneText}>Submit</Text>
+                <Text style={styles.buttonText}>Submit</Text>
             </Pressable>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  backButtonText:{
+  container: {
+    flex: 1, // Makes sure the container takes up the whole screen
+    justifyContent: 'center', // Centers content vertically in the container
+    alignItems: 'center', // Centers content horizontally in the container
+    padding: 20, // Optional: Adds padding to the container
+  },
+  title:{
+    fontFamily: 'BPoppins',
+    fontSize: 32,
+    marginBottom: 20,
+  },
+  subtitle:{
     fontFamily: 'BPoppins',
     fontSize: 15,
-    color: 'white',
+    color: 'rgba(127, 127, 127, 255)',
     marginBottom: 30,
   },
-  backButton: {
-    marginTop: 0,
+  logo: {
+    width: 270,  // specify a width
+    height: 270, // and a height for your image
+    marginBottom: 20,
+    // add other styling as needed
+  },
+  buttonOne: {
+    marginTop: "20%",
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 12,
@@ -35,24 +54,23 @@ const styles = StyleSheet.create({
     elevation: 3,
     backgroundColor: 'rgba(0, 130, 190, 255)',
     borderWidth: 1,
-    borderColor: 'white',
+    borderColor: 'rgba(0, 130, 190, 255)',
   },
-  buttonOne: {
-    marginTop: 0,
+  buttonTwo: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 12,
-    paddingHorizontal: 53,
+    paddingHorizontal: 52,
     borderRadius: 4,
     elevation: 3,
     backgroundColor: 'rgba(0, 130, 190, 255)',
-    borderWidth: 2,
-    borderColor: 'white',
+    borderWidth: 1,
+    borderColor: 'rgba(0, 130, 190, 255)',
+    marginTop: 10, // Adds space between buttons
   },
-  buttonOneText: {
+  buttonText: {
     fontSize: 16,
     lineHeight: 21,
-    fontWeight: 'bold',
     letterSpacing: 0.25,
     color: 'white',
     fontFamily: 'BPoppins',
