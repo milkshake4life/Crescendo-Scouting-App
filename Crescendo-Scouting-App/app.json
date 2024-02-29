@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "Crescendo-Scouting-App",
-    "slug": "Crescendo-Scouting-App",
-    "scheme": "Crescendo-Scouting-App",
+    "name": "589 Scouting App",
+    "slug": "589ScoutingApp",
+    "scheme": "589ScoutingApp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/589Logo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/589Logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -16,20 +16,29 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.et8095.589ScoutingApp"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/images/589Logo.png",
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png",
+      "favicon": "./assets/images/589Logo.png",
       "bundler": "metro"
     },
     "plugins": [
       "expo-router"
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "e2b9db3a-6b2e-4f2c-8738-c4a4b57b4fc1"
+      }
+    }
   }
 }
