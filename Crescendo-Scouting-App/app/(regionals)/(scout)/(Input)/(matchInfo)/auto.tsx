@@ -289,20 +289,40 @@ const matchInfo: React.FC = () => {
 
         <View style={styles.border}>
         <View style={styles.buttonrow}>
-          <Pressable onPress={() => handlePress('SPEAKER')} style={styles.speakerButton}>
+          <Pressable onPress={() => {
+            if(hasNote)
+            {
+              handlePress('SPEAKER')
+            }
+           }} style={styles.speakerButton}>
             <Text style={styles.buttonText}>Speaker</Text>
           </Pressable>
-          <Pressable onPress={() => handlePress('MISSED SPEAKER')} style={styles.speakerMissButton}>
+          <Pressable onPress={() => {
+            if(hasNote)
+            {
+              handlePress('MISSED SPEAKER')
+            }
+           }} style={styles.speakerMissButton}>
             <Text style={styles.buttonText}>Missed Speaker</Text>
           </Pressable>
           </View>
 
           
         <View style={styles.buttonrow}>
-          <Pressable onPress={() => handlePress('AMP')} style={styles.ampButton}>
+          <Pressable onPress={() => {
+            if(hasNote)
+            {
+              handlePress('AMP')
+            }
+           }} style={styles.ampButton}>
             <Text style={styles.buttonText}>Amp</Text>
           </Pressable>
-          <Pressable onPress={() => handlePress('MISSED AMP')} style={styles.ampMissButton}>
+          <Pressable onPress={() => {
+            if(hasNote)
+            {
+              handlePress('MISSED AMP')
+            }
+           }} style={styles.ampMissButton}>
             <Text style={styles.buttonText}>Missed Amp</Text>
           </Pressable>
           </View>
