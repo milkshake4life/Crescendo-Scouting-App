@@ -21,23 +21,23 @@ const HomePage = () => {
 
       <Pressable 
         style={styles.buttonOne}
+        onPress={() => router.push("/(regionals)/Port Hueneme")}
+      >
+        <Text style={styles.buttonText}>Port Hueneme</Text>
+      </Pressable>
+
+      <Pressable 
+        style={styles.buttonTwo}
         onPress={() => router.push("/(regionals)/Ventura")}
       >
         <Text style={styles.buttonText}>Ventura</Text>
       </Pressable>
 
       <Pressable 
-        style={styles.buttonTwo}
+        style={styles.buttonThree}
         onPress={() => router.push("/(regionals)/Orange County")}
       >
         <Text style={styles.buttonText}>Orange County</Text>
-      </Pressable>
-
-      <Pressable 
-        style={styles.buttonTwo}
-        onPress={() => router.push("/(regionals)/ISR")}
-      >
-        <Text style={styles.buttonText}>ISR</Text>
       </Pressable>
 
     </View>
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 12,
-    paddingHorizontal: 82,
+    paddingHorizontal: 56,
     borderRadius: 4,
     elevation: 3,
     backgroundColor: 'rgba(0, 130, 190, 255)',
@@ -83,6 +83,18 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 130, 190, 255)',
   },
   buttonTwo: {
+    marginTop: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 82,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: 'rgba(0, 130, 190, 255)',
+    borderWidth: 1,
+    borderColor: 'rgba(0, 130, 190, 255)',
+  },
+  buttonThree: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 12,

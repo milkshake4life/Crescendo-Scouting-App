@@ -7,7 +7,7 @@ firebase = firebase.FirebaseApplication('https://crescendo-scouting-app-default-
 f = open("../TBAkey.txt", "r")
 headers = {'X-TBA-Auth-Key': f.read()}
 
-eventKey = "2023isde1" #ONLY CHANGE THIS VARIABLE
+eventKey = "2023caph" #ONLY CHANGE THIS VARIABLE
 
 r = requests.get('https://www.thebluealliance.com/api/v3/event/' + eventKey + '/matches/simple', headers=headers)
 x = json.loads(r.text)
@@ -24,8 +24,8 @@ for i in range(0, len(x)):
 
 for i in range(0, len(blueTeams)):
     for j in range(0, 3):
-        firebase.put('https://crescendo-scouting-app-default-rtdb.firebaseio.com/ISR/teams/' + str(blueTeams[i][j].replace("frc", "")) + '/Match-Info/' + matchNum[i], 'None', 'None')
-        firebase.put('https://crescendo-scouting-app-default-rtdb.firebaseio.com/ISR/teams/' + str(redTeams[i][j].replace("frc", "")) + '/Match-Info/' + matchNum[i], 'None', 'None')
+        firebase.put('https://crescendo-scouting-app-default-rtdb.firebaseio.com/Port-Hueneme/teams/' + str(blueTeams[i][j].replace("frc", "")) + '/Match-Info/' + matchNum[i], 'None', 'None')
+        firebase.put('https://crescendo-scouting-app-default-rtdb.firebaseio.com/Port-Hueneme/teams/' + str(redTeams[i][j].replace("frc", "")) + '/Match-Info/' + matchNum[i], 'None', 'None')
 
 
 
