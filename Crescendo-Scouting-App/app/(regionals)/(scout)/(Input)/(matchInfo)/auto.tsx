@@ -66,7 +66,7 @@ const matchInfo: React.FC = () => {
   }, [notes, alliance]);
 
   //state variable which determines whether or not the robot curently has a note (true if robot intake was successful)
-  const [hasNote, setHasNote] = useState<boolean>(false);
+  const [hasNote, setHasNote] = useState<boolean>(true);
 
   const handlePressNote = (noteId: string): void => {
 
@@ -119,15 +119,15 @@ const matchInfo: React.FC = () => {
 
       // Step 2: Add the entry to buttonPresses
       setButtonPresses(currentPresses => [...currentPresses, entry]);
+      //maybe swap this guy?
 
       // Step 3: Mark the note as used and reset its color
       // Note: Since we're directly modifying the state based on the previous state,
       // it's better to use the functional update form of the setState hook.
 
       //IF THE NOTE IS R, THIS IS ALREADY TRUE, SO IT SHOULD JUST TRIGGER THE INTAKE FUNCTION IMMEDIATELY
-      if(item === 'Intake' || greenNote.id.toUpperCase() === 'R')
+      if(item === 'Intake')
       {
-        //Conditionally resets the color based on intake status of the robot. If the robot isntakes a note,
         //Conditionally resets the color based on intake status of the robot. If the robot intakes a note,
         //selection of other notes is disabled until another button is pressed. After the second action log for the intake
         //note, the note is marked as used.  
@@ -149,6 +149,7 @@ const matchInfo: React.FC = () => {
         );
         setHasNote(false);
       }
+      //maybe disable intake push if setHasNote is true?
   }
   else {
     // If no note is green, just add the item
@@ -288,20 +289,40 @@ const matchInfo: React.FC = () => {
 
         <View style={styles.border}>
         <View style={styles.buttonrow}>
-          <Pressable onPress={() => handlePress('SPEAKER')} style={styles.speakerButton}>
+          <Pressable onPress={() => {
+            if(hasNote)
+            {
+              handlePress('SPEAKER')
+            }
+           }} style={styles.speakerButton}>
             <Text style={styles.buttonText}>Speaker</Text>
           </Pressable>
-          <Pressable onPress={() => handlePress('MISSED SPEAKER')} style={styles.speakerMissButton}>
+          <Pressable onPress={() => {
+            if(hasNote)
+            {
+              handlePress('MISSED SPEAKER')
+            }
+           }} style={styles.speakerMissButton}>
             <Text style={styles.buttonText}>Missed Speaker</Text>
           </Pressable>
           </View>
 
           
         <View style={styles.buttonrow}>
-          <Pressable onPress={() => handlePress('AMP')} style={styles.ampButton}>
+          <Pressable onPress={() => {
+            if(hasNote)
+            {
+              handlePress('AMP')
+            }
+           }} style={styles.ampButton}>
             <Text style={styles.buttonText}>Amp</Text>
           </Pressable>
-          <Pressable onPress={() => handlePress('MISSED AMP')} style={styles.ampMissButton}>
+          <Pressable onPress={() => {
+            if(hasNote)
+            {
+              handlePress('MISSED AMP')
+            }
+           }} style={styles.ampMissButton}>
             <Text style={styles.buttonText}>Missed Amp</Text>
           </Pressable>
           </View>
@@ -312,12 +333,24 @@ const matchInfo: React.FC = () => {
             //Because of batching, setHasNote completes its setting after the handlePress function runs. This means that
             //it can't be used for comparisons in handlePress, which is why item value is used for those comparisons,
             //while hasNote is used for selection logic. 
-            setHasNote(true);
-            handlePress('Intake');
+            
+            // setHasNote(true);
+            if(!hasNote)
+            {
+              setHasNote(true);
+              handlePress('Intake');
+            }
             }} style={styles.intakeButton}>
             <Text style={styles.buttonText}>Intake</Text>
           </Pressable>
-          <Pressable onPress={() => handlePress('MISSED Intake')} style={styles.intakeMissButton}>
+          <Pressable onPress={() => {
+
+            if(!hasNote)
+            {    
+              handlePress('MISSED Intake')
+            }
+          }
+        } style={styles.intakeMissButton}>
             <Text style={styles.buttonText}>Missed Intake</Text>
           </Pressable>
           </View>
