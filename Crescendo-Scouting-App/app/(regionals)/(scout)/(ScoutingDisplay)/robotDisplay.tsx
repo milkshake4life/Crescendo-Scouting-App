@@ -12,7 +12,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 const robotDisplay = () => {
  //backend data state variables:
  //climbing
- const [climbingData, setClimbingData] = useState<string | null>(null);
+ const [climbingData, setClimbingData] = useState<string>("No Information");
  //driving
  const [drivingData, setDrivingData] = useState<string | null>(null);
  //intake
@@ -34,6 +34,8 @@ const robotDisplay = () => {
    'No Intake', 'Ground Only', 'Source Only', 'Both',
    //driving
    'N/A', 'Drive Over Notes', 'Drive Under Stage', 'Both',
+   //No Information
+   'No Information',
  ]
 
 
@@ -91,7 +93,7 @@ const robotDisplay = () => {
          setClimbData(JSON.stringify(climbingData))
          console.log("climbing data: " + climbingData + " climbing Display: " + climbData)
        } else {
-         setClimbingData("No Information")
+         setClimbingData("16")
        }
      })
      .catch((error) => {
@@ -113,7 +115,7 @@ const robotDisplay = () => {
          setDrivingData(data); // Set the data to state
          console.log("driving data: " + drivingData)
        } else {
-        setDrivingData("No Information")
+        setDrivingData("16")
         console.log("No driving data available");
        }
      })
@@ -135,7 +137,7 @@ const robotDisplay = () => {
          setIntakeData(data); // Set the data to state
          console.log("intake data: " + intakeData)
        } else {
-        setIntakeData("No Information")
+        setIntakeData("16")
         console.log("No intake data available");
        }
      })
@@ -158,7 +160,7 @@ const robotDisplay = () => {
          setScoringData(data); // Set the data to state
          console.log("scoring data: " + scoringData)
        } else {
-        setScoringData("No Information")
+        setScoringData("16")
          console.log("No scoring data available");
        }
      })
