@@ -27,13 +27,13 @@ const robotDisplay = () => {
  //Array for reading values:
  const displayArray: string[] = [
    //scoring
-   'No Scoring', 'Amp Only', 'Speaker Only', 'Both',
+   'No Scoring', 'Amp', 'Speaker', 'Amp and Speaker',
    //climbing
    'No Climb', 'Single Climb', 'Harmony Climb',
    //intake
-   'No Intake', 'Ground Only', 'Source Only', 'Both',
+   'No Intake', 'Ground', 'Source', 'Ground and Source',
    //driving
-   'N/A', 'Drive Over Notes', 'Drive Under Stage', 'Both',
+   'Restricted', 'Drive Over Notes', 'Drive Under Stage', 'Both',
    //No Information
    'No Information',
  ]
