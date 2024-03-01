@@ -1,10 +1,12 @@
 import { Link, router } from "expo-router";
-import { Pressable, Button, Image, Text, View, StyleSheet } from "react-native";
+import { Pressable, Button, Image, Text, View, StyleSheet, ScrollView } from "react-native";
 import { useFonts } from 'expo-font';
+import BackButton from './backButton';
+ 
 
+//Please style this page and check over your names to make sure they are correct
 
-
-const HomePage = () => {
+const CreditsPage = () => {
   const [fontLoaded] = useFonts({
     'BPoppins': require('../assets/fonts/Poppins-SemiBold.ttf'), // Update with your font details
   });
@@ -14,41 +16,30 @@ const HomePage = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <Image source={require('../assets/images/589Logo.png')} style={styles.logo} />
-      <Text style={styles.title}>Hello!</Text>
-      <Text style={styles.subtitle}>Welcome to the 589 Scouting App!</Text>
+    <ScrollView>
+        <View style={styles.container}>
+            <BackButton buttonName='Home Page'/>
+            <Text style={styles.title}>Credits:</Text>
+            <Text style={styles.listTitle}>Development Team:</Text>
+            
+            <Text style={styles.listSubtitle}>Backend and Frontend Developers</Text>
+            <Text style={styles.listText}>Ethan Lee</Text>
+            <Text style={styles.listText}>Christian Kantchev</Text>
+            <Text style={styles.listText}>David Yu</Text>
+            <Text style={styles.listText}>Jayson Song</Text>
 
-      <Pressable 
-        style={styles.buttonOne}
-        onPress={() => router.push("/(regionals)/Ventura")}
-      >
-        <Text style={styles.buttonText}>Ventura</Text>
-      </Pressable>
 
-      <Pressable 
-        style={styles.buttonTwo}
-        onPress={() => router.push("/(regionals)/Orange County")}
-      >
-        <Text style={styles.buttonText}>Orange County</Text>
-      </Pressable>
+            <Text style={styles.listSubtitle}>UI and Design Team</Text>
+            <Text style={styles.listText}>Brianna Zhu</Text>
+            <Text style={styles.listText}>Dahae Seo</Text>
+            <Text style={styles.listText}>Tara Tokikawa</Text>
+            <Text style={styles.listText}>Haabee Lee</Text>
+            <Text style={styles.listText}>Erin Oh</Text>
+            
 
-      <Pressable 
-        style={styles.buttonTwo}
-        onPress={() => router.push("/(regionals)/ISR")}
-      >
-        <Text style={styles.buttonText}>ISR</Text>
-      </Pressable>
+        </View>
+    </ScrollView>
 
-      {/* credits page */}
-      <Pressable
-        style={styles.buttonTwo}
-        onPress={() => router.push("/credits")}
-      >
-        <Text style={styles.buttonText}>Credits</Text>
-      </Pressable>
-
-    </View>
   );
 };
 
@@ -109,7 +100,27 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'BPoppins',
   },
+  listTitle:{
+    fontFamily: 'BPoppins',
+    fontSize: 24,
+    color: 'rgba(0, 130, 190, 255)',
+    marginBottom: 10,
+  },
+  listSubtitle:{
+    fontFamily: 'BPoppins',
+    fontSize: 20,
+    // color: 'rgba(127, 127, 127, 255)',
+    marginBottom: 30,
+    marginTop: 20, 
+  },
+  listText:{
+    fontFamily: 'BPoppins',
+    fontSize: 15,
+    color: 'rgba(127, 127, 127, 255)',
+    marginBottom: 15,
+  },
+  
   
 });
 
-export default HomePage;
+export default CreditsPage;
