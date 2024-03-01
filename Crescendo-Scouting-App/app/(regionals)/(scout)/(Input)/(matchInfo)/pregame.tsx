@@ -134,27 +134,27 @@ const matchInfo = () => {
                   borderRadius: 5,
                   borderWidth: 2,
                   overflow: "hidden",
-                  borderColor: isOn ? offColor : onColor,
+                  borderColor: isOn ? onColor : offColor,
                 }}
                 onPress={() => {
                   LayoutAnimation.easeInEaseOut();
-                  
-                  let displayedText: string | null = selectedAlliance;
-                  if(displayedText === "Red")
+                  let displayedText: string | null = "";
+                  if(selectedAlliance === "Red")
                   {
                     displayedText = "Blue"
-                    toggleIsOn(!isOn);
+                    //toggleIsOn(!isOn);
                     console.log(selectedAlliance + " = red, switched to " + displayedText + ", switching toggle to " + seating);  
                   }
                   else
                   {
                     displayedText = "Red"
                     //this isnt updating on time probably due to batching. 
-                    toggleIsOn(!isOn);
+                    //toggleIsOn(!isOn);
                     console.log(selectedAlliance + " = blue, switched to " + displayedText + ", switching toggle to " + seating);
                   }
 
                   setSelectedAlliance(displayedText as "Red" | "Blue" | null)
+                  toggleIsOn(!isOn);
                   console.log(selectedAlliance);
                 }}
               >
@@ -162,7 +162,7 @@ const matchInfo = () => {
                   style={{
                     height: "100%",
                     width: "50%",
-                    backgroundColor: isOn ? offColor : onColor,
+                    backgroundColor: isOn ? onColor : offColor,
                     alignSelf: isOn ? "flex-end" : "flex-start",
                     alignItems: "center",
                     justifyContent: "center",
@@ -171,7 +171,7 @@ const matchInfo = () => {
                   <Text
                     style={{ color: "white", fontSize: 12, fontWeight: "500" }}
                   >
-                    {isOn ? "Red" : "Blue"}
+                    {isOn ? "Blue" : "Red"}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -179,7 +179,7 @@ const matchInfo = () => {
           </View>
         </View>
 
-        <Text style={styles.subtitle}> Seating </Text>
+        {/* <Text style={styles.subtitle}> Seating </Text>
         <View style={styles.container}>
           <View style={styles.borderTwo}>
             <View style={styles.ButtonsContainer}>
@@ -238,7 +238,7 @@ const matchInfo = () => {
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+        </View> */}
 
         <Text style={styles.subtitle}> Starting Position </Text>
         <View style={styles.container}>
