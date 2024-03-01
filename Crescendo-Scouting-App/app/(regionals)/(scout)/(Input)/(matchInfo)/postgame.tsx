@@ -114,7 +114,6 @@ const MatchInfo: React.FC = () => {
     // Add your submission logic here
     const path = `${regional}/teams/${teamNumber}/Match-Info/${qualMatch}`;
     set(ref(database, path + '/Driving Rating'), sliderValue)
-    console.log("====================================")
   };
 
   return (

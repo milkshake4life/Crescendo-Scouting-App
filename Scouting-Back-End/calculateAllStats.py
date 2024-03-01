@@ -16,6 +16,7 @@ ref = db.reference('/ISR/teams')
 StartingPosition = {1: "Amp", 2: "Middle", 3: "Source"}
 Teleop = {1: "Amp", 2: "Ground Intake", 3: "Source Intake", 4: "Speaker"}
 Climb = {1: "Nothing", 2: "Park", 3: "Single Climb", 4: "Double Climb", 5: "Triple Climb"}
+Trap = {0: "0 Trap", 1: "1 Trap", 2: "2 Trap", 3: "3 Trap"}
 
 
 
@@ -65,6 +66,7 @@ def calculateEverything(path):
 
     #Endgame variables
     endgameCounts = [0, 0, 0, 0, 0]
+    endgameTrapCounts = [0, 0, 0, 0]
     endgameTotalCounts = 0
 
     #Postgame variables
@@ -135,9 +137,12 @@ def calculateEverything(path):
                         totalTeleopSpeakerCount += made_value + miss_value
             elif j == "Endgame":
                 endgameResult = firebase.get(specificPath + '/' + j, '')
-                for value in endgameResult.values():
-                    endgameCounts[value - 1] = endgameCounts[value - 1] + 1
-                    endgameTotalCounts = endgameTotalCounts + 1
+                for key, value in endgameResult.items():
+                    if key == "Climb":
+                        endgameCounts[value - 1] = endgameCounts[value - 1] + 1
+                    elif key == "Trap":
+                        endgameTrapCounts[value] = endgameTrapCounts[value] + 1
+                endgameTotalCounts = endgameTotalCounts + 1
             elif j == "Driving Rating":
                 drivingRatingResult = firebase.get(specificPath + '/' + j, '')
                 postgameSumDrivingRating = postgameSumDrivingRating + drivingRatingResult
@@ -181,19 +186,27 @@ def calculateEverything(path):
 
     if endgameTotalCounts == 0:
         endgamePercentage = [0, 0, 0, 0, 0]
+        endgameTrapPercentage = [0, 0, 0, 0]
     else:
         endgamePercentage = [
-            int(endgameCounts[0] / endgameTotalCounts * 100),
-            int(endgameCounts[1] / endgameTotalCounts * 100),
-            int(endgameCounts[2] / endgameTotalCounts * 100),
-            int(endgameCounts[3] / endgameTotalCounts * 100),
-            int(endgameCounts[4] / endgameTotalCounts * 100)
+            round(endgameCounts[0] / endgameTotalCounts * 100),
+            round(endgameCounts[1] / endgameTotalCounts * 100),
+            round(endgameCounts[2] / endgameTotalCounts * 100),
+            round(endgameCounts[3] / endgameTotalCounts * 100),
+            round(endgameCounts[4] / endgameTotalCounts * 100)
+        ]
+        endgameTrapPercentage = [
+            round(endgameTrapCounts[0] / endgameTotalCounts * 100),
+            round(endgameTrapCounts[1] / endgameTotalCounts * 100),
+            round(endgameTrapCounts[2] / endgameTotalCounts * 100),
+            round(endgameTrapCounts[3] / endgameTotalCounts * 100)
         ]
     
     #postgame
-    
-    postgameAverageRating = round(postgameSumDrivingRating / postgameTotalDrivingRating)
-
+    if postgameTotalDrivingRating == 0:
+        postgameAverageRating = 0
+    else:
+        postgameAverageRating = round(postgameSumDrivingRating / postgameTotalDrivingRating)
 
     #Pushing the data
     #Pregame
@@ -214,6 +227,8 @@ def calculateEverything(path):
     #Endgame
     for i in range(len(endgamePercentage)):
         firebase.put(statsPath + 'Stats/Endgame/Climb', Climb[i + 1], data=endgamePercentage[i])
+    for i in range(len(endgameTrapPercentage)):
+        firebase.put(statsPath + 'Stats/Endgame/Trap', Trap[i], data=endgameTrapPercentage[i])
     #Post game
     firebase.put(statsPath + 'Stats/Postgame/', "Driving Rating", postgameAverageRating)
 

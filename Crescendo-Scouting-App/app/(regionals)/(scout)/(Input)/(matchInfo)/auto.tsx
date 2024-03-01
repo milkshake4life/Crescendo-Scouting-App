@@ -2,10 +2,8 @@ import { Link, router, useGlobalSearchParams, useLocalSearchParams, } from "expo
 import { Pressable, Button, Image, Text, View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity, } from "react-native";
 import BackButton from "../../../../backButton";
 import React, { useEffect, useMemo, useState } from "react";
-import { ref, set } from '@firebase/database';
-import { database } from '../../../../../firebaseConfig';
-
-
+import { ref, set } from "@firebase/database";
+import { database } from "../../../../../firebaseConfig";
 
 
 interface Note {
@@ -130,6 +128,7 @@ const matchInfo: React.FC = () => {
       if(item === 'Intake' || greenNote.id.toUpperCase() === 'R')
       {
         //Conditionally resets the color based on intake status of the robot. If the robot isntakes a note,
+        //Conditionally resets the color based on intake status of the robot. If the robot intakes a note,
         //selection of other notes is disabled until another button is pressed. After the second action log for the intake
         //note, the note is marked as used.  
         setNotes(currentNotes =>
@@ -280,42 +279,55 @@ const matchInfo: React.FC = () => {
 
   }
   console.log(qualMatch + " seating: " + alliance);
+
   return (
     <ScrollView>
       <View style={styles.mainContainer}>
         <BackButton buttonName="Home Page" />
         <Text style={styles.title}>Autonomous</Text>
 
-        <View style={styles.buttonGroup}>
-          <Pressable onPress={() => handlePress('TAXI')} style={styles.button}>
-            <Text style={styles.buttonText}>Taxi</Text>
-          </Pressable>
-          <Pressable onPress={() => handlePress('SPEAKER')} style={styles.button}>
+        <View style={styles.border}>
+        <View style={styles.buttonrow}>
+          <Pressable onPress={() => handlePress('SPEAKER')} style={styles.speakerButton}>
             <Text style={styles.buttonText}>Speaker</Text>
           </Pressable>
-          <Pressable onPress={() => handlePress('MISSED SPEAKER')} style={styles.button}>
+          <Pressable onPress={() => handlePress('MISSED SPEAKER')} style={styles.speakerMissButton}>
             <Text style={styles.buttonText}>Missed Speaker</Text>
           </Pressable>
-          <Pressable onPress={() => handlePress('AMP')} style={styles.button}>
+          </View>
+
+          
+        <View style={styles.buttonrow}>
+          <Pressable onPress={() => handlePress('AMP')} style={styles.ampButton}>
             <Text style={styles.buttonText}>Amp</Text>
           </Pressable>
-          <Pressable onPress={() => handlePress('MISSED AMP')} style={styles.button}>
+          <Pressable onPress={() => handlePress('MISSED AMP')} style={styles.ampMissButton}>
             <Text style={styles.buttonText}>Missed Amp</Text>
           </Pressable>
+          </View>
+
+          
+        <View style={styles.buttonrow}>
           <Pressable onPress={() => {
             //Because of batching, setHasNote completes its setting after the handlePress function runs. This means that
             //it can't be used for comparisons in handlePress, which is why item value is used for those comparisons,
             //while hasNote is used for selection logic. 
             setHasNote(true);
             handlePress('Intake');
-            }} style={styles.button}>
+            }} style={styles.intakeButton}>
             <Text style={styles.buttonText}>Intake</Text>
           </Pressable>
-          <Pressable onPress={() => handlePress('MISSED Intake')} style={styles.button}>
+          <Pressable onPress={() => handlePress('MISSED Intake')} style={styles.intakeMissButton}>
             <Text style={styles.buttonText}>Missed Intake</Text>
           </Pressable>
+          </View>
+          <Pressable onPress={() => handlePress('TAXI')} style={styles.taxiButton}>
+            <Text style={styles.buttonText}>Taxi</Text>
+          </Pressable>
+          
         </View>
 
+        <View style={styles.border}>
         <View style={styles.notesContainer}>
           {/* Left Column */}
           <View style={styles.notesColumn}>
@@ -349,8 +361,9 @@ const matchInfo: React.FC = () => {
             ))}
           </View>
         </View>
+        </View>
 
-        <View style={styles.listContainer}>
+        <View style={styles.border}>
           <Text style={styles.listTitle}>List</Text>
           {buttonPresses.map((press, index) => (
             <Pressable key={index} onPress={() => handleDeletePress(index)} style={styles.listItemContainer}>
@@ -366,7 +379,7 @@ const matchInfo: React.FC = () => {
             handleSendAutoData();
             router.push(`/(matchInfo)/teleop?regional=${regional}&teamNumber=${teamNumber}&qualMatch=${qualMatch}`)
           }
-        }
+        }       
         >
           <Text style={styles.buttonOneText}>Teleoperation</Text>
         </Pressable>
@@ -377,8 +390,11 @@ const matchInfo: React.FC = () => {
 
 const styles = StyleSheet.create({
   title: {
-    fontFamily: "BPoppins",
-    fontSize: 32,
+    fontFamily: 'BPoppins',
+    fontSize: 36,
+    textAlign: 'center',
+    marginTop: -45,
+    marginBottom: 30,
   },
   buttonOne: {
     marginTop: 30,
@@ -444,7 +460,72 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     marginVertical: 5, // Adjust for space between buttons
-    marginLeft: 10,//PLEASE CHANGE THIS 
+    marginLeft: 5,//PLEASE CHANGE THIS 
+    marginRight: 5,
+    alignContent: 'center',
+  },
+  speakerButton: {
+    backgroundColor: 'rgba(0, 130, 190, 255)', // Button color
+    paddingHorizontal: '15%',
+    paddingVertical: 10,
+    marginVertical: 5, // Adjust for space between buttons
+    marginLeft: 5,//PLEASE CHANGE THIS 
+    marginRight: 5,
+    alignContent: 'center',
+  },
+  speakerMissButton: {
+    backgroundColor: 'rgba(0, 130, 190, 255)', // Button color
+    paddingHorizontal: '7%',
+    paddingVertical: 10,
+    marginVertical: 5, // Adjust for space between buttons
+    marginLeft: 5,//PLEASE CHANGE THIS 
+    marginRight: 5,
+    alignContent: 'center',
+  },
+  ampButton: {
+    backgroundColor: 'rgba(0, 130, 190, 255)', // Button color
+    paddingHorizontal: '19%',
+    paddingVertical: 10,
+    marginVertical: 5, // Adjust for space between buttons
+    marginLeft: 5,//PLEASE CHANGE THIS 
+    marginRight: 5,
+    alignContent: 'center',
+  },
+  ampMissButton: {
+    backgroundColor: 'rgba(0, 130, 190, 255)', // Button color
+    paddingHorizontal: '11%',
+    paddingVertical: 10,
+    marginVertical: 5, // Adjust for space between buttons
+    marginLeft: 5,//PLEASE CHANGE THIS 
+    marginRight: 5,
+    alignContent: 'center',
+  },
+  intakeButton: {
+    backgroundColor: 'rgba(0, 130, 190, 255)', // Button color
+    paddingHorizontal: '17%',
+    paddingVertical: 10,
+    marginVertical: 5, // Adjust for space between buttons
+    marginLeft: 5,//PLEASE CHANGE THIS 
+    marginRight: 5,
+    alignContent: 'center',
+  },
+  intakeMissButton: {
+    backgroundColor: 'rgba(0, 130, 190, 255)', // Button color
+    paddingHorizontal: '9%',
+    paddingVertical: 10,
+    marginVertical: 5, // Adjust for space between buttons
+    marginLeft: 5,//PLEASE CHANGE THIS 
+    marginRight: 5,
+    alignContent: 'center',
+  },
+  taxiButton: {
+    backgroundColor: 'rgba(0, 130, 190, 255)', // Button color
+    paddingHorizontal: '20%',
+    paddingVertical: 10,
+    marginVertical: 5, // Adjust for space between buttons
+    marginLeft: 5,//PLEASE CHANGE THIS 
+    marginRight: 5,
+    alignContent: 'center',
   },
   buttonText: {
     color: '#fff',
@@ -496,7 +577,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: 'lightgray', // Apply background color to the entire item
+    backgroundColor: '#E6E5E5', // Apply background color to the entire item
     marginBottom: 5,
     padding: 10, // Add padding inside the item for spacing
     borderRadius: 5, // Optional: for rounded corners
@@ -512,7 +593,7 @@ const styles = StyleSheet.create({
     marginLeft: 10, // Ensure spacing between the text and "X"
   },
   usedNote: {
-    backgroundColor: '#ccc', // Gray background for used notes
+    backgroundColor: '#E6E5E5', // Gray background for used notes
   },
   notesContainer: {
     flexDirection: 'row', // Align columns side by side
@@ -539,7 +620,6 @@ const styles = StyleSheet.create({
   noteText: {
     // Your text style here
     color: 'black', // Choose the text color that suits your design
-    fontWeight: 'bold', // If you want the text to be bold
     // Position the text in the center of the ring
     position: 'absolute',
     textAlign: 'center',
@@ -547,6 +627,20 @@ const styles = StyleSheet.create({
     lineHeight: 40, // Adjust line height to vertically center text in the ring
     fontFamily: "BPoppins",
   },
+  border: {
+    padding: 10,
+    borderRadius: 10, //curves
+    borderWidth: 3,
+    borderColor: 'rgba(0, 130, 190, 255)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    width: '100%',
+    marginBottom:9,
+  },
+  buttonrow: {
+    flexDirection: 'row',
+  }
 });
 
 export default matchInfo;

@@ -80,8 +80,8 @@ const Counter = () => {
   const [groundCount, setGroundCount] = useState<number>(0);
   const [sourceCount, setSourceCount] = useState<number>(0);
   const [isFocus, setIsFocus] = useState(false);
-  const [selectedTrapValue, setSelectedTrapValue] = useState<number | null>(null);
-  const [selectedClimbingValue, setSelectedClimbingValue] = useState<string | null>(null);
+  const [selectedTrapValue, setSelectedTrapValue] = useState<number | 0>(0);
+  const [selectedClimbingValue, setSelectedClimbingValue] = useState<string | 1>(1);
   const { regional } = useGlobalSearchParams<{ regional: string }>();
   const { teamNumber } = useGlobalSearchParams<{ teamNumber: string }>();
   const { qualMatch } = useGlobalSearchParams<{ qualMatch: string }>();
@@ -225,17 +225,14 @@ const Counter = () => {
                       style={[styles.dropdown, isFocus && { borderColor: 'blue', position: 'relative', bottom: 300 }]}
                       placeholderStyle={styles.placeholderStyle}
                       selectedTextStyle={styles.selectedTextStyle}
-                      inputSearchStyle={styles.inputSearchStyle}
                       iconStyle={styles.iconStyle}
                       //dont know why this below is an error
                       data={ClimbingData}
-                      search
                       maxHeight={300}
                       labelField="label"
                       valueField="value"
                       placeholder={!isFocus ? 'Select item' : '...'}
                       value={selectedClimbingValue || '1'}
-                      searchPlaceholder="Search..."
                       onFocus={() => handleFocus('climbingData')}
                       onBlur={() => handleBlur('climbingData')}
                       onChange={(item: DropdownItem) => {

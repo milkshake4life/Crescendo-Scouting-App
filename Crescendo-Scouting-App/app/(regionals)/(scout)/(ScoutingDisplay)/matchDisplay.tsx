@@ -50,6 +50,8 @@ const matchDisplay = () => {
   const [autoS1IntakePercent, setS1IntakePercent] = useState<string | null>(null);
   const [autoS2IntakePercent, setS2IntakePercent] = useState<string | null>(null);
   const [autoS3IntakePercent, setS3IntakePercent] = useState<string | null>(null);
+  const [autoRIntakePercent, setRIntakePercent] = useState<string | null>(null);
+
 
   //teleop constants
   const [teleopAmpPercent, setTeleopAmpPercent] = useState<string | null>(null);
@@ -183,7 +185,7 @@ const matchDisplay = () => {
       case 'Speaker':
         return autoRSpeakerPercent;
       case 'Intake':
-        return 'N/A';
+        return autoRIntakePercent;
       default:
         return 'N/A';
     }
@@ -200,6 +202,8 @@ const matchDisplay = () => {
     const pregamePositionThreeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Pregame/Source');
 
     // auto paths
+    const autoTaxiRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Taxi')
+
     const autoM1AmpRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Amp/M1') 
     const autoM2AmpRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Amp/M2') 
     const autoM3AmpRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Amp/M3') 
@@ -228,6 +232,7 @@ const matchDisplay = () => {
     const autoS1IntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/S1') 
     const autoS2IntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/S2') 
     const autoS3IntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/S3') 
+    const autoRIntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/R') 
 
     // teleop paths
     const teleopAmpPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Teleop/Amp')
@@ -242,8 +247,13 @@ const matchDisplay = () => {
     const endgameDoubleClimbPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Endgame/Climb/Double Climb')
     const endgameTripleClimbPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Endgame/Climb/Triple Climb')
 
+    const endgameNoTrapPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Endgame/Trap/0 Trap')
+    const endgameOneTrapPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Endgame/Trap/1 Trap')
+    const endgameTwoTrapPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Endgame/Trap/2 Trap')
+    const endgameThreeTrapPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Endgame/Trap/3 Trap')
+
     //postgame paths
-    const postgameAverageDriverRatingRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Postgame/DrivingRating')
+    const postgameAverageDriverRatingRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Postgame/Driving Rating')
 
     // Callback function to handle snapshot changes
     const handleSnapshot = (snapshot: DataSnapshot, setPosition: React.Dispatch<React.SetStateAction<string | null>>) => {
@@ -262,6 +272,8 @@ const matchDisplay = () => {
     const pregamePositionThreeListener = onValue(pregamePositionThreeRef, (snapshot) => handleSnapshot(snapshot, setPregamePositionThree));
 
     //auto
+    const autoTaxiListener = onValue(autoTaxiRef, (snapshot) => handleSnapshot(snapshot, setTaxiPercent));
+
     const autoM1AmpListener = onValue(autoM1AmpRef, (snapshot) => handleSnapshot(snapshot, setM1AutoPercent));
     const autoM2AmpListener = onValue(autoM2AmpRef, (snapshot) => handleSnapshot(snapshot, setM2AutoPercent));
     const autoM3AmpListener = onValue(autoM3AmpRef, (snapshot) => handleSnapshot(snapshot, setM3AutoPercent));
@@ -290,6 +302,7 @@ const matchDisplay = () => {
     const autoS1IntakeListener = onValue(autoS1IntakeRef, (snapshot) => handleSnapshot(snapshot, setS1IntakePercent));
     const autoS2IntakeListener = onValue(autoS2IntakeRef, (snapshot) => handleSnapshot(snapshot, setS2IntakePercent));
     const autoS3IntakeListener = onValue(autoS3IntakeRef, (snapshot) => handleSnapshot(snapshot, setS3IntakePercent));
+    const autoRIntakeListener = onValue(autoRIntakeRef, (snapshot) => handleSnapshot(snapshot, setRIntakePercent));
 
     // teleop
     const teleopAmpPercentListener = onValue(teleopAmpPercentRef, (snapshot) => handleSnapshot(snapshot, setTeleopAmpPercent))
@@ -304,6 +317,10 @@ const matchDisplay = () => {
     const endgameDoubleClimbPercentListener = onValue(endgameDoubleClimbPercentRef, (snapshot) => handleSnapshot(snapshot, setEndgameDoubleClimbPercent))
     const endgameTripleClimbPercentListener = onValue(endgameTripleClimbPercentRef, (snapshot) => handleSnapshot(snapshot, setEndgameTripleClimbPercent))
 
+    const endgameNoTrapPercentListener = onValue(endgameNoTrapPercentRef, (snapshot) => handleSnapshot(snapshot, setEndgameNoTrapPercent))
+    const endgameOneTrapPercentListener = onValue(endgameOneTrapPercentRef, (snapshot) => handleSnapshot(snapshot, setEndgameOneTrapPercent))
+    const endgameTwoTrapPercentListener = onValue(endgameTwoTrapPercentRef, (snapshot) => handleSnapshot(snapshot, setEndgameTwoTrapPercent))
+    const endgameThreeTrapPercentListener = onValue(endgameThreeTrapPercentRef, (snapshot) => handleSnapshot(snapshot, setEndgameThreeTrapPercent))
     //postgame
     const postgameAverageDriverRatingListener = onValue(postgameAverageDriverRatingRef, (snapshot) => handleSnapshot(snapshot, setPostgameAverageDriverRating))
 
@@ -315,6 +332,8 @@ const matchDisplay = () => {
       off(pregamePositionThreeRef, 'value', pregamePositionThreeListener);
 
       //auto listeners
+      off(autoTaxiRef, 'value', autoTaxiListener);
+
       off(autoM1AmpRef, 'value', autoM1AmpListener);
       off(autoM2AmpRef, 'value', autoM2AmpListener);
       off(autoM3AmpRef, 'value', autoM3AmpListener);
@@ -343,6 +362,7 @@ const matchDisplay = () => {
       off(autoS1IntakeRef, 'value', autoS1IntakeListener);
       off(autoS2IntakeRef, 'value', autoS2IntakeListener);
       off(autoS3IntakeRef, 'value', autoS3IntakeListener);
+      off(autoRIntakeRef, 'value', autoRIntakeListener);
 
       //teleop listeners
       off(teleopAmpPercentRef, 'value', teleopAmpPercentListener);
@@ -356,6 +376,11 @@ const matchDisplay = () => {
       off(endgameSingleClimbPercentRef, 'value', endgameSingleClimbPercentListener);
       off(endgameDoubleClimbPercentRef, 'value', endgameDoubleClimbPercentListener);
       off(endgameTripleClimbPercentRef, 'value', endgameTripleClimbPercentListener);
+
+      off(endgameNoTrapPercentRef, 'value', endgameNoTrapPercentListener);
+      off(endgameOneTrapPercentRef, 'value', endgameOneTrapPercentListener);
+      off(endgameTwoTrapPercentRef, 'value', endgameTwoTrapPercentListener);
+      off(endgameThreeTrapPercentRef, 'value', endgameThreeTrapPercentListener);
 
       //postgame listeners
       off(postgameAverageDriverRatingRef, 'value', postgameAverageDriverRatingListener);
@@ -439,11 +464,17 @@ const matchDisplay = () => {
 
   //added a line which displays stored info to ensure it is being retrieved
 
-  const InfoItem: React.FC<ItemProps> = ({ title, info }) => (
+  const InfoPercentItem: React.FC<ItemProps> = ({ title, info }) => (
     <View style={styles.infoItem}>
       <Text style={styles.titleText}>{title}</Text>
       <Text style={styles.infoText}>{info !== null ? `${info}%` : 'N/A'}</Text>
+    </View>
+  );
 
+  const InfoItem: React.FC<ItemProps> = ({ title, info }) => (
+    <View style={styles.infoItem}>
+      <Text style={styles.titleText}>{title}</Text>
+      <Text style={styles.infoText}>{info !== null ? `${info}` : 'N/A'}</Text>
     </View>
   );
   
@@ -462,23 +493,23 @@ const matchDisplay = () => {
         <Text style={styles.subtitle}>{regional} Regional!</Text>
         <Text style={styles.itemTitle}>Pregame</Text>
         <View style={styles.border}>
-          <InfoItem title="Amp:" info={pregamePositionOne}/>
-          <InfoItem title="Middle: " info={pregamePositionTwo} />
-          <InfoItem title="Source: " info={pregamePositionThree}/>
+          <InfoPercentItem title="Amp:" info={pregamePositionOne}/>
+          <InfoPercentItem title="Middle: " info={pregamePositionTwo} />
+          <InfoPercentItem title="Source: " info={pregamePositionThree}/>
         </View>
 
         <Text style={styles.itemTitle}>Autonomous</Text>
         <View style={styles.border}>
-          <InfoItem title="Taxi:" info="filler" />
-          <InfoItem title={`${selectedAutoType} M1:`} info={getM1AutoPercentage(selectedAutoType)} />
-          <InfoItem title={`${selectedAutoType} M2:`} info={getM2AutoPercentage(selectedAutoType)} />
-          <InfoItem title={`${selectedAutoType} M3:`} info={getM3AutoPercentage(selectedAutoType)} />
-          <InfoItem title={`${selectedAutoType} M4:`} info={getM4AutoPercentage(selectedAutoType)} />
-          <InfoItem title={`${selectedAutoType} M5:`} info={getM5AutoPercentage(selectedAutoType)} />
-          <InfoItem title={`${selectedAutoType} S1:`} info={getS1AutoPercentage(selectedAutoType)} />
-          <InfoItem title={`${selectedAutoType} S2:`} info={getS2AutoPercentage(selectedAutoType)} />
-          <InfoItem title={`${selectedAutoType} S3:`} info={getS3AutoPercentage(selectedAutoType)} />
-          <InfoItem title={`${selectedAutoType} R:`} info={getRAutoPercentage(selectedAutoType)} />
+          <InfoPercentItem title="Taxi:" info={autoTaxiPercent} />
+          <InfoPercentItem title={`${selectedAutoType} M1:`} info={getM1AutoPercentage(selectedAutoType)} />
+          <InfoPercentItem title={`${selectedAutoType} M2:`} info={getM2AutoPercentage(selectedAutoType)} />
+          <InfoPercentItem title={`${selectedAutoType} M3:`} info={getM3AutoPercentage(selectedAutoType)} />
+          <InfoPercentItem title={`${selectedAutoType} M4:`} info={getM4AutoPercentage(selectedAutoType)} />
+          <InfoPercentItem title={`${selectedAutoType} M5:`} info={getM5AutoPercentage(selectedAutoType)} />
+          <InfoPercentItem title={`${selectedAutoType} S1:`} info={getS1AutoPercentage(selectedAutoType)} />
+          <InfoPercentItem title={`${selectedAutoType} S2:`} info={getS2AutoPercentage(selectedAutoType)} />
+          <InfoPercentItem title={`${selectedAutoType} S3:`} info={getS3AutoPercentage(selectedAutoType)} />
+          <InfoPercentItem title={`${selectedAutoType} R:`} info={getRAutoPercentage(selectedAutoType)} />
         </View>
         <View style={styles.autoBorder}>
           <View style={styles.autoButtons}>
@@ -491,19 +522,23 @@ const matchDisplay = () => {
 
         <Text style={styles.itemTitle}>Teleoperation</Text>
         <View style={styles.border}>
-          <InfoItem title="Amp Accuracy:" info={teleopAmpPercent} />
-          <InfoItem title="Speaker Accuracy: " info={teleopSpeakerPercent} />
-          <InfoItem title="Source Intake: " info={teleopSourceIntakePercent} />
-          <InfoItem title="Ground Intake: " info={teleopGroundIntakePercent} />
+          <InfoPercentItem title="Amp Accuracy:" info={teleopAmpPercent} />
+          <InfoPercentItem title="Speaker Accuracy: " info={teleopSpeakerPercent} />
+          <InfoPercentItem title="Source Intake: " info={teleopSourceIntakePercent} />
+          <InfoPercentItem title="Ground Intake: " info={teleopGroundIntakePercent} />
         </View>
 
         <Text style={styles.itemTitle}>Endgame</Text>
         <View style={styles.border}>
-          <InfoItem title="Nothing:" info={endgameNothingPercent} />
-          <InfoItem title="Park Rate: " info={endgameParkPercent} />
-          <InfoItem title="Single Climb Rate: " info={endgameSingleClimbPercent} />
-          <InfoItem title="Double Climb Rate: " info={endgameDoubleClimbPercent} />
-          <InfoItem title="Triple Climb Rate: " info={endgameTripleClimbPercent} />
+          <InfoPercentItem title="Nothing:" info={endgameNothingPercent} />
+          <InfoPercentItem title="Park Rate: " info={endgameParkPercent} />
+          <InfoPercentItem title="Single Climb Rate: " info={endgameSingleClimbPercent} />
+          <InfoPercentItem title="Double Climb Rate: " info={endgameDoubleClimbPercent} />
+          <InfoPercentItem title="Triple Climb Rate: " info={endgameTripleClimbPercent} />
+          <InfoPercentItem title="0 Trap:" info={endgameNoTrapPercent} />
+          <InfoPercentItem title="1 Trap: " info={endgameOneTrapPercent} />
+          <InfoPercentItem title="2 Trap: " info={endgameTwoTrapPercent} />
+          <InfoPercentItem title="3 Trap: " info={endgameThreeTrapPercent} />
         </View>
 
         <Text style={styles.itemTitle}>Overall</Text>

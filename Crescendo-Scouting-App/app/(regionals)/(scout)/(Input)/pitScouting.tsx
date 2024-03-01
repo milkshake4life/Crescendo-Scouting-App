@@ -114,16 +114,13 @@ const robotInfo = () => {
           style={[styles.dropdown, isFocus && { borderColor: 'blue', position: 'relative', bottom: dropdownHeight + 10, }]}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
-          inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
           data={ScoringData}
-          search
           maxHeight={300}
           labelField="label"
           valueField="value"
           placeholder={!isFocus ? 'Select item' : '...'}
           value={selectedScoringValue || '1'}
-          searchPlaceholder="Search..."
           onFocus={() => handleFocus('scoringData')}
           onBlur={() => handleBlur('scoringData')}
           onChange={(item: DropdownItem) => {
@@ -137,16 +134,13 @@ const robotInfo = () => {
           style={[styles.dropdown, isFocus && { borderColor: 'blue', position: 'relative', bottom: 300 }]}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
-          inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
           data={ClimbingData}
-          search
           maxHeight={300}
           labelField="label"
           valueField="value"
           placeholder={!isFocus ? 'Select item' : '...'}
           value={selectedClimbingValue || '5'}
-          searchPlaceholder="Search..."
           onFocus={() => handleFocus('climbingData')}
           onBlur={() => handleBlur('climbingData')}
           onChange={(item: DropdownItem) => {
@@ -159,16 +153,13 @@ const robotInfo = () => {
           style={[styles.dropdown, isFocus && { borderColor: 'blue', position: 'relative', bottom: 300 }]}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
-          inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
           data={IntakeData}
-          search
           maxHeight={300}
           labelField="label"
           valueField="value"
           placeholder={!isFocus ? 'Select item' : '...'}
           value={selectedIntakeValue || '8'}
-          searchPlaceholder="Search..."
           onFocus={() => handleFocus('intakeData')}
           onBlur={() => handleBlur('intakeData')}
           onChange={(item: DropdownItem) => {
@@ -181,16 +172,13 @@ const robotInfo = () => {
           style={[styles.dropdown, isFocus && { borderColor: 'blue'}]}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
-          inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
           data={DrivingData}
-          search
           maxHeight={300}
           labelField="label"
           valueField="value"
           placeholder={!isFocus ? 'Select item' : '...'}
           value={selectedDrivingValue || '12'}
-          searchPlaceholder="Search..."
           onFocus={() => handleFocus('Data')}
           onBlur={() => handleBlur('drivingData')}
           onChange={(item: DropdownItem) => {
@@ -202,13 +190,11 @@ const robotInfo = () => {
           <Pressable
             style={styles.sendButton}
             onPress={() => {
-              router.push(`/(matchInfo)/thanks`);
+              router.push(`/(matchInfo)/thanks?regional=${regional}`);
               handleSendData();
             }}>
             <Text style={styles.sendButtonText}>Send Data</Text>
           </Pressable>
-
-          
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

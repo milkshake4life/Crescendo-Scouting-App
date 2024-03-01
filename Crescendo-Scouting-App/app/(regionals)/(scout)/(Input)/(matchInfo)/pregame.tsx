@@ -107,15 +107,12 @@ const matchInfo = () => {
                 style={[styles.dropdown, isFocus && { borderColor: "blue" }]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
-                inputSearchStyle={styles.inputSearchStyle}
                 iconStyle={styles.iconStyle}
                 data={qualMatch}
-                search
                 maxHeight={300}
                 labelField="label"
                 valueField="value"
                 placeholder={!isFocus ? "Select match" : "..."}
-                searchPlaceholder="Search..."
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
                 onChange={(item) => {
@@ -251,16 +248,13 @@ const matchInfo = () => {
                 style={[styles.dropdown, isFocus && { borderColor: "blue" }]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
-                inputSearchStyle={styles.inputSearchStyle}
                 iconStyle={styles.iconStyle}
                 data={startingPosition}
                 value={selectedStartingPositionString}
-                search
                 maxHeight={300}
                 labelField="label"
                 valueField="value"
                 placeholder={!isFocus ? "Starting Position" : "..."}
-                searchPlaceholder="Search..."
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
                 onChange={item => {
@@ -301,16 +295,6 @@ const matchInfo = () => {
 };
 
 const styles = StyleSheet.create({
-  title: {
-    fontFamily: 'BPoppins',
-    fontSize: 36,
-    textAlign: 'center',
-  },
-  subtitle:{
-    fontFamily: 'BPoppins',
-    fontSize:15,
-    color: 'rgba(0, 130, 190, 255)',
-  },
   backButtonText: {
     fontFamily: "BPoppins",
     fontSize: 15,
@@ -329,24 +313,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "white",
   },
-  // buttonOne: {
-  //   marginTop: 50,
-  //   marginBottom: 100,
-  //   alignItems: "center",
-  //   justifyContent: "center",
-  //   paddingVertical: 12,
-  //   paddingHorizontal: 20,
-  //   elevation: 3,
-  //   backgroundColor: "rgba(0, 130, 190, 255)",
-  // },
-  // buttonOneText: {
-  //   fontSize: 16,
-  //   lineHeight: 21,
-  //   fontWeight: "bold",
-  //   letterSpacing: 0.25,
-  //   color: "white",
-  //   fontFamily: "BPoppins",
-  // },
   buttonOne: {
     marginTop: 50,
     marginBottom: 100,

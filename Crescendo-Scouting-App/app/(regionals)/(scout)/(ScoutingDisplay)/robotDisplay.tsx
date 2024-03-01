@@ -91,7 +91,7 @@ const robotDisplay = () => {
          setClimbData(JSON.stringify(climbingData))
          console.log("climbing data: " + climbingData + " climbing Display: " + climbData)
        } else {
-         console.log("No climbing data available");
+         setClimbingData("No Information")
        }
      })
      .catch((error) => {
@@ -113,7 +113,8 @@ const robotDisplay = () => {
          setDrivingData(data); // Set the data to state
          console.log("driving data: " + drivingData)
        } else {
-         console.log("No driving data available");
+        setDrivingData("No Information")
+        console.log("No driving data available");
        }
      })
      .catch((error) => {
@@ -134,7 +135,8 @@ const robotDisplay = () => {
          setIntakeData(data); // Set the data to state
          console.log("intake data: " + intakeData)
        } else {
-         console.log("No intake data available");
+        setIntakeData("No Information")
+        console.log("No intake data available");
        }
      })
      .catch((error) => {
@@ -156,6 +158,7 @@ const robotDisplay = () => {
          setScoringData(data); // Set the data to state
          console.log("scoring data: " + scoringData)
        } else {
+        setScoringData("No Information")
          console.log("No scoring data available");
        }
      })
@@ -177,6 +180,7 @@ const robotDisplay = () => {
          setVisionData(data); // Set the data to state
          console.log("vision data: " + visionData)
        } else {
+        setVisionData("No Information")
          console.log("No vision data available");
        }
      })
@@ -198,6 +202,7 @@ const robotDisplay = () => {
          setDriveTrainData(data); // Set the data to state
          console.log("drive train data: " + driveTrainData)
        } else {
+        setDriveTrainData("No Information")
          console.log("No drive train data available");
        }
      })

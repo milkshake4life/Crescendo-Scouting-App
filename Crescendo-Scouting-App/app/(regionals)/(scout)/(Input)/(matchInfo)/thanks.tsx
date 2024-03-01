@@ -12,7 +12,7 @@ const matchInfo = () => {
       <Text style={styles.title}>Thank you!</Text>
       <Pressable
             style={styles.buttonOne}
-            onPress={() => router.push(`/(regionals)/${regional}`)}
+            onPress={() => router.push(``)}
             >
                 <Text style={styles.buttonText}>Submit</Text>
             </Pressable>
