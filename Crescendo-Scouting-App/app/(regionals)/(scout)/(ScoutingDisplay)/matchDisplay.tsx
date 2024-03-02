@@ -479,9 +479,15 @@ const matchDisplay = () => {
         </View>
         <View style={styles.autoBorder}>
           <View style={styles.autoButtons}>
-            <Button title="Amp" onPress={() => setSelectedAutoType('Amp')} />
-            <Button title="Speaker" onPress={() => setSelectedAutoType('Speaker')} />
-            <Button title="Intake" onPress={() => setSelectedAutoType('Intake')} />
+            <Pressable style = {styles.optionButton} >
+              <Text style={styles.optionText} onPress={() => setSelectedAutoType('Amp')}>Amp</Text>
+            </Pressable>
+            <Pressable style = {styles.optionButton} >
+              <Text style={styles.optionText} onPress={() => setSelectedAutoType('Speaker')}>Speaker</Text>
+            </Pressable>
+            <Pressable style = {styles.optionButton} >
+              <Text style={styles.optionText} onPress={() => setSelectedAutoType('Intake')}>Intake</Text>
+            </Pressable>
           </View>
           <Text style={styles.infoText}>{selectedAutoType !== 'filler' ? `Showing ${selectedAutoType} percentages` : ''}</Text>
         </View>
@@ -538,11 +544,11 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   subtitle: {
-    // fontFamily: 'BPoppins',
     fontSize: 20,  //font size differs from regional page. Regional = 25. 
     marginBottom: -10,
     marginTop: 5, //adding top margin to move down the page.
     color: '#737373',
+    fontFamily:'BPoppins',
   },
   border: {
     padding: 10,
@@ -566,7 +572,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   itemTitle: {
-    fontSize: 30,
+    fontSize: 25,
     fontFamily: 'BPoppins',
     color: 'rgba(0, 130, 190, 255)',
     marginTop: 30,
@@ -592,7 +598,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   autoButtons: {
-
+    flexDirection: 'row',
+  },
+  optionButton: {
+    backgroundColor: 'rgba(0, 130, 190, 255)',
+    paddingHorizontal: '5%',
+    marginHorizontal:'1%',
+    paddingVertical:'3%',
+    borderRadius:5,
+    marginBottom:'3%',
+  },
+  optionText:{
+    fontFamily:'BPoppins',
+    color:'white',
+    fontSize: 15,
   }
 });
 

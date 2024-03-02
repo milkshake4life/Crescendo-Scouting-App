@@ -96,7 +96,7 @@ const matchInfo = () => {
   };
 
   const onColor = "rgba(0, 130, 190, 255)";
-  const offColor = "red";
+  const offColor = "#d11127";
 
   return (
     <ScrollView>
@@ -126,15 +126,15 @@ const matchInfo = () => {
               />
             </View>
           </View>
-        </View>
+        
         <Text style={styles.subtitle}> Alliance </Text>
         <View style={styles.container}>
           <View style={styles.borderTwo}>
             <View style={styles.ButtonsContainer}>
               <TouchableOpacity
                 style={{
-                  height: 60,
-                  width: 150,
+                  height: 50,
+                  width: 300,
                   borderRadius: 5,
                   borderWidth: 2,
                   overflow: "hidden",
@@ -173,12 +173,13 @@ const matchInfo = () => {
                   }}
                 >
                   <Text
-                    style={{ color: "white", fontSize: 12, fontWeight: "500" }}
+                    style={{ color: "white", fontSize: 15, fontWeight: "500", fontFamily: 'BPoppins' }}
                   >
                     {isOn ? "Blue" : "Red"}
                   </Text>
                 </View>
               </TouchableOpacity>
+              
             </View>
           </View>
         </View>
@@ -293,6 +294,7 @@ const matchInfo = () => {
         >
           <Text style={styles.buttonOneText}>Auto</Text>
         </Pressable>
+        </View>
       </View>
     </ScrollView>
   );
@@ -318,36 +320,37 @@ const styles = StyleSheet.create({
     borderColor: "white",
   },
   buttonOne: {
-    marginTop: 50,
-    marginBottom: 100,
-    marginLeft: 95,
+    marginTop: '15%',
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 12,
-    paddingHorizontal: 20,
-    elevation: 3,
+    paddingHorizontal: '20%',
+    borderRadius: 4,
     backgroundColor: "rgba(0, 130, 190, 255)",
-    width: 200, // Adjust the width as per your preference
+    borderWidth: 2,
+    borderColor: "rgba(0, 130, 190, 255)",
+    marginBottom:'13%',
   },
   buttonOneText: {
     fontSize: 16,
     lineHeight: 21,
-    fontWeight: "bold",
     letterSpacing: 0.25,
     color: "white",
     fontFamily: "BPoppins",
+
   },
   
   dropdown: {
     height: 50,
-    width: "80%", // or some other appropriate width
+    width: "95%", // or some other appropriate width
     borderColor: "gray",
     borderWidth: 0.5,
     borderRadius: 8,
-    paddingHorizontal: 8,
+    paddingHorizontal: 3,
     // Add margin for some spacing if needed
-    marginTop: 10,
-    marginBottom: 40,
+    marginTop: '2%',
+    marginBottom: '4%',
+
   },
   label: {
     position: "absolute",
@@ -360,9 +363,12 @@ const styles = StyleSheet.create({
   },
   placeholderStyle: {
     fontSize: 16,
+    marginLeft: '5%',
+    color:'gray',
   },
   selectedTextStyle: {
     fontSize: 16,
+    marginLeft: '5%',
   },
   iconStyle: {
     width: 20,
@@ -376,36 +382,37 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   border: {
-    paddingTop: 20,
-    paddingLeft: 30,
-    paddingRight: 30,
+    paddingVertical:'4%',
+    paddingHorizontal:'10%',
     borderRadius: 10,
     borderWidth: 3,
     borderColor: "rgba(0, 130, 190, 255)",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "white",
-    maxWidth: "95%",
+    width: "94%",
+
   },
   borderTwo: {
     paddingVertical: 15,
-    paddingHorizontal: 80,
+    paddingHorizontal: '3%',
     borderRadius: 10,
     borderWidth: 3,
     borderColor: "rgba(0, 130, 190, 255)",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "white",
-    maxWidth: "95%",
+    width: "94%",
+
   },
   title: {
     fontFamily: "BPoppins",
-    fontSize: 36,
+    fontSize: 40,
     textAlign: "center",
   },
   subtitle: {
     fontFamily: "BPoppins",
-    fontSize: 30,
+    fontSize: 25,
     textAlign: "center",
     color: "rgba(0, 130, 190, 255)",
     marginTop: "10%",

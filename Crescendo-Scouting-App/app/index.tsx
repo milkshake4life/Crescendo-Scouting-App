@@ -20,21 +20,21 @@ const HomePage = () => {
       <Text style={styles.subtitle}>Welcome to the 589 Scouting App!</Text>
 
       <Pressable 
-        style={styles.buttonOne}
+        style={styles.buttonHueneme}
         onPress={() => router.push("/(regionals)/Port Hueneme")}
       >
         <Text style={styles.buttonText}>Port Hueneme</Text>
       </Pressable>
 
       <Pressable 
-        style={styles.buttonTwo}
+        style={styles.buttonVentura}
         onPress={() => router.push("/(regionals)/Ventura")}
       >
         <Text style={styles.buttonText}>Ventura</Text>
       </Pressable>
 
       <Pressable 
-        style={styles.buttonThree}
+        style={styles.buttonOC}
         onPress={() => router.push("/(regionals)/Orange County")}
       >
         <Text style={styles.buttonText}>Orange County</Text>
@@ -42,7 +42,7 @@ const HomePage = () => {
 
       {/* credits page */}
       <Pressable
-        style={styles.buttonTwo}
+        style={styles.buttonCreds}
         onPress={() => router.push("/credits")}
       >
         <Text style={styles.buttonText}>Credits</Text>
@@ -78,35 +78,47 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     // add other styling as needed
   },
-  buttonOne: {
+  buttonHueneme: {
     marginTop: 0,
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 12,
-    paddingHorizontal: 56,
+    paddingHorizontal: '14%',
     borderRadius: 4,
     elevation: 3,
     backgroundColor: 'rgba(0, 130, 190, 255)',
     borderWidth: 1,
     borderColor: 'rgba(0, 130, 190, 255)',
   },
-  buttonTwo: {
+  buttonVentura: {
     marginTop: 10,
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 12,
-    paddingHorizontal: 82,
+    paddingHorizontal: '21.5%',
     borderRadius: 4,
     elevation: 3,
     backgroundColor: 'rgba(0, 130, 190, 255)',
     borderWidth: 1,
     borderColor: 'rgba(0, 130, 190, 255)',
   },
-  buttonThree: {
+  buttonOC: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 12,
-    paddingHorizontal: 52,
+    paddingHorizontal: '12.5%',
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: 'rgba(0, 130, 190, 255)',
+    borderWidth: 1,
+    borderColor: 'rgba(0, 130, 190, 255)',
+    marginTop: 10, // Adds space between buttons
+  },
+  buttonCreds: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: '22.5%',
     borderRadius: 4,
     elevation: 3,
     backgroundColor: 'rgba(0, 130, 190, 255)',
