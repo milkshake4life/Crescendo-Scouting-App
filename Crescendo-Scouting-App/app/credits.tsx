@@ -22,14 +22,16 @@ const CreditsPage = () => {
             <Text style={styles.title}>Credits:</Text>
             <Text style={styles.listTitle}>Development Team:</Text>
             
-            <Text style={styles.listSubtitle}>Backend and Frontend Developers</Text>
+            <Text style={styles.listSubtitle}>Backend and Frontend</Text>
             <Text style={styles.listText}>Ethan Lee</Text>
             <Text style={styles.listText}>Christian Kantchev</Text>
             <Text style={styles.listText}>David Yu</Text>
             <Text style={styles.listText}>Jayson Song</Text>
+            <Text style={styles.listText}>Dahae Seo</Text> 
 
+            <View style={styles.line}></View>
 
-            <Text style={styles.listSubtitle}>UI and Design Team</Text>
+            <Text style={styles.listSubtitle}>UI and Design</Text>
             <Text style={styles.listText}>Brianna Zhu</Text>
             <Text style={styles.listText}>Dahae Seo</Text>
             <Text style={styles.listText}>Tara Tokikawa</Text>
@@ -55,8 +57,9 @@ const styles = StyleSheet.create({
   title:{
     fontFamily: 'BPoppins',
     fontSize: 40,
-    marginBottom: 20,
+    marginBottom: 0,
     color: 'rgba(0, 130, 190, 255)',
+
   },
   subtitle:{
     fontFamily: 'BPoppins',
@@ -103,24 +106,32 @@ const styles = StyleSheet.create({
   },
   listTitle:{
     fontFamily: 'BPoppins',
-    fontSize: 24,
-    color: 'rgba(0, 130, 190, 255)',
+    fontSize: 30,
     marginBottom: 10,
   },
   listSubtitle:{
     fontFamily: 'BPoppins',
     fontSize: 20,
     // color: 'rgba(127, 127, 127, 255)',
-    marginBottom: 30,
+    marginBottom: 10,
     marginTop: 20, 
+    textAlign:'center',
   },
   listText:{
     fontFamily: 'BPoppins',
-    fontSize: 15,
+    fontSize: 18,
     color: 'rgba(127, 127, 127, 255)',
     marginBottom: 15,
   },
   
+  line: {
+    borderBottomColor: '#00bcf0', // Change the color as needed
+    borderBottomWidth: 4,       // Adjust the width as needed
+    marginVertical: 10,         // Adjust the vertical margin as needed
+    width:'90%',
+    borderRadius:10,
+    color:'#00bcf0',
+  },
   
 });
 
