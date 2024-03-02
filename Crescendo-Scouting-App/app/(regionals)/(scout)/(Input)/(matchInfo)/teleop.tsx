@@ -50,6 +50,7 @@ const SliderWithNumbers: React.FC<SliderWithNumbersProps> = ({
           step={step}
           value={value}
           onValueChange={onValueChange}
+          thumbStyle={styles.thumbStyle}
         />
       </View>
       <View style={styles.sliderMarkersContainer}>
@@ -170,10 +171,10 @@ const Counter = () => {
         <BackButton buttonName="Home Page" />
 
         <Text style={styles.title}> Teleoperation </Text>
-
-        <Text style={styles.subtitle}>Speaker</Text>
         <View style={styles.container}>
-          <View style={styles.border}>
+
+          <Text style={styles.subtitle}>Speaker</Text>
+          <View style={styles.borderC}>
             <View style={styles.counterContainer}>
               <CounterControl label="Made" count={madeCountSpeaker} onIncrement={() => incrementSpeaker('made')} onDecrement={() => decrementSpeaker('made')} />
               <CounterControl label="Miss" count={missCountSpeaker} onIncrement={() => incrementSpeaker('miss')} onDecrement={() => decrementSpeaker('miss')} />
@@ -181,8 +182,8 @@ const Counter = () => {
           </View>
 
           <Text style={styles.subtitle}>Amp</Text>
-          <View style={styles.container}>
-            <View style={styles.border}>
+          
+            <View style={styles.borderC}>
               <View style={styles.counterContainer}>
                 <CounterControl label="Made" count={madeCountAmp} onIncrement={() => incrementAmp('made')} onDecrement={() => decrementAmp('made')} />
                 <CounterControl label="Miss" count={missCountAmp} onIncrement={() => incrementAmp('miss')} onDecrement={() => decrementAmp('miss')} />
@@ -190,8 +191,7 @@ const Counter = () => {
             </View>
 
             <Text style={styles.subtitle}>Intake</Text>
-            <View style={styles.container}>
-              <View style={styles.border}>
+              <View style={styles.borderC}>
                 <View style={styles.counterContainer}>
                   <CounterControl label="Ground" count={groundCount} onIncrement={() => incrementIntake('ground')} onDecrement={() => decrementIntake('ground')} />
                   <CounterControl label="Source" count={sourceCount} onIncrement={() => incrementIntake('source')} onDecrement={() => decrementIntake('source')} />
@@ -253,8 +253,6 @@ const Counter = () => {
 
                 </Pressable>
               </View>
-            </View>
-          </View>
         </View>
       </View>
       {/* </View> */}
@@ -268,16 +266,20 @@ const Counter = () => {
 
 const CounterControl = ({ label, count, onIncrement, onDecrement }: { label: string; count: number; onIncrement: () => void; onDecrement: () => void; }) => (
   <View style={styles.counterControl}>
+    
+    <Text style={styles.countText}>{label}</Text>
+    <View style={styles.line}></View>
+    <View style={styles.row}>
     <TouchableOpacity onPress={onDecrement} style={styles.button}>
       <Text style={styles.buttonText}>-</Text>
     </TouchableOpacity>
     <View style={styles.countContainer}>
-      <Text style={styles.countText}>{label}</Text>
       <Text style={styles.countNumber}>{count}</Text>
     </View>
     <TouchableOpacity onPress={onIncrement} style={styles.button}>
       <Text style={styles.buttonText}>+</Text>
     </TouchableOpacity>
+    </View>
   </View>
 
 
@@ -296,16 +298,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
-    maxWidth: '95%',
+    maxWidth: '94%',
+  },
+  borderC: {
+    paddingTop: 20,
+    paddingBottom: 8,
+    borderRadius: 10,
+    borderWidth: 3,
+    borderColor: 'rgba(0, 130, 190, 255)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    maxWidth: '100%',
+    width: '93%',
   },
   title: {
     fontFamily: 'BPoppins',
-    fontSize: 36,
+    fontSize: 40,
     textAlign: 'center',
   },
   subtitle: {
     fontFamily: 'BPoppins',
-    fontSize: 30,
+    fontSize: 25,
     textAlign: 'center',
     color: 'rgba(0, 130, 190, 255)',
     marginTop: '10%',
@@ -316,19 +330,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   counterControl: {
-    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   button: {
     padding: 10,
     backgroundColor: '#blue',
-    marginHorizontal: 10,
+    marginHorizontal: '4%',
     borderRadius: 5,
   },
   buttonText: {
-    fontSize: 20,
+    fontSize: 25,
     color: 'rgba(0, 130, 190, 255)',
     fontFamily: 'BPoppins',
+    marginTop: -12,
   },
   countContainer: {
     alignItems: 'center',
@@ -338,13 +353,18 @@ const styles = StyleSheet.create({
     fontFamily: 'BPoppins',
   },
   countNumber: {
-    fontSize: 18,
+    fontSize: 30,
     fontFamily: 'BPoppins',
+    marginTop: -5,
   },
   line: {
-    borderBottomWidth: 1,
-    borderColor: 'black', // You can change the color as needed
-    marginVertical: 10, // Adjust the margin as needed
+      borderBottomWidth: 2,       // Adjust the width as needed
+      marginVertical: -2,         // Adjust the vertical margin as needed
+      marginBottom: '6%',
+      width:100,
+      borderRadius:10,
+      color:'#00bcf0',
+    
   },
   numberLine: {
     flexDirection: 'row',
@@ -378,6 +398,7 @@ const styles = StyleSheet.create({
   },
   placeholderStyle: {
     fontSize: 16,
+    color: 'gray',
   },
   selectedTextStyle: {
     fontSize: 16,
@@ -420,9 +441,10 @@ const styles = StyleSheet.create({
   sliderMarkersContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingLeft: 20,
+    alignContent: 'center',
     width: '95%',
-    paddingHorizontal: 60,
+    paddingLeft: '0%',
+    paddingRight: '15%',
     position: 'absolute',
     bottom: 0,
   },
@@ -430,7 +452,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: 'rgba(127, 127, 127, 255)',
   },
-  
+  row: {
+    flexDirection: 'row',
+  },
+  thumbStyle: {
+    width:20,
+    height: 20,
+  }
 });
 
 export default Counter;

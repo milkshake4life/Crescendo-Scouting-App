@@ -511,7 +511,7 @@ const matchDisplay = () => {
           <InfoPercentItem title={`${selectedAutoType} S3:`} info={getS3AutoPercentage(selectedAutoType)} />
           <InfoPercentItem title={`${selectedAutoType} R:`} info={getRAutoPercentage(selectedAutoType)} />
         </View>
-        <View style={styles.autoBorder}>
+        <View style={styles.border}>
           <View style={styles.autoButtons}>
             <Pressable style = {styles.optionButton} >
               <Text style={styles.optionText} onPress={() => setSelectedAutoType('Amp')}>Amp</Text>
@@ -538,14 +538,18 @@ const matchDisplay = () => {
         <View style={styles.border}>
           <InfoPercentItem title="Nothing:" info={endgameNothingPercent} />
           <InfoPercentItem title="Park Rate: " info={endgameParkPercent} />
+          </View>
+          <View style={styles.border}>
           <InfoPercentItem title="Single Climb Rate: " info={endgameSingleClimbPercent} />
           <InfoPercentItem title="Double Climb Rate: " info={endgameDoubleClimbPercent} />
           <InfoPercentItem title="Triple Climb Rate: " info={endgameTripleClimbPercent} />
+          </View>
+          <View style={styles.border}>
           <InfoPercentItem title="0 Trap:" info={endgameNoTrapPercent} />
           <InfoPercentItem title="1 Trap: " info={endgameOneTrapPercent} />
           <InfoPercentItem title="2 Trap: " info={endgameTwoTrapPercent} />
           <InfoPercentItem title="3 Trap: " info={endgameThreeTrapPercent} />
-        </View>
+          </View>
 
         <Text style={styles.itemTitle}>Overall</Text>
         <View style={styles.border}>
@@ -593,17 +597,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'white',
     width: '100%',
-  },
-  autoBorder: {
-    padding: 10,
-    borderRadius: 10, //curves
-    borderWidth: 3,
-    borderColor: 'rgba(0, 130, 190, 255)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white',
-    width: '100%',
-    marginVertical: 10,
+    marginBottom: '2%',
   },
   itemTitle: {
     fontSize: 25,
@@ -617,10 +611,11 @@ const styles = StyleSheet.create({
     fontFamily: 'BPoppins',
   },
   infoText: {
-    fontSize: 20,
+    fontSize: 17,
     marginLeft: 10,
     fontFamily: 'BPoppins',
     color: '#737373',
+    textAlign: 'center',
   },
   infoItem: {
     flexDirection: 'row',

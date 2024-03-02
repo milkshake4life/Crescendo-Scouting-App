@@ -92,7 +92,7 @@ const robotInfo = () => {
         <View style={ styles.container }>
         <BackButton buttonName='Home Page'/>
           <Text style={ styles.title }>Pit Scouting</Text>
-          <Text style={ styles.subtitle }>Input the team's data</Text>
+          {/* <Text style={ styles.subtitle }>Input the team's data</Text> */}
 
       <View style={styles.container}>
       <Text style={ styles.buttontitle }>Visionary Data</Text>
@@ -100,14 +100,14 @@ const robotInfo = () => {
             style={styles.input}
             value={vision}
             onChangeText={setVision}
-            placeholder="Visionary System"
+            placeholder="Input Visionary System"
           />
       <Text style={ styles.buttontitle }>Drive Train Data</Text>
       <TextInput
             style={styles.input}
             value={driveTrain}
             onChangeText={setDriveTrain}
-            placeholder="Drive Train"
+            placeholder="Input Drive Train"
          />
         <Text style={ styles.buttontitle }>Scoring Data</Text>
         <Dropdown
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
   },
   title:{
     fontFamily: 'BPoppins',
-    fontSize: 32,
+    fontSize: 35,
   },
   subtitle:{
     fontFamily: 'BPoppins',
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
   },
   buttontitle:{
     fontFamily: 'BPoppins',
-    fontSize: 12,
+    fontSize: 20,
     color: 'rgba(0, 130, 190, 255)',
    
   },

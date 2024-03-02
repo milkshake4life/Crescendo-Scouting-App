@@ -273,8 +273,8 @@ const styles = StyleSheet.create({
  container: {
    flex:1,
    backgroundColor: 'white',
-   paddingHorizontal: 15,
-   
+  alignItems: 'center',
+  justifyContent: 'center',
  },
  
  infoBox: {
@@ -283,15 +283,16 @@ const styles = StyleSheet.create({
  },
  teamNumber: {
    fontSize: 48,
-   fontWeight: 'bold',
    color: 'rgba(0, 130, 190, 255)',
    alignSelf: 'center',
+   marginTop: -40,
+   fontFamily: 'BPoppins',
  },
  heading: {
    fontSize: 30,
    fontWeight: 'bold',
    color: 'black',
-   marginTop: 7,
+   marginTop: -10,
    marginBottom: 30,
    alignSelf: 'center',
  },

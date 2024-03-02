@@ -424,7 +424,7 @@ const matchInfo: React.FC = () => {
 const styles = StyleSheet.create({
   title: {
     fontFamily: 'BPoppins',
-    fontSize: 36,
+    fontSize: 40,
     textAlign: 'center',
     marginTop: -45,
     marginBottom: 30,
@@ -436,7 +436,6 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 53,
     borderRadius: 4,
-    elevation: 3,
     backgroundColor: "rgba(0, 130, 190, 255)",
     borderWidth: 2,
     borderColor: "rgba(0, 130, 190, 255)",
@@ -602,7 +601,7 @@ const styles = StyleSheet.create({
   },
   listTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily:'BPoppins',
     marginBottom: 10,
     textAlign: 'center',
   },
@@ -617,12 +616,12 @@ const styles = StyleSheet.create({
   },
   listItem: {
     color: '#000', // Text color for the list item
-    fontWeight: 'normal',
+    fontFamily: 'BPoppins',
     flex: 1, // Allows text to fill the row and push the "X" to the end
   },
   closeButtonText: {
     color: '#333', // Color for the "X"
-    fontWeight: 'bold',
+    fontFamily:'BPoppins',
     marginLeft: 10, // Ensure spacing between the text and "X"
   },
   usedNote: {

@@ -154,8 +154,10 @@ const RegionalPage = () => {
       ) : (
         <View style={styles.container}>
           <BackButton buttonName='Home Page'/>
-          <Text style={styles.title}>Regional Has Not Started Yet</Text>
+          <View style={styles.containerRedirect}>
+          <Text style={styles.titleRedirect}>Regional Has Not Started Yet</Text>
           <Text style={styles.subtitle}>Please go back and choose a different regional</Text>
+        </View>
         </View>
       )}
     </View>
@@ -171,16 +173,30 @@ const styles = StyleSheet.create({
     alignItems: 'center', // Centers content horizontally in the container
     padding: 20, // Optional: Adds padding to the container
   },
+  containerRedirect: {
+    flex: 1, // Makes sure the container takes up the whole screen
+    justifyContent: 'flex-start', // Centers content to the top of the page
+    // alignItems: 'left', // Centers content horizontally in the container
+    paddingLeft: '0%', 
+  },
   title: {
+    fontFamily: 'BPoppins',
+    fontSize: 30,
+    marginBottom: 30,
+    textAlign: 'center',
+  },
+  titleRedirect: {
     fontFamily: 'BPoppins',
     fontSize: 30,
     marginBottom: 30,
   },
   subtitle: {
     fontFamily: 'BPoppins',
-    fontSize: 20,
+    fontSize: 15,
     color: 'rgba(127, 127, 127, 255)',
+    // textAlign: 'center',
   },
+  
   logo: {
     width: 270,  // specify a width
     height: 270, // and a height for your image
