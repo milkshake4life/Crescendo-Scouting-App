@@ -1,31 +1,25 @@
 import firebase_admin
 from firebase_admin import credentials, db
-from firebase import firebase
-firebase = firebase.FirebaseApplication('https://crescendo-scouting-app-default-rtdb.firebaseio.com/', None)
 
 # Initialize the app with a service account, granting admin privileges
-cred = credentials.Certificate('../FIREBASEkey.json')
+cred = credentials.Certificate('../FIREBASEkey.json')  # Change this back to ../FIREBASEkey.json
 firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://crescendo-scouting-app-default-rtdb.firebaseio.com/'
 })
 
 # Reference to the database
-ref = db.reference('/ISR/teams')
-
+ref = db.reference('/Port-Hueneme/teams')
 #Dictionaries
 StartingPosition = {1: "Amp", 2: "Middle", 3: "Source"}
 Teleop = {1: "Amp", 2: "Ground Intake", 3: "Source Intake", 4: "Speaker"}
 Climb = {1: "Nothing", 2: "Park", 3: "Single Climb", 4: "Double Climb", 5: "Triple Climb"}
 Trap = {0: "0 Trap", 1: "1 Trap", 2: "2 Trap", 3: "3 Trap"}
 
-
-
-
 isInitial = True  # Global variable declaration
 
 def listener(event):
     global isInitial  # Declare isInitial as global within the function
-    if not isInitial:    
+    if not isInitial:
         tempPath = event.path
         print("Event details:")
         print(f"Event path: {tempPath}")
@@ -33,14 +27,14 @@ def listener(event):
         if not ("Stats" in tempPath):
             print("there was a change")
             matchInfoIndex = tempPath.index("Match-Info") + 11
-            realPath = tempPath[0: matchInfoIndex] # this is the path to the qual Match, where there was a change in the database
+            realPath = tempPath[0: matchInfoIndex]  # this is the path to the qual Match, where there was a change in the database
             calculateEverything(realPath)
     else:
         isInitial = False  # Modify the global variable only after the first invocation
 
 def calculateEverything(path):
-    methodPath = '/ISR/teams' + path
-    result = firebase.get(methodPath, '')
+    methodPath = '/Port-Hueneme/teams' + path
+    result = db.reference(methodPath).get()
 
     #Pre Game variables
     totalPregameCount = 0
@@ -77,48 +71,46 @@ def calculateEverything(path):
     #getting data
     for i in result.keys():
         specificPath = methodPath + i
-        specificResult = firebase.get(specificPath, '')
+        specificResult = db.reference(specificPath).get()
+
         for j in specificResult.keys():
-            if(j == "Starting-Position"):
-                totalPregameCount = totalPregameCount + 1
+            if j == "Starting-Position":
+                totalPregameCount += 1
                 starting_position_value = specificResult[j]
-                startingPositionCounts[starting_position_value - 1] = startingPositionCounts[starting_position_value - 1] + 1
-            elif(j == "Auto"):
-                autoResult = firebase.get(specificPath + '/' + j, '')
-                for k in autoResult.keys():
-                    auto_result = autoResult[k]
+                startingPositionCounts[starting_position_value - 1] += 1
+            elif j == "Auto":
+                autoResult = db.reference(specificPath + '/' + j).get()
+                for k, auto_result in autoResult.items():
                     if k == "Taxi":
                         taxiValue = auto_result
                         if taxiValue == 1:
-                            taxiCount = taxiCount + 1
-                            totalTaxiCount = totalTaxiCount + 1
+                            taxiCount += 1
+                            totalTaxiCount += 1
                         else:
-                            totalTaxiCount = totalTaxiCount + 1
+                            totalTaxiCount += 1
                     else:
-                        auto_result = autoResult[k]
                         actionValue = auto_result.get("Action")
                         intakeValue = auto_result.get("Intake")
-                        if actionValue == 1: # Amp made
-                            autoAmpCounts[k] = autoAmpCounts[k] + 1
-                            totalAutoAmpCounts[k] = totalAutoAmpCounts[k] + 1
-                        elif actionValue == 2: # Amp missed
-                            totalAutoAmpCounts[k] = totalAutoAmpCounts[k] + 1
-                        elif actionValue == 3: # Speaker made
-                            autoSpeakerCounts[k] = autoSpeakerCounts[k] + 1
-                            totalAutoSpeakerCounts[k] = totalAutoSpeakerCounts[k] + 1
-                        elif actionValue == 4: # Speaker missed
-                            totalAutoSpeakerCounts[k] = totalAutoSpeakerCounts[k] + 1
 
-                        if intakeValue == 1: # Intake Missed
-                            totalAutoIntakeCounts[k] = totalAutoIntakeCounts[k] + 1
-                        elif intakeValue == 2: # Intake succesful
-                            autoIntakeCounts[k] = autoIntakeCounts[k] + 1
-                            totalAutoIntakeCounts[k] = totalAutoIntakeCounts[k] + 1
-            elif(j == "Teleop"):
-                teleopResult = firebase.get(specificPath + '/' + j, '')
-                for k in teleopResult.keys():
-                    # print(i)
-                    teleop_result = teleopResult[k]
+                        if actionValue == 1:  # Amp made
+                            autoAmpCounts[k] += 1
+                            totalAutoAmpCounts[k] += 1
+                        elif actionValue == 2:  # Amp missed
+                            totalAutoAmpCounts[k] += 1
+                        elif actionValue == 3:  # Speaker made
+                            autoSpeakerCounts[k] += 1
+                            totalAutoSpeakerCounts[k] += 1
+                        elif actionValue == 4:  # Speaker missed
+                            totalAutoSpeakerCounts[k] += 1
+
+                        if intakeValue == 1:  # Intake Missed
+                            totalAutoIntakeCounts[k] += 1
+                        elif intakeValue == 2:  # Intake successful
+                            autoIntakeCounts[k] += 1
+                            totalAutoIntakeCounts[k] += 1
+            elif j == "Teleop":
+                teleopResult = db.reference(specificPath + '/' + j).get()
+                for k, teleop_result in teleopResult.items():
                     if k == "Amp":
                         made_value = teleop_result.get('Made')
                         miss_value = teleop_result.get('Miss')
@@ -136,17 +128,18 @@ def calculateEverything(path):
                         teleopCounts[3] += made_value
                         totalTeleopSpeakerCount += made_value + miss_value
             elif j == "Endgame":
-                endgameResult = firebase.get(specificPath + '/' + j, '')
+                endgameResult = db.reference(specificPath + '/' + j).get()
                 for key, value in endgameResult.items():
                     if key == "Climb":
-                        endgameCounts[value - 1] = endgameCounts[value - 1] + 1
+                        endgameCounts[value - 1] += 1
                     elif key == "Trap":
-                        endgameTrapCounts[value] = endgameTrapCounts[value] + 1
-                endgameTotalCounts = endgameTotalCounts + 1
+                        endgameTrapCounts[value] += 1
+                endgameTotalCounts += 1
             elif j == "Driving Rating":
-                drivingRatingResult = firebase.get(specificPath + '/' + j, '')
-                postgameSumDrivingRating = postgameSumDrivingRating + drivingRatingResult
-                postgameTotalDrivingRating = postgameTotalDrivingRating + 1
+                drivingRatingResult = db.reference(specificPath + '/' + j).get()
+                postgameSumDrivingRating += drivingRatingResult
+                postgameTotalDrivingRating += 1
+
 
 
 
@@ -211,26 +204,33 @@ def calculateEverything(path):
     #Pushing the data
     #Pregame
     statsPath = methodPath[:int(methodPath.index("Match-Info"))]
+
+    # Pregame
     for i in range(len(startingPositionCounts)):
-        firebase.put(statsPath + 'Stats/Pregame/', StartingPosition[i + 1], data=pregamePercentage[i])
-    #Auto
-    firebase.put(statsPath + 'Stats/Auto', 'Taxi', autoTaxiPercentages)
+        db.reference(statsPath + 'Stats/Pregame/' + StartingPosition[i + 1]).set(pregamePercentage[i])
+
+    # Auto
+    db.reference(statsPath + 'Stats/Auto').update({'Taxi': autoTaxiPercentages})
     for key, value in autoAmpPercentages.items():
-        firebase.put(statsPath + 'Stats/Auto/Amp', key, data=value)
+        db.reference(statsPath + f'Stats/Auto/Amp/{key}').set(value)
     for key, value in autoSpeakerPercentages.items():
-        firebase.put(statsPath + 'Stats/Auto/Speaker', key, data=value)
+        db.reference(statsPath + f'Stats/Auto/Speaker/{key}').set(value)
     for key, value in autoIntakePercentages.items():
-        firebase.put(statsPath + 'Stats/Auto/Intake', key, data=value)
-    #Teleop
+        db.reference(statsPath + f'Stats/Auto/Intake/{key}').set(value)
+
+    # Teleop
     for i in range(len(teleopPercentage)):
-        firebase.put(statsPath + 'Stats/Teleop/', Teleop[i + 1], data=teleopPercentage[i])
-    #Endgame
+        db.reference(statsPath + 'Stats/Teleop/' + Teleop[i + 1]).set(teleopPercentage[i])
+
+    # Endgame
     for i in range(len(endgamePercentage)):
-        firebase.put(statsPath + 'Stats/Endgame/Climb', Climb[i + 1], data=endgamePercentage[i])
+        db.reference(statsPath + 'Stats/Endgame/Climb/' + Climb[i + 1]).set(endgamePercentage[i])
     for i in range(len(endgameTrapPercentage)):
-        firebase.put(statsPath + 'Stats/Endgame/Trap', Trap[i], data=endgameTrapPercentage[i])
-    #Post game
-    firebase.put(statsPath + 'Stats/Postgame/', "Driving Rating", postgameAverageRating)
+        db.reference(statsPath + 'Stats/Endgame/Trap/' + Trap[i]).set(endgameTrapPercentage[i])
+
+    # Post game
+    db.reference(statsPath + 'Stats/Postgame/Driving Rating').set(postgameAverageRating)
+
 
 # def calculatePreGameStats(path): # done
 #     methodPath = '/ISR/teams' + path

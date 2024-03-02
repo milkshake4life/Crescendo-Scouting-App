@@ -41,6 +41,7 @@ const robotDisplay = () => {
 
  //state variables for regional and teamNumber
  const [regional, setRegional] = useState('');
+ 
  const [teamNumber, setTeamNumber] = useState('');
 
  //state variables for climber display value. 

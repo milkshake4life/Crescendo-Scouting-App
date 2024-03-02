@@ -10,9 +10,11 @@ import { DataSnapshot, getDatabase, off, onValue, ref } from "@firebase/database
 
 
 const matchDisplay = () => {
+  
   // defining teamNumber and regional as state variables, because this allows their values to change.
   const [teamNumber, setTeamNumber] = useState<any>();
   const [regional, setRegional] = useState<any>();
+  const [titleRegional, setTitleRegional] = useState<any>();
   const [selectedAutoType, setSelectedAutoType] = useState<string>('Amp');
 
   //pregame constants
@@ -73,6 +75,43 @@ const matchDisplay = () => {
 
   //postgame constants
   const [postgameAverageDriverRating, setPostgameAverageDriverRating] = useState<string | null>(null);
+
+  useEffect(() => {
+    //log for debugging
+    // console.log("useEffect called");
+
+    //defining a new asynchronous function which will be used to retrieve and set both the team number and the regional. 
+    async function getTeamInfo() {
+      const result = await retrieveRegional();
+      if (!result) {
+        // console.log("no regional found");
+      } else {
+        setTitleRegional(result)
+        let modifiedRegional = result
+        if (result === 'Orange County') {
+          modifiedRegional = 'Orange-County'
+        }
+        else if (result === 'Port Hueneme') {
+          modifiedRegional = 'Port-Hueneme'
+        }
+        setRegional(modifiedRegional);
+      }
+
+      const num = await retrieveTeam();
+      if (!num) {
+        // console.log("no team found");
+      } else {
+        setTeamNumber(num);
+      }
+    }
+    //calling the function defined above
+    getTeamInfo();
+
+    //logging for debugging
+    // console.log("(matchDisplay): " + "team: " + teamNumber + " regional " + regional)
+
+  }, [teamNumber, regional])
+  // defining teamNumber and regional as state variables, because this allows their values to change.
 
   const getM1AutoPercentage = (autoType: string) => {
     switch (autoType) {
@@ -261,7 +300,7 @@ const matchDisplay = () => {
         const data = snapshot.val();
         setPosition(data); // Set the data to state
       } else {
-        console.log("No data available");
+        // console.log("No data available");
       }
     };
 
@@ -387,79 +426,6 @@ const matchDisplay = () => {
     };
 
   }, [teamNumber, regional]);
-
-
-  useEffect(() => {
-    //log for debugging
-    console.log("useEffect called");
-
-    //defining a new asynchronous function which will be used to retrieve and set both the team number and the regional. 
-    async function getTeamInfo() {
-      const result = await retrieveRegional();
-      if (!result) {
-        console.log("no regional found");
-      } else {
-        setRegional(result);
-      }
-
-      const num = await retrieveTeam();
-      if (!num) {
-        console.log("no team found");
-      } else {
-        setTeamNumber(num);
-      }
-    }
-    //calling the function defined above
-    getTeamInfo();
-
-    //logging for debugging
-    // console.log("(matchDisplay): " + "team: " + teamNumber + " regional " + regional)
-
-  }, [teamNumber, regional])
-  // defining teamNumber and regional as state variables, because this allows their values to change.
-
-  useEffect(() => {
-    //log for debugging
-    console.log("useEffect called");
-
-    //defining a new asynchronous function which will be used to retrieve and set both the team number and the regional. 
-    async function getTeamInfo() {
-
-      //.then is used to ensure that retrieveRegional has returned a value before attempting to set the value of regional to that value
-      //Basically, retrieveRegional and retrieveTeam return Promises of type string, but not actual strings. By using .then (alternatively you can use await), we 
-      //know for certain that the promise has been fulfilled, meaning we now have turned the Promise<string> into a string, so we can set our state variables to that string.
-      retrieveRegional().then((result: string | null) => {
-        if (!result) {
-          console.log("no regional found")
-        }
-        else {
-          const reg = result;
-          //setting the value of our state variable regional to the result of retrieveRegional
-          setRegional(reg);
-        }
-      })
-
-      //this is the same function as the above but with team instead of regional
-      retrieveTeam().then((result: string | null) => {
-        if (!result) {
-          console.log("no team found")
-        }
-        else {
-          const num = result;
-          setTeamNumber(num);
-        }
-      })
-
-
-    }
-
-    //calling the function defined above
-    getTeamInfo();
-
-    //logging for debugging
-    console.log("(matchDisplay): " + "team: " + teamNumber + " regional " + regional)
-
-  }, [teamNumber, regional])
   //I think having these as dependencies ensures that they will have a value before the rest of the code runs, but I'm not sure
 
   //added a line which displays stored info to ensure it is being retrieved
@@ -490,7 +456,7 @@ const matchDisplay = () => {
         <BackButton buttonName="Home Page" />
         <Text style={styles.teamNumber}> {teamNumber} </Text>
         <Text style={styles.heading}> Match Display! </Text>
-        <Text style={styles.subtitle}>{regional} Regional!</Text>
+        <Text style={styles.subtitle}>{titleRegional} Regional!</Text>
         <Text style={styles.itemTitle}>Pregame</Text>
         <View style={styles.border}>
           <InfoPercentItem title="Amp:" info={pregamePositionOne}/>

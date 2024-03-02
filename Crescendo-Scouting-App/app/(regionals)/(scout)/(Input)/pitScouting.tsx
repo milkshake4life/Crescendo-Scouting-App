@@ -55,6 +55,9 @@ const robotInfo = () => {
   if(regional === 'Orange County'){
     modifiedRegional = 'Orange-County'
   }
+  else if (regional === 'Port Hueneme') {
+    modifiedRegional = 'Port-Hueneme'
+  }
   const {teamNumber} = useGlobalSearchParams<{ teamNumber:string } > ();
 
   const handleSendData = () => {
