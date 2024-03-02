@@ -91,7 +91,7 @@ backButtonText:{
     marginBottom: 30,
 },
 backButton: {
-    marginTop: 50,
+    marginTop: '15%',
     marginBottom: 40, //adding bottom margins to avoid changing the title style
     //alignItems: 'center',
     //justifyContent: 'center',
@@ -102,6 +102,7 @@ backButton: {
     //backgroundColor: 'rgba(0, 130, 190, 255)', //removing background color so we can use an image. 
     //borderWidth: 1,                            //removing border for same reason as above
     borderColor: 'white',
+    marginLeft:'3%',
     width: 20,
     height: 20,
 },

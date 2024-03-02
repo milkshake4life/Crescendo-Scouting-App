@@ -24,6 +24,9 @@ const matchInfo = () => {
   if (regional === "Orange County") {
     modifiedRegional = "Orange-County";
   }
+  else if(regional === "Port Hueneme") {
+    modifiedRegional = "Port-Hueneme";
+  }
 
   interface DropdownItem {
     label: string;
@@ -38,6 +41,7 @@ const matchInfo = () => {
 
   const [qualMatch, setQualMatch] = useState<DropdownItem[]>([]);
   const [isFocus, setIsFocus] = useState(false);
+  const [isStartingPosFocus, setIsStartingPosFocus] = useState(false);
   const [selectedQualMatch, setSelectedQualMatch] = useState<string | null>(null);
 
   const [selectedAlliance, setSelectedAlliance] = useState< "Red" | "Blue" | null >("Blue");
@@ -104,7 +108,7 @@ const matchInfo = () => {
           <View style={styles.border}>
             <View style={styles.dropdownContainer}>
               <Dropdown
-                style={[styles.dropdown, isFocus && { borderColor: "black" }]}
+                style={[styles.dropdown, isFocus && { borderColor: "blue" }]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 iconStyle={styles.iconStyle}
@@ -175,6 +179,7 @@ const matchInfo = () => {
                   </Text>
                 </View>
               </TouchableOpacity>
+              
             </View>
           </View>
         </View>
@@ -245,7 +250,7 @@ const matchInfo = () => {
           <View style={styles.border}>
             <View style={styles.dropdownContainer}>
               <Dropdown
-                style={[styles.dropdown, isFocus && { borderColor: "black" }]}
+                style={[styles.dropdown, isFocus && { borderColor: "blue" }]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 iconStyle={styles.iconStyle}
@@ -254,15 +259,15 @@ const matchInfo = () => {
                 maxHeight={300}
                 labelField="label"
                 valueField="value"
-                placeholder={!isFocus ? "Starting Position" : "..."}
-                onFocus={() => setIsFocus(true)}
-                onBlur={() => setIsFocus(false)}
+                placeholder={!isStartingPosFocus ? "Starting Position" : "..."}
+                onFocus={() => setIsStartingPosFocus(true)}
+                onBlur={() => setIsStartingPosFocus(false)}
                 onChange={item => {
                   setSelectedStartingPositionString(item.value); //sets the displayed item
                   setSelectedStartingPosition(+item.value as 1 | 2 | 3 | null); //sets the value we are going to push to the backend
                   //debugging log
                   console.log(item.value + " label: " + item.label) 
-                  setIsFocus(false); // Assuming you want to unfocus the dropdown after selection
+                  setIsStartingPosFocus(false); // Assuming you want to unfocus the dropdown after selection
                 }}
               />
             </View>
@@ -325,23 +330,8 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "rgba(0, 130, 190, 255)",
     marginBottom:'13%',
-    // marginTop: 50,
-    // marginBottom: 100,
-    // alignItems: "center",
-    // justifyContent: "center",
-    // paddingVertical: 12,
-    // paddingHorizontal: 20,
-    // elevation: 3,
-    // backgroundColor: "rgba(0, 130, 190, 255)",
-    // width: 200, // Adjust the width as per your preference
   },
   buttonOneText: {
-    // fontSize: 16,
-    // lineHeight: 21,
-    // fontWeight: "bold",
-    // letterSpacing: 0.25,
-    // color: "white",
-    // fontFamily: "BPoppins",
     fontSize: 16,
     lineHeight: 21,
     letterSpacing: 0.25,
@@ -354,7 +344,7 @@ const styles = StyleSheet.create({
     height: 50,
     width: "95%", // or some other appropriate width
     borderColor: "gray",
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 3,
     // Add margin for some spacing if needed
@@ -373,12 +363,12 @@ const styles = StyleSheet.create({
   },
   placeholderStyle: {
     fontSize: 16,
-    color: 'gray',
-    marginLeft: '5%'
+    marginLeft: '5%',
+    color:'gray',
   },
   selectedTextStyle: {
     fontSize: 16,
-    marginLeft: '5%'
+    marginLeft: '5%',
   },
   iconStyle: {
     width: 20,
@@ -401,6 +391,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "white",
     width: "94%",
+
   },
   borderTwo: {
     paddingVertical: 15,
@@ -434,7 +425,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    
   },
   ButtonsContainer: {
     flexDirection: "row",
