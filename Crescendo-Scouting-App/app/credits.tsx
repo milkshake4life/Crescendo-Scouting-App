@@ -54,8 +54,9 @@ const styles = StyleSheet.create({
   },
   title:{
     fontFamily: 'BPoppins',
-    fontSize: 32,
+    fontSize: 40,
     marginBottom: 20,
+    color: 'rgba(0, 130, 190, 255)',
   },
   subtitle:{
     fontFamily: 'BPoppins',
