@@ -120,7 +120,7 @@ const MatchInfo: React.FC = () => {
     <ScrollView>
       <BackButton buttonName="Home Page" />
       <View style={styles.container}>
-        <Text style={styles.title}>Match Info</Text>
+        <Text style={styles.title}>Post Game</Text>
 
         {/* Driving Rating Slider */}
         <Text style={styles.subtitle}>Driving Rating</Text>
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     // marginBottom: 20,
     // marginTop: 70,
     fontFamily: 'BPoppins',
-    fontSize: 36,
+    fontSize: 40,
     textAlign: 'center',
   },
   // checkBox: {
@@ -202,25 +202,24 @@ const styles = StyleSheet.create({
     // color: 'rgba(127, 127, 127, 255)',
     // marginTop: 10,
     fontFamily: 'BPoppins',
-    fontSize: 30,
+    fontSize: 25,
     textAlign: 'center',
     color: 'rgba(0, 130, 190, 255)',
     marginTop: '10%',
   },
   submitButton: {
-    marginTop: 20,
+    marginTop: 40,
+    marginBottom:40,
     backgroundColor: 'rgba(0, 130, 190, 255)',
     paddingVertical: 12,
     paddingHorizontal: 53,
     borderRadius: 4,
-    elevation: 3,
     borderWidth: 2,
-    borderColor: 'white',
+    borderColor: 'rgba(0, 130, 190, 255)',
   },
   submitButtonText: {
     fontSize: 16,
     lineHeight: 21,
-    fontWeight: 'bold',
     letterSpacing: 0.25,
     color: 'white',
     fontFamily: 'BPoppins',
