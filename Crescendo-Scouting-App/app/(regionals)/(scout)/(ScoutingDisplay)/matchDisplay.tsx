@@ -626,7 +626,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   autoButtons: {
-
+    flexDirection: 'row',
   }
 });
 
