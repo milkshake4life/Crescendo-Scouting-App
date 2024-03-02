@@ -34,8 +34,7 @@ def listener(event):
         isInitial = False  # Modify the global variable only after the first invocation
 
 def calculateEverything(path):
-    methodPath = '/Port-Hueneme/teams' + path
-    result = db.reference(methodPath).get()
+    result = db.reference(path).get()
 
     #Pre Game variables
     totalPregameCount = 0
@@ -71,7 +70,7 @@ def calculateEverything(path):
 
     #getting data
     for i in result.keys():
-        specificPath = methodPath + i
+        specificPath = path + i
         specificResult = db.reference(specificPath).get()
 
         for j in specificResult.keys():
@@ -204,7 +203,7 @@ def calculateEverything(path):
 
     #Pushing the data
     #Pregame
-    statsPath = methodPath[:int(methodPath.index("Match-Info"))]
+    statsPath = path[:int(path.index("Match-Info"))]
 
     # Pregame
     for i in range(len(startingPositionCounts)):
