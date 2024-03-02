@@ -41,7 +41,7 @@ const robotDisplay = () => {
 
  //state variables for regional and teamNumber
  const [regional, setRegional] = useState('');
- 
+
  const [teamNumber, setTeamNumber] = useState('');
 
  //state variables for climber display value. 
@@ -51,34 +51,39 @@ const robotDisplay = () => {
 
  //Accessing cache
  useEffect(() => {
-   //this is copied over from matchDisplay, where it is explained in more detail.
+    //log for debugging
+    // console.log("useEffect called");
 
-   async function getTeamInfo() {
-     retrieveRegional().then((result: string | null) => {
-       if (!result) {
-         console.log("no regional found")
-       }
-       else {
-         const reg = result;
-         setRegional(reg);
-       }
-     })
+    //defining a new asynchronous function which will be used to retrieve and set both the team number and the regional. 
+    async function getTeamInfo() {
+      const result = await retrieveRegional();
+      if (!result) {
+        // console.log("no regional found");
+      } else {
+        let modifiedRegional = result
+        if (result === 'Orange County') {
+          modifiedRegional = 'Orange-County'
+        }
+        else if (result === 'Port Hueneme') {
+          modifiedRegional = 'Port-Hueneme'
+        }
+        setRegional(modifiedRegional);
+      }
 
-     retrieveTeam().then((result: string | null) => {
-       if (!result) {
-         console.log("no team found")
-       }
-       else {
-         const num = result;
-         setTeamNumber(num);
-       }
-     })
-   }
+      const num = await retrieveTeam();
+      if (!num) {
+        // console.log("no team found");
+      } else {
+        setTeamNumber(num);
+      }
+    }
+    //calling the function defined above
+    getTeamInfo();
 
-   getTeamInfo();
-   console.log("(robotDisplay): " + "team: " + teamNumber + " regional " + regional)
+    //logging for debugging
+    // console.log("(matchDisplay): " + "team: " + teamNumber + " regional " + regional)
 
- }, [teamNumber, regional]);
+  }, [teamNumber, regional])
 
  //accessing Climbing Info
  useEffect(() => {

@@ -8,7 +8,7 @@ firebase_admin.initialize_app(cred, {
 })
 
 # Reference to the database
-ref = db.reference('/Port-Hueneme/teams')
+ref = db.reference('')
 #Dictionaries
 StartingPosition = {1: "Amp", 2: "Middle", 3: "Source"}
 Teleop = {1: "Amp", 2: "Ground Intake", 3: "Source Intake", 4: "Speaker"}
@@ -24,8 +24,9 @@ def listener(event):
         print("Event details:")
         print(f"Event path: {tempPath}")
         print(f"Event data: {event.data}")
-        if not ("Stats" in tempPath):
+        if (not ("Stats" in tempPath)) and (not ("Robot-Info" in tempPath)):
             print("there was a change")
+            print(tempPath)
             matchInfoIndex = tempPath.index("Match-Info") + 11
             realPath = tempPath[0: matchInfoIndex]  # this is the path to the qual Match, where there was a change in the database
             calculateEverything(realPath)
