@@ -24,6 +24,9 @@ const matchInfo = () => {
   if (regional === "Orange County") {
     modifiedRegional = "Orange-County";
   }
+  else if(regional === "Port Hueneme") {
+    modifiedRegional = "Port-Hueneme";
+  }
 
   interface DropdownItem {
     label: string;
@@ -38,6 +41,7 @@ const matchInfo = () => {
 
   const [qualMatch, setQualMatch] = useState<DropdownItem[]>([]);
   const [isFocus, setIsFocus] = useState(false);
+  const [isStartingPosFocus, setIsStartingPosFocus] = useState(false);
   const [selectedQualMatch, setSelectedQualMatch] = useState<string | null>(null);
 
   const [selectedAlliance, setSelectedAlliance] = useState< "Red" | "Blue" | null >("Blue");
@@ -254,15 +258,15 @@ const matchInfo = () => {
                 maxHeight={300}
                 labelField="label"
                 valueField="value"
-                placeholder={!isFocus ? "Starting Position" : "..."}
-                onFocus={() => setIsFocus(true)}
-                onBlur={() => setIsFocus(false)}
+                placeholder={!isStartingPosFocus ? "Starting Position" : "..."}
+                onFocus={() => setIsStartingPosFocus(true)}
+                onBlur={() => setIsStartingPosFocus(false)}
                 onChange={item => {
                   setSelectedStartingPositionString(item.value); //sets the displayed item
                   setSelectedStartingPosition(+item.value as 1 | 2 | 3 | null); //sets the value we are going to push to the backend
                   //debugging log
                   console.log(item.value + " label: " + item.label) 
-                  setIsFocus(false); // Assuming you want to unfocus the dropdown after selection
+                  setIsStartingPosFocus(false); // Assuming you want to unfocus the dropdown after selection
                 }}
               />
             </View>
