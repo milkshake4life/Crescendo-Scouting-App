@@ -7,7 +7,7 @@ firebase = firebase.FirebaseApplication('https://crescendo-scouting-app-default-
 f = open("../TBAkey.txt", "r")
 headers = {'X-TBA-Auth-Key': f.read()}
 
-eventKey = "2023caph" #ONLY CHANGE THIS VARIABLE
+eventKey = "2024caph" #ONLY CHANGE THIS VARIABLE
 
 r = requests.get('https://www.thebluealliance.com/api/v3/event/' + eventKey + '/matches/simple', headers=headers)
 x = json.loads(r.text)
