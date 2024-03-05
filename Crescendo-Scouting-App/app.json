@@ -2,10 +2,10 @@
   "expo": {
     "name": "589 Scouting App",
     "slug": "589ScoutingApp",
-    "scheme": "589ScoutingApp",
-    "version": "1.0.0",
+    "scheme": ["scoutingapp589"],
+    "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/images/589Logo.png",
+    "icon": "./assets/images/Square589Logo.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/images/589Logo.png",
@@ -16,12 +16,13 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
       "bundleIdentifier": "com.et8095.589ScoutingApp"
+      
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/589Logo.png",
+        "foregroundImage": "./assets/images/Square589Logo.png",
         "backgroundColor": "#ffffff"
       }
     },
