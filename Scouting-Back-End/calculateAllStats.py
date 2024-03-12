@@ -27,9 +27,10 @@ def listener(event):
         if (not ("Stats" in tempPath)) and (not ("Robot-Info" in tempPath)):
             print("there was a change")
             print(tempPath)
-            matchInfoIndex = tempPath.index("Match-Info") + 11
-            realPath = tempPath[0: matchInfoIndex]  # this is the path to the qual Match, where there was a change in the database
-            calculateEverything(realPath)
+            if("Match-Info" in tempPath):
+                matchInfoIndex = tempPath.index("Match-Info") + 11
+                realPath = tempPath[0: matchInfoIndex]  # this is the path to the qual Match, where there was a change in the database
+                calculateEverything(realPath)
     else:
         isInitial = False  # Modify the global variable only after the first invocation
 
