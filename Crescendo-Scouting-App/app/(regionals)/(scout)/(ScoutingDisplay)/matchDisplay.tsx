@@ -622,10 +622,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 0,
   },
-  infoBox: {
-    backgroundColor: 'white',
-    paddingHorizontal: 15,
-  },
   autoButtons: {
     flexDirection: 'row',
   },

@@ -32,12 +32,6 @@ const styles = StyleSheet.create({
     fontSize: 32,
     marginBottom: 20,
   },
-  subtitle:{
-    fontFamily: 'BPoppins',
-    fontSize: 15,
-    color: 'rgba(127, 127, 127, 255)',
-    marginBottom: 30,
-  },
   logo: {
     width: 270,  // specify a width
     height: 270, // and a height for your image
@@ -55,18 +49,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 130, 190, 255)',
     borderWidth: 1,
     borderColor: 'rgba(0, 130, 190, 255)',
-  },
-  buttonTwo: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 52,
-    borderRadius: 4,
-    elevation: 3,
-    backgroundColor: 'rgba(0, 130, 190, 255)',
-    borderWidth: 1,
-    borderColor: 'rgba(0, 130, 190, 255)',
-    marginTop: 10, // Adds space between buttons
   },
   buttonText: {
     fontSize: 16,

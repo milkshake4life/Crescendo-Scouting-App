@@ -447,55 +447,6 @@ const styles = StyleSheet.create({
     color: "white",
     fontFamily: "BPoppins",
   },
-  ringsContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  ringWrapper: {
-    marginVertical: 10,
-  },
-  ringBase: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    borderWidth: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  ringActive: {
-    borderColor: '#00f',
-  },
-  ringInactive: {
-    borderColor: '#f90',
-  },
-  greenRing: {
-    borderColor: '#0f0',
-  },
-  redRing: {
-    borderColor: '#f00',
-  },
-  content: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    flex: 1,
-    width: '100%',
-  },
-  buttonGroup: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    // flexDirection: 'row',
-  },
-  button: {
-    backgroundColor: 'rgba(0, 130, 190, 255)', // Button color
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    marginVertical: 5, // Adjust for space between buttons
-    marginLeft: 5,//PLEASE CHANGE THIS 
-    marginRight: 5,
-    alignContent: 'center',
-  },
   speakerButton: {
     backgroundColor: 'rgba(0, 130, 190, 255)', // Button color
     paddingHorizontal: '15%',
@@ -569,35 +520,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     padding: 20,
     width: "100%",
-  },
-  ringsOuterContainer: {
-    flexDirection: 'column', // Stack the two rows vertically
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-  },
-  ringsRow: {
-    flexDirection: 'row', // Arrange items in a row
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    width: '100%',
-  },
-  ringText: {
-    color: 'black', // Choose the text color that suits your design
-    fontWeight: 'bold', // If you want the text to be bold
-    // Position the text in the center of the ring
-    position: 'absolute',
-    textAlign: 'center',
-    width: '100%', // Ensure the text is centered in the ring
-    lineHeight: 40, // Adjust line height to vertically center text in the ring
-  },
-  listContainer: {
-    borderColor: '#000',
-    borderWidth: 2,
-    marginTop: 20,
-    padding: 10,
-    width: '90%',
-    alignSelf: 'center',
   },
   listTitle: {
     fontSize: 20,

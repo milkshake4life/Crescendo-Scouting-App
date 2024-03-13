@@ -306,10 +306,6 @@ const styles = StyleSheet.create({
    marginLeft: 10,
    fontFamily:'BPoppins',
  },
- icon: {
-   color: "black",
-   fontFamily:'BPoppins',
- },
  titleText: {
    color: 'rgba(0, 130, 190, 255)',
    fontSize: 20,

@@ -46,18 +46,6 @@ const styles = StyleSheet.create({
       marginBottom: '16%',
       marginTop: '30%', //adding top margin to move down the page. 
     },
-    subtitle:{
-      fontFamily: 'BPoppins',
-      fontSize: 15,
-      color: 'rgba(127, 127, 127, 255)',
-      marginBottom: 30,
-    },
-    logo: {
-      width: 270,  // specify a width
-      height: 270, // and a height for your image
-      marginBottom: 60,
-      // add other styling as needed
-    },
     buttonOne: {
       marginTop: 5,
       alignItems: 'center',
@@ -87,40 +75,6 @@ const styles = StyleSheet.create({
       color: 'white',
       fontFamily: 'BPoppins',
     },
-    backButtonText:{
-      fontFamily: 'BPoppins',
-      fontSize: 15,
-      color: 'white',
-      marginBottom: 30,
-    },
-    // backButton: {
-    //   marginTop: 0,
-    //   alignItems: 'center',
-    //   justifyContent: 'center',
-    //   paddingVertical: 12,
-    //   paddingHorizontal: 82,
-    //   borderRadius: 4,
-    //   elevation: 3,
-    //   backgroundColor: 'rgba(0, 130, 190, 255)',
-    //   borderWidth: 1,
-    //   borderColor: 'white',
-    // },
-    backButton: {
-      marginTop: 0,
-      marginBottom: 50, //adding bottom margins to avoid changing the title style
-      //alignItems: 'center',
-      //justifyContent: 'center',
-      //paddingVertical: 12,
-      //paddingHorizontal: 82,
-      paddingRight: 350,
-      borderRadius: 4,
-      elevation: 3,
-      //backgroundColor: 'rgba(0, 130, 190, 255)', //removing background color so we can use an image. 
-      //borderWidth: 1,                            //removing border for same reason as above
-      borderColor: 'white',
-      width: 20,
-      height: 20,
-    }
   });
 
 export default Scout;
