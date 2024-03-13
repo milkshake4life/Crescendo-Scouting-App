@@ -301,24 +301,6 @@ const matchInfo = () => {
 };
 
 const styles = StyleSheet.create({
-  backButtonText: {
-    fontFamily: "BPoppins",
-    fontSize: 15,
-    color: "white",
-    marginBottom: 30,
-  },
-  backButton: {
-    marginTop: 0,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 82,
-    borderRadius: 4,
-    elevation: 3,
-    backgroundColor: "rgba(0, 130, 190, 255)",
-    borderWidth: 1,
-    borderColor: "white",
-  },
   buttonOne: {
     marginTop: '15%',
     alignItems: "center",
@@ -352,15 +334,6 @@ const styles = StyleSheet.create({
     marginBottom: '4%',
 
   },
-  label: {
-    position: "absolute",
-    backgroundColor: "white",
-    left: 22,
-    top: 8,
-    zIndex: 999,
-    paddingHorizontal: 8,
-    fontSize: 14,
-  },
   placeholderStyle: {
     fontSize: 16,
     marginLeft: '5%',
@@ -373,13 +346,6 @@ const styles = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
-  },
-  inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
-  },
-  checkboxContainer: {
-    marginVertical: 20,
   },
   border: {
     paddingVertical:'4%',
@@ -430,21 +396,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-  },
-  sendButton: {
-    marginTop: 0,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: "3%",
-    paddingHorizontal: "15%",
-    borderRadius: 4,
-    backgroundColor: "rgba(0, 130, 190, 255)",
-    borderWidth: 1,
-    borderColor: "white",
-  },
-  sendButtonText: {
-    color: "white",
-    fontFamily: "BPoppins",
   },
 });
 

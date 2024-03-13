@@ -220,22 +220,11 @@ const styles = StyleSheet.create({
     fontFamily: 'BPoppins',
     fontSize: 35,
   },
-  subtitle:{
-    fontFamily: 'BPoppins',
-    fontSize: 15,
-    color: 'rgba(127, 127, 127, 255)',
-    marginBottom: 30,
-  },
   buttontitle:{
     fontFamily: 'BPoppins',
     fontSize: 20,
     color: 'rgba(0, 130, 190, 255)',
    
-  },
-  questiontitle:{
-    fontFamily: 'BPoppins',
-    fontSize: 15,
-    color: 'rgba(127, 127, 127, 255)',
   },
   input: {
     height: 50,
@@ -246,29 +235,6 @@ const styles = StyleSheet.create({
     padding: 10,
     width: '90%', // Set width as needed
     borderRadius: 5, // Optional: if you want rounded corners
-  },
-  optionsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-  },
-  option: {
-    padding: 10,
-    margin: 5,
-    borderWidth: 1,
-    borderColor: '#000',
-    borderRadius: 20, // Makes it more "bubble"-like
-    backgroundColor: '#fff',
-  },
-  optionText: {
-    fontSize: 16,
-    color: '#000',
-    //fontFamily: 'BPoppins', // Change this to less dense font
-  },
-  optionSelected: {
-    backgroundColor: '#007bff',
-    borderColor: '#0056b3',
-    color: '#fff',
   },
   sendButton: {
     marginTop: 0,
@@ -297,15 +263,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 30,
   },
-  label: {
-    position: 'absolute',
-    backgroundColor: 'white',
-    left: 22,
-    top: 8,
-    zIndex: 999,
-    paddingHorizontal: 8,
-    fontSize: 14,
-  },
   placeholderStyle: {
     fontSize: 16,
   },
@@ -316,11 +273,6 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
   },
-  inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
-  },
-
 });
 
 export default robotInfo;

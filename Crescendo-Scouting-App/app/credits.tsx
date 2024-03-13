@@ -61,49 +61,6 @@ const styles = StyleSheet.create({
     color: 'rgba(0, 130, 190, 255)',
 
   },
-  subtitle:{
-    fontFamily: 'BPoppins',
-    fontSize: 15,
-    color: 'rgba(127, 127, 127, 255)',
-    marginBottom: 30,
-  },
-  logo: {
-    width: 270,  // specify a width
-    height: 270, // and a height for your image
-    marginBottom: 20,
-    // add other styling as needed
-  },
-  buttonOne: {
-    marginTop: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 82,
-    borderRadius: 4,
-    elevation: 3,
-    backgroundColor: 'rgba(0, 130, 190, 255)',
-    borderWidth: 1,
-    borderColor: 'rgba(0, 130, 190, 255)',
-  },
-  buttonTwo: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 52,
-    borderRadius: 4,
-    elevation: 3,
-    backgroundColor: 'rgba(0, 130, 190, 255)',
-    borderWidth: 1,
-    borderColor: 'rgba(0, 130, 190, 255)',
-    marginTop: 10, // Adds space between buttons
-  },
-  buttonText: {
-    fontSize: 16,
-    lineHeight: 21,
-    letterSpacing: 0.25,
-    color: 'white',
-    fontFamily: 'BPoppins',
-  },
   listTitle:{
     fontFamily: 'BPoppins',
     fontSize: 30,

@@ -372,15 +372,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
   },
-  space: {
-    height: 2,
-    width: '28%',
-
-  },
-  number: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
   dropdown: {
     height: 50,
     width: '99%', // or some other appropriate width
@@ -401,10 +392,6 @@ const styles = StyleSheet.create({
     color: 'gray',
   },
   selectedTextStyle: {
-    fontSize: 16,
-  },
-  inputSearchStyle: {
-    height: 40,
     fontSize: 16,
   },
   submitButton: {
