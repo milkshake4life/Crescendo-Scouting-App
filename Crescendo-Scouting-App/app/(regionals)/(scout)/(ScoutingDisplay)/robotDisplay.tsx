@@ -2,14 +2,24 @@ import { Link, router, useGlobalSearchParams, useLocalSearchParams } from "expo-
 import { Pressable, Button, Text, View, StyleSheet } from "react-native";
 import BackButton from "../../../backButton";
 import { database } from '../../../.././firebaseConfig';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { getDatabase, ref, get, DataSnapshot } from "firebase/database";
 import { TeamProvider, useTeam } from './TeamContext';
 import { retrieveRegional, retrieveTeam } from "../../../Contexts/TeamSecureCache";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Camera, CameraPictureOptions } from "expo-camera";
+
 
 
 const robotDisplay = () => {
+ //Camera variables
+  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
+  const [cameraType, setCameraType] = useState(Camera.Constants.Type); //idk how to default to back camera
+  const [isPreview, setIsPreview] = useState(false);
+  const [isCameraReady, setIsCameraReady] = useState(false);
+  const cameraRef =  useRef();
+
+
  //backend data state variables:
  //climbing
  const [climbingData, setClimbingData] = useState<string>("No Information");
@@ -48,6 +58,14 @@ const robotDisplay = () => {
  //Find a way to make this more efficient. 
  const [climberOption, setClimberOption] = useState('');
  const [climbData, setClimbData] = useState(".");
+
+ //Camera Permissions
+ useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === "granted");
+    })();
+ }, []);
 
  //Accessing cache
  useEffect(() => {
@@ -219,7 +237,6 @@ const robotDisplay = () => {
      });
 
  }, [regional, teamNumber, driveTrainData]);
-
  //setting display data based on fetched data using an array. 
 
  //data needs to be trimmed because data fetched from firebase is returned with quotes: "<data>"
@@ -238,6 +255,26 @@ const robotDisplay = () => {
  let climbDisplay: string = displayArray[+climbIndex - 1];
  let intakeDisplay: string = displayArray[+intakeIndex - 1];
  let drivingDisplay: string = displayArray[+drivingIndex - 1];
+
+
+//Taking a picture using camera:
+const takePicture = async () => {
+  //this method will only be called after making sure permissions have been granted.
+  //checks to see if app has a current camera
+  if(cameraRef.current)
+  {
+    //options for picture processing. There is a skipProcessing prop which will speed up
+    //photo delivery significantly, so we could always use that to speed it up. 
+    const options: CameraPictureOptions = {base64: true, quality: 0.5};
+    Camera.
+  }
+}
+
+
+
+
+
+
 
 const InfoItem: React.FC<ItemProps> = ({ icon, text, info }) => (
  <View style={styles.infoItem}>
