@@ -466,16 +466,16 @@ const matchDisplay = () => {
 
         <Text style={styles.itemTitle}>Autonomous</Text>
         <View style={styles.border}>
-          <InfoPercentItem title="Taxi:" info={autoTaxiPercent} />
-          <InfoPercentItem title={`${selectedAutoType} M1:`} info={getM1AutoPercentage(selectedAutoType)} />
-          <InfoPercentItem title={`${selectedAutoType} M2:`} info={getM2AutoPercentage(selectedAutoType)} />
-          <InfoPercentItem title={`${selectedAutoType} M3:`} info={getM3AutoPercentage(selectedAutoType)} />
-          <InfoPercentItem title={`${selectedAutoType} M4:`} info={getM4AutoPercentage(selectedAutoType)} />
-          <InfoPercentItem title={`${selectedAutoType} M5:`} info={getM5AutoPercentage(selectedAutoType)} />
-          <InfoPercentItem title={`${selectedAutoType} S1:`} info={getS1AutoPercentage(selectedAutoType)} />
-          <InfoPercentItem title={`${selectedAutoType} S2:`} info={getS2AutoPercentage(selectedAutoType)} />
-          <InfoPercentItem title={`${selectedAutoType} S3:`} info={getS3AutoPercentage(selectedAutoType)} />
-          <InfoPercentItem title={`${selectedAutoType} R:`} info={getRAutoPercentage(selectedAutoType)} />
+          <InfoItem title="Taxi:" info={autoTaxiPercent} />
+          <InfoItem title={`${selectedAutoType} M1:`} info={getM1AutoPercentage(selectedAutoType)} />
+          <InfoItem title={`${selectedAutoType} M2:`} info={getM2AutoPercentage(selectedAutoType)} />
+          <InfoItem title={`${selectedAutoType} M3:`} info={getM3AutoPercentage(selectedAutoType)} />
+          <InfoItem title={`${selectedAutoType} M4:`} info={getM4AutoPercentage(selectedAutoType)} />
+          <InfoItem title={`${selectedAutoType} M5:`} info={getM5AutoPercentage(selectedAutoType)} />
+          <InfoItem title={`${selectedAutoType} S1:`} info={getS1AutoPercentage(selectedAutoType)} />
+          <InfoItem title={`${selectedAutoType} S2:`} info={getS2AutoPercentage(selectedAutoType)} />
+          <InfoItem title={`${selectedAutoType} S3:`} info={getS3AutoPercentage(selectedAutoType)} />
+          <InfoItem title={`${selectedAutoType} R:`} info={getRAutoPercentage(selectedAutoType)} />
         </View>
         <View style={styles.border}>
           <View style={styles.autoButtons}>
