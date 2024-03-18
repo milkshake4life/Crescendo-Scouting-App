@@ -202,202 +202,49 @@ def calculateEverything(path):
     else:
         postgameAverageRating = round(postgameSumDrivingRating / postgameTotalDrivingRating)
 
+
+
     #Pushing the data
     #Pregame
     statsPath = path[:int(path.index("Match-Info"))]
 
     # Pregame
     for i in range(len(startingPositionCounts)):
-        db.reference(statsPath + 'Stats/Pregame/' + StartingPosition[i + 1]).set(pregamePercentage[i])
+        db.reference(statsPath + 'Stats/Percentage/Pregame/' + StartingPosition[i + 1]).set(pregamePercentage[i])
+        db.reference(statsPath + 'Stats/Fraction/Pregame/' + StartingPosition[i + 1]).set(startingPositionCounts[i])
+
+    db.reference(statsPath + 'Stats/Fraction/Pregame/Total').set(totalPregameCount)
 
     # Auto
-    db.reference(statsPath + 'Stats/Auto').update({'Taxi': autoTaxiPercentages})
+    db.reference(statsPath + 'Stats/Percentage/Auto').update({'Taxi': autoTaxiPercentages})
+    db.reference(statsPath + 'Stats/Fraction/Auto').update({'Taxi': taxiCount})
+    db.reference(statsPath + 'Stats/Fraction/Auto').update({'TaxiTotal': totalTaxiCount})
     for key, value in autoAmpPercentages.items():
-        db.reference(statsPath + f'Stats/Auto/Amp/{key}').set(value)
+        db.reference(statsPath + f'Stats/Percentage/Auto/Amp/{key}').set(value)
     for key, value in autoSpeakerPercentages.items():
-        db.reference(statsPath + f'Stats/Auto/Speaker/{key}').set(value)
+        db.reference(statsPath + f'Stats/Percentage/Auto/Speaker/{key}').set(value)
     for key, value in autoIntakePercentages.items():
-        db.reference(statsPath + f'Stats/Auto/Intake/{key}').set(value)
+        db.reference(statsPath + f'Stats/Percentage/Auto/Intake/{key}').set(value)
 
     # Teleop
     for i in range(len(teleopPercentage)):
-        db.reference(statsPath + 'Stats/Teleop/' + Teleop[i + 1]).set(teleopPercentage[i])
+        db.reference(statsPath + 'Stats/Percentage/Teleop/' + Teleop[i + 1]).set(teleopPercentage[i])
+        db.reference(statsPath + 'Stats/Fraction/Teleop/' + Teleop[i + 1]).set(teleopCounts[i])
+    db.reference(statsPath + 'Stats/Fraction/Teleop/Amp Total').set(totalTeleopAmpCount)
+    db.reference(statsPath + 'Stats/Fraction/Teleop/Speaker Total').set(totalTeleopSpeakerCount)
+    db.reference(statsPath + 'Stats/Fraction/Teleop/Intake Total').set(totalTeleopIntakeCount)
 
     # Endgame
     for i in range(len(endgamePercentage)):
-        db.reference(statsPath + 'Stats/Endgame/Climb/' + Climb[i + 1]).set(endgamePercentage[i])
+        db.reference(statsPath + 'Stats/Percentage/Endgame/Climb/' + Climb[i + 1]).set(endgamePercentage[i])
+        db.reference(statsPath + 'Stats/Fraction/Endgame/Climb/' + Climb[i + 1]).set(endgameCounts[i])
     for i in range(len(endgameTrapPercentage)):
-        db.reference(statsPath + 'Stats/Endgame/Trap/' + Trap[i]).set(endgameTrapPercentage[i])
+        db.reference(statsPath + 'Stats/Percentage/Endgame/Trap/' + Trap[i]).set(endgameTrapPercentage[i])
+        db.reference(statsPath + 'Stats/Fraction/Endgame/Trap/' + Trap[i]).set(endgameTrapCounts[i])
+    db.reference(statsPath + 'Stats/Fraction/Endgame/Total/').set(endgameTotalCounts)
 
     # Post game
-    db.reference(statsPath + 'Stats/Postgame/Driving Rating').set(postgameAverageRating)
-
-
-# def calculatePreGameStats(path): # done
-#     methodPath = '/ISR/teams' + path
-#     result = firebase.get(methodPath, '')
-#     totalCount = 0
-
-#     #this loop counts all the data in the fir
-#     startingPositionCounts = [0, 0, 0]
-#     for i in result.keys():
-#         specificPath = methodPath + i
-#         specificResult = firebase.get(specificPath, '')
-#         for j in specificResult.keys():
-#             if(j == "Starting-Position"):
-#                 totalCount = totalCount + 1
-#                 starting_position_value = specificResult[j]
-#                 startingPositionCounts[starting_position_value - 1] = startingPositionCounts[starting_position_value - 1] + 1
-    
-#     #Now we calculate the statisitic
-#     if totalCount == 0:
-#         percentage = [0, 0, 0]
-#     else:
-#         percentage = [int((startingPositionCounts[0] / totalCount)*100), int((startingPositionCounts[1] / totalCount) *100), int((startingPositionCounts[2] / totalCount)*100)]
-
-
-#     #Push to database
-#     statsPath = methodPath[:int(methodPath.index("Match-Info"))]
-#     for i in range(len(startingPositionCounts)):
-#         firebase.put(statsPath + 'Stats/Pregame/', StartingPosition[i + 1], data=percentage[i])
-
-
-# def calculateAutoStats(path): # done
-#     methodPath = '/ISR/teams' + path
-#     result = firebase.get(methodPath, '')
-#     taxiCount = 0
-#     actionAmpCounts = {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 0, "S1": 0, "S2": 0, "S3": 0, "R": 0}
-#     actionSpeakerCounts = {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 0, "S1": 0, "S2": 0, "S3": 0, "R": 0}
-#     intakeCounts = {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 0, "S1": 0, "S2": 0, "S3": 0}
-
-#     totalTaxiCount = 0
-#     totalActionAmpCounts = {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 0, "S1": 0, "S2": 0, "S3": 0, "R": 0}
-#     totalActionSpeakerCounts = {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 0, "S1": 0, "S2": 0, "S3": 0, "R": 0} 
-#     totalIntakeCounts = {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 0, "S1": 0, "S2": 0, "S3": 0}
-
-#     for i in result.keys():
-#         specificPath = methodPath + i
-#         specificResult = firebase.get(specificPath, '')
-#         for j in specificResult.keys():
-#             if(j == "Auto"):
-#                 autoResult = firebase.get(specificPath + '/' + j, '')
-#                 for k in autoResult.keys():
-#                     auto_result = autoResult[k]
-#                     if k == "Taxi":
-#                         taxiValue = auto_result
-#                         if taxiValue == 1:
-#                             taxiCount = taxiCount + 1
-#                             totalTaxiCount = totalTaxiCount + 1
-#                         else:
-#                             totalTaxiCount = totalTaxiCount + 1
-#                     else:
-#                         auto_result = autoResult[k]
-#                         actionValue = auto_result.get("Action")
-#                         intakeValue = auto_result.get("Intake")
-#                         if actionValue == 1: # Amp made
-#                             actionAmpCounts[k] = actionAmpCounts[k] + 1
-#                             totalActionAmpCounts[k] = totalActionAmpCounts[k] + 1
-#                         elif actionValue == 2: # Amp missed
-#                             totalActionAmpCounts[k] = totalActionAmpCounts[k] + 1
-#                         elif actionValue == 3: # Speaker made
-#                             actionSpeakerCounts[k] = actionSpeakerCounts[k] + 1
-#                             totalActionSpeakerCounts[k] = totalActionSpeakerCounts[k] + 1
-#                         elif actionValue == 4: # Speaker missed
-#                             totalActionSpeakerCounts[k] = totalActionSpeakerCounts[k] + 1
-
-#                         if intakeValue == 1: # Intake Missed
-#                             totalIntakeCounts[k] = totalIntakeCounts[k] + 1
-#                         elif intakeValue == 2: # Intake succesful
-#                             intakeCounts[k] = intakeCounts[k] + 1
-#                             totalIntakeCounts[k] = totalIntakeCounts[k] + 1
-    
-#     #calculate statistics
-#     ampPercentages = {key: int(actionAmpCounts[key] / totalActionAmpCounts[key] * 100) if totalActionAmpCounts[key] != 0 else 0 for key in actionAmpCounts}
-#     speakerPercentages = {key: int(actionSpeakerCounts[key] / totalActionSpeakerCounts[key] * 100) if totalActionSpeakerCounts[key] != 0 else 0 for key in actionSpeakerCounts}
-#     intakePercentages = {key: int(intakeCounts[key] / totalIntakeCounts[key] * 100) if totalIntakeCounts[key] != 0 else 0 for key in intakeCounts}
-#     taxiPercentages = int(taxiCount / totalTaxiCount * 100) if totalTaxiCount != 0 else 0
-
-#     # Push to database
-#     statsPath = methodPath[:int(methodPath.index("Match-Info"))]
-#     firebase.put(statsPath + 'Stats/Auto', 'Taxi', taxiPercentages)
-#     for key, value in ampPercentages.items():
-#         firebase.put(statsPath + 'Stats/Auto/Amp', key, data=value)
-#     for key, value in speakerPercentages.items():
-#         firebase.put(statsPath + 'Stats/Auto/Speaker', key, data=value)
-#     for key, value in intakePercentages.items():
-#         firebase.put(statsPath + 'Stats/Auto/Intake', key, data=value)
-    
-
-    
-# def calculateTeleopStats(path): # done
-#     methodPath = '/ISR/teams' + path
-#     result = firebase.get(methodPath, '')
-#     totalAmpCount = 0
-#     totalIntakeCount = 0
-#     totalSpeakerCount = 0
-    
-#     counts = [0, 0, 0, 0] # index 0 is amp, index 1 is ground, index 2 is source, index 3 is speaker
-#     for i in result.keys():
-#         specificPath = methodPath + i
-#         specificResult = firebase.get(specificPath, '')
-#         for j in specificResult.keys():
-#             if(j == "Teleop"):
-#                 teleopResult = firebase.get(specificPath + '/' + j, '')
-#                 for k in teleopResult.keys():
-#                     # print(i)
-#                     teleop_result = teleopResult[k]
-#                     if k == "Amp":
-#                         made_value = teleop_result.get('Made')
-#                         miss_value = teleop_result.get('Miss')
-#                         counts[0] += made_value
-#                         totalAmpCount += made_value + miss_value
-#                     elif k == "Intake":
-#                         ground_value = teleop_result.get('Ground')
-#                         source_value = teleop_result.get('Source')
-#                         counts[1] += ground_value
-#                         counts[2] += source_value
-#                         totalIntakeCount += ground_value + source_value
-#                     elif k == "Speaker":
-#                         made_value = teleop_result.get('Made')
-#                         miss_value = teleop_result.get('Miss')
-#                         counts[3] += made_value
-#                         totalSpeakerCount += made_value + miss_value
-        
-#     #calculates the stats
-#     if(totalAmpCount == 0):
-#         ampPercentage = 0
-#     else:
-#         ampPercentage = int(counts[0]/ totalAmpCount*100 )
-#     if(totalIntakeCount == 0):
-#         groundPercentage = 0
-#         sourcePercentage = 0
-#     else:
-#         groundPercentage = int(counts[1]/ totalIntakeCount*100 )
-#         sourcePercentage = int(counts[2]/ totalIntakeCount*100 )
-#     if(totalSpeakerCount == 0):
-#         speakerPercentage = 0
-#     else:
-#         speakerPercentage = int(counts[3]/ totalSpeakerCount*100 )
-#     percentage = [ampPercentage, groundPercentage, sourcePercentage, speakerPercentage]
-
-#     #push to database
-#     statsPath = methodPath[:int(methodPath.index("Match-Info"))]
-#     for i in range(len(percentage)):
-#         firebase.put(statsPath + 'Stats/Teleop/', Teleop[i + 1], data=percentage[i])
-                    
-
-# def calculateEndGameStats(path):
-#     methodPath = '/ISR/teams' + path
-#     result = firebase.get(methodPath, '')
-#     climbCounts = [0, 0, 0, 0, 0] # index 0 is amp, index 1 is ground, index 2 is source, index 3 is speaker
-#     for i in result.keys():
-#         specificPath = methodPath + i
-#         specificResult = firebase.get(specificPath, '')
-#         for j in specificResult.keys():
-#             if(j == "Teleop"):
-
-# def calculatePostGameStats(path):
-
+    db.reference(statsPath + 'Stats/Percentage/Postgame/Driving Rating').set(postgameAverageRating)
 
 
 
