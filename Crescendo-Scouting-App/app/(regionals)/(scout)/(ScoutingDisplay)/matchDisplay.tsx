@@ -88,12 +88,17 @@ const matchDisplay = () => {
   const [endgameDoubleClimbFraction, setEndgameDoubleClimbFraction] = useState<string | null>(null);
   const [endgameTripleClimbFraction, setEndgameTripleClimbFraction] = useState<string | null>(null);
 
-  const [endgameTotal, setEndgameTotal] = useState<string | null>(null);
-
   const [endgameNoTrapPercent, setEndgameNoTrapPercent] = useState<string | null>(null);
   const [endgameOneTrapPercent, setEndgameOneTrapPercent] = useState<string | null>(null);
   const [endgameTwoTrapPercent, setEndgameTwoTrapPercent] = useState<string | null>(null);
   const [endgameThreeTrapPercent, setEndgameThreeTrapPercent] = useState<string | null>(null);
+
+  const [endgameNoTrapFraction, setEndgameNoTrapFraction] = useState<string | null>(null);
+  const [endgameOneTrapFraction, setEndgameOneTrapFraction] = useState<string | null>(null);
+  const [endgameTwoTrapFraction, setEndgameTwoTrapFraction] = useState<string | null>(null);
+  const [endgameThreeTrapFraction, setEndgameThreeTrapFraction] = useState<string | null>(null);
+
+  const [endgameTotal, setEndgameTotal] = useState<string | null>(null);
 
   //postgame constants
   const [postgameAverageDriverRating, setPostgameAverageDriverRating] = useState<string | null>(null);
@@ -329,12 +334,17 @@ const matchDisplay = () => {
     const endgameDoubleClimbFractionRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Fraction/Endgame/Climb/Double Climb')
     const endgameTripleClimbFractionRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Fraction/Endgame/Climb/Triple Climb')
 
-    const endgameTotalRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Fraction/Endgame/Total')
+    const endgameNoTrapPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Percentage/Endgame/Trap/0 Trap')
+    const endgameOneTrapPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Percentage/Endgame/Trap/1 Trap')
+    const endgameTwoTrapPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Percentage/Endgame/Trap/2 Trap')
+    const endgameThreeTrapPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Percentage/Endgame/Trap/3 Trap')
 
-    const endgameNoTrapPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Endgame/Trap/0 Trap')
-    const endgameOneTrapPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Endgame/Trap/1 Trap')
-    const endgameTwoTrapPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Endgame/Trap/2 Trap')
-    const endgameThreeTrapPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Endgame/Trap/3 Trap')
+    const endgameNoTrapFractionRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Fraction/Endgame/Trap/0 Trap')
+    const endgameOneTrapFractionRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Fraction/Endgame/Trap/1 Trap')
+    const endgameTwoTrapFractionRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Fraction/Endgame/Trap/2 Trap')
+    const endgameThreeTrapFractionRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Fraction/Endgame/Trap/3 Trap')
+
+    const endgameTotalRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Fraction/Endgame/Total')
 
     //postgame paths
     const postgameAverageDriverRatingRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Postgame/Driving Rating')
@@ -422,12 +432,17 @@ const matchDisplay = () => {
     const endgameDoubleClimbFractionListener = onValue(endgameDoubleClimbFractionRef, (snapshot) => handleSnapshot(snapshot, setEndgameDoubleClimbFraction))
     const endgameTripleClimbFractionListener = onValue(endgameTripleClimbFractionRef, (snapshot) => handleSnapshot(snapshot, setEndgameTripleClimbFraction))
 
-    const endgameTotalListener = onValue(endgameTotalRef, (snapshot) => handleSnapshot(snapshot, setEndgameTotal))
-
     const endgameNoTrapPercentListener = onValue(endgameNoTrapPercentRef, (snapshot) => handleSnapshot(snapshot, setEndgameNoTrapPercent))
     const endgameOneTrapPercentListener = onValue(endgameOneTrapPercentRef, (snapshot) => handleSnapshot(snapshot, setEndgameOneTrapPercent))
     const endgameTwoTrapPercentListener = onValue(endgameTwoTrapPercentRef, (snapshot) => handleSnapshot(snapshot, setEndgameTwoTrapPercent))
     const endgameThreeTrapPercentListener = onValue(endgameThreeTrapPercentRef, (snapshot) => handleSnapshot(snapshot, setEndgameThreeTrapPercent))
+
+    const endgameNoTrapFractionListener = onValue(endgameNoTrapFractionRef, (snapshot) => handleSnapshot(snapshot, setEndgameNoTrapFraction))
+    const endgameOneTrapFractionListener = onValue(endgameOneTrapFractionRef, (snapshot) => handleSnapshot(snapshot, setEndgameOneTrapFraction))
+    const endgameTwoTrapFractionListener = onValue(endgameTwoTrapFractionRef, (snapshot) => handleSnapshot(snapshot, setEndgameTwoTrapFraction))
+    const endgameThreeTrapFractionListener = onValue(endgameThreeTrapFractionRef, (snapshot) => handleSnapshot(snapshot, setEndgameThreeTrapFraction))
+
+    const endgameTotalListener = onValue(endgameTotalRef, (snapshot) => handleSnapshot(snapshot, setEndgameTotal))
     //postgame
     const postgameAverageDriverRatingListener = onValue(postgameAverageDriverRatingRef, (snapshot) => handleSnapshot(snapshot, setPostgameAverageDriverRating))
 
@@ -503,12 +518,17 @@ const matchDisplay = () => {
       off(endgameDoubleClimbFractionRef, 'value', endgameDoubleClimbFractionListener);
       off(endgameTripleClimbFractionRef, 'value', endgameTripleClimbFractionListener);
 
-      off(endgameTotalRef, 'value', endgameTotalListener);
-
       off(endgameNoTrapPercentRef, 'value', endgameNoTrapPercentListener);
       off(endgameOneTrapPercentRef, 'value', endgameOneTrapPercentListener);
       off(endgameTwoTrapPercentRef, 'value', endgameTwoTrapPercentListener);
       off(endgameThreeTrapPercentRef, 'value', endgameThreeTrapPercentListener);
+
+      off(endgameNoTrapFractionRef, 'value', endgameNoTrapFractionListener);
+      off(endgameOneTrapFractionRef, 'value', endgameOneTrapFractionListener);
+      off(endgameTwoTrapFractionRef, 'value', endgameTwoTrapFractionListener);
+      off(endgameThreeTrapFractionRef, 'value', endgameThreeTrapFractionListener);
+
+      off(endgameTotalRef, 'value', endgameTotalListener);
 
       //postgame listeners
       off(postgameAverageDriverRatingRef, 'value', postgameAverageDriverRatingListener);
@@ -606,10 +626,10 @@ const matchDisplay = () => {
 
         <Text style={styles.itemTitle}>Trap</Text>
         <View style={styles.border}>
-          <InfoPercentItem title="0 Trap:" info={endgameNoTrapPercent} />
-          <InfoPercentItem title="1 Trap: " info={endgameOneTrapPercent} />
-          <InfoPercentItem title="2 Trap: " info={endgameTwoTrapPercent} />
-          <InfoPercentItem title="3 Trap: " info={endgameThreeTrapPercent} />
+          <InfoPercentFractionItem title="0 Trap:" percent = {endgameNoTrapPercent} fraction = {endgameNoTrapFraction} total = {endgameTotal}/>
+          <InfoPercentFractionItem title="1 Trap:" percent = {endgameOneTrapPercent} fraction = {endgameOneTrapFraction} total = {endgameTotal}/>
+          <InfoPercentFractionItem title="2 Trap:" percent = {endgameTwoTrapPercent} fraction = {endgameTwoTrapFraction} total = {endgameTotal}/>
+          <InfoPercentFractionItem title="3 Trap:" percent = {endgameThreeTrapPercent} fraction = {endgameThreeTrapFraction} total = {endgameTotal}/>
         </View>
 
         <Text style={styles.itemTitle}>Climb</Text>
