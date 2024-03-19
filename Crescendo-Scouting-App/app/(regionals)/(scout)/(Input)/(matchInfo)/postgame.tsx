@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Pressable, Button, Image, Text, View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity, } from "react-native";
 import BackButton from '../../../../backButton';
 import { CheckBox } from 'react-native-elements';
-import Slider from '@react-native-community/slider';
+// import Slider from '@react-native-community/slider';
+import { Slider } from 'react-native-elements';
 import { router, useGlobalSearchParams } from 'expo-router'
 import { ref, set } from "@firebase/database";
 import { database } from "../../../../../firebaseConfig";
@@ -35,65 +36,117 @@ const SliderWithNumbers: React.FC<SliderWithNumbersProps> = ({
 
   return (
     <View style={styles.sliderContainer}>
-      <View style={styles.border}>
-        <View style={styles.counterContainer}>
-          <Slider
-            style={styles.slider}
-            minimumValue={minValue}
-            maximumValue={maxValue}
-            step={step}
-            value={value}
-            onValueChange={onValueChange}
-          />
-          <View style={[styles.sliderMarkers, { paddingHorizontal: 0 }]}>
-            {markers.map((marker, index) => (
-              <Text key={marker} style={[styles.markerText, { fontSize }]}>
-                {marker}
-              </Text>
-            ))}
-          </View>
-        </View>
+      <View style={styles.sliderWrapper}>
+        <Slider
+          style={styles.slider}
+          thumbTintColor="rgba(0, 130, 190, 255)"
+          minimumTrackTintColor="rgba(0, 130, 190, 255)"
+          minimumValue={minValue}
+          maximumValue={maxValue}
+          step={step}
+          value={value}
+          onValueChange={onValueChange}
+          thumbStyle={styles.thumbStyle}
+        />
+      </View>
+      <View style={styles.sliderMarkersContainer}>
+        {markers.map((marker, index) => (
+          <Text key={marker} style={[styles.markerText, { fontSize }]}>
+            {marker}
+          </Text>
+        ))}
       </View>
     </View>
   );
 };
 
-const DrivingRatingSlider: React.FC<{ value: number; onValueChange: (value: number) => void }> = ({ value, onValueChange }) => {
-  const markers = Array.from(
-    { length: (5 - 1) / 1 + 1 },
-    (_, index) => 1 + index * 1
-  );
 
-  const fontSize = 100 / markers.length;
+// interface SliderWithNumbersProps {
+//   value: number;
+//   onValueChange: (value: number) => void;
+//   minValue: number;
+//   maxValue: number;
+//   step: number;
+//   sliderWidth: number;
+// }
 
-  return (
-    <View style={styles.sliderContainer}>
-      <View style={styles.border}>
-        <View style={styles.counterContainer}>
-          <Slider
-            style={styles.slider}
-            minimumValue={1}
-            maximumValue={5}
-            step={1}
-            value={value}
-            onValueChange={onValueChange}
-          />
-          <View style={[styles.sliderMarkers, { paddingHorizontal: 0 }]}>
-            {markers.map((marker, index) => (
-              <Text key={marker} style={[styles.markerText, { fontSize }]}>
-                {marker}
-              </Text>
-            ))}
-          </View>
-        </View>
-      </View>
-    </View>
-  );
-};
+// const SliderWithNumbers: React.FC<SliderWithNumbersProps> = ({
+//   value,
+//   onValueChange,
+//   minValue,
+//   maxValue,
+//   step,
+//   sliderWidth,
+// }) => {
+//   const markers = Array.from(
+//     { length: (maxValue - minValue) / step + 1 },
+//     (_, index) => minValue + index * step
+//   );
+
+//   const fontSize = sliderWidth / markers.length;
+
+//   return (
+//     <View style={styles.sliderContainer}>
+//       <View style={styles.border}>
+//         <View style={styles.counterContainer}>
+//           <Slider
+//             style={styles.slider}
+//             minimumValue={minValue}
+//             maximumValue={maxValue}
+//             step={step}
+//             value={value}
+//             onValueChange={onValueChange}
+//           />
+//           <View style={[styles.sliderMarkers, { paddingHorizontal: 0 }]}>
+//             {markers.map((marker, index) => (
+//               <Text key={marker} style={[styles.markerText, { fontSize }]}>
+//                 {marker}
+//               </Text>
+//             ))}
+//           </View>
+//         </View>
+//       </View>
+//     </View>
+//   );
+// };
+
+// const DrivingRatingSlider: React.FC<{ value: number; onValueChange: (value: number) => void }> = ({ value, onValueChange }) => {
+//   const markers = Array.from(
+//     { length: (5 - 1) / 1 + 1 },
+//     (_, index) => 1 + index * 1
+//   );
+
+//   const fontSize = 100 / markers.length;
+
+//   return (
+//     <View style={styles.sliderContainer}>
+//       <View style={styles.border}>
+//         <View style={styles.counterContainer}>
+//           <Slider
+//             style={styles.slider}
+//             minimumValue={1}
+//             maximumValue={5}
+//             step={1}
+//             value={value}
+//             onValueChange={onValueChange}
+//           />
+//           <View style={[styles.sliderMarkers, { paddingHorizontal: 0 }]}>
+//             {markers.map((marker, index) => (
+//               <Text key={marker} style={[styles.markerText, { fontSize }]}>
+//                 {marker}
+//               </Text>
+//             ))}
+//           </View>
+//         </View>
+//       </View>
+//     </View>
+//   );
+// };
 
 
 const MatchInfo: React.FC = () => {
   const [sliderValue, setSliderValue] = useState<number>(1);
+  const [selectedDriveRatingValue, setSelectedDriveRatingValue] = useState<number | 0>(0);
   const [isChecked, setIsChecked] = React.useState(false);
   const [counter, setCounter] = useState(0)
   const { regional } = useGlobalSearchParams<{ regional: string }>();
@@ -114,6 +167,7 @@ const MatchInfo: React.FC = () => {
     // Add your submission logic here
     const path = `${regional}/teams/${teamNumber}/Match-Info/${qualMatch}`;
     set(ref(database, path + '/Driving Rating'), sliderValue)
+    
   };
 
   return (
@@ -122,9 +176,27 @@ const MatchInfo: React.FC = () => {
       <View style={styles.container}>
         <Text style={styles.title}>Post Game</Text>
 
-        {/* Driving Rating Slider */}
+        <Text style={styles.subtitle}>Driver Rating</Text>
+        <View style={styles.border}>
+                  <View style={styles.counterContainer}>
+                    {/* <View style={styles.numberLine}>
+                    </View> */}
+        <SliderWithNumbers
+          value={sliderValue}
+          onValueChange={(value) => {
+            setSelectedDriveRatingValue(value); // Set the slider value to your trap value
+          }}
+          minValue={1}
+          maxValue={5}
+          step={1}
+          sliderWidth={90} // changes number size
+        />
+        </View>
+        </View>
+
+        {/* Driving Rating Slider
         <Text style={styles.subtitle}>Driving Rating</Text>
-        <DrivingRatingSlider value={sliderValue} onValueChange={(value) => setSliderValue(value)} />
+        <DrivingRatingSlider value={sliderValue} onValueChange={(value) => setSliderValue(value)} /> */}
 
         {/* Checkbox with margin */}
 
@@ -169,6 +241,7 @@ const MatchInfo: React.FC = () => {
   );
 };
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1, // Makes sure the container takes up the whole screen
@@ -186,7 +259,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     textAlign: 'center',
     color: 'rgba(0, 130, 190, 255)',
-    marginTop: '10%',
+    marginTop: '5%',
   },
   submitButton: {
     marginTop: 40,
@@ -210,15 +283,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   slider: {
-    width: 200,
+    width: '100%',
     height: 40,
-    marginBottom: 5,
+    marginBottom: 30,
   },
   sliderMarkers: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '62%',
-    paddingHorizontal: 25,
+    width: '65%',
+    paddingHorizontal: '2%',
     marginLeft: 35,
   },
   markerText: {
@@ -226,21 +299,56 @@ const styles = StyleSheet.create({
     color: 'rgba(127, 127, 127, 255)',
   },
   border: {
-    padding: 20,
+    paddingVertical: 20,
+    paddingHorizontal: '2%',
     borderRadius: 10,
     borderWidth: 3,
     borderColor: 'rgba(0, 130, 190, 255)',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
-    maxWidth: '95%',
-    marginVertical: 10,
+    maxWidth: '94%',
   },
+  // border: {
+  //   padding: 20,
+  //   borderRadius: 10,
+  //   borderWidth: 3,
+  //   borderColor: 'rgba(0, 130, 190, 255)',
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  //   backgroundColor: 'white',
+  //   maxWidth: '95%',
+  //   marginVertical: 10,
+  // },
   counterContainer: {
     justifyContent: 'space-between',
     alignItems: 'center',
+    flexDirection: 'row',
   },
-
+  sliderWrapper: {
+    width: '80%', // Adjust as needed
+    alignItems: 'center',
+    marginRight: 0,
+  },
+  thumbStyle: {
+    width: 20,
+    height: 20,
+  },
+  sliderMarkersContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignContent: 'center',
+    width: '80%',
+    paddingHorizontal:'3%',
+    position: 'absolute',
+    bottom: 0,
+  },
+  numberLine: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
 });
 
 export default MatchInfo;
