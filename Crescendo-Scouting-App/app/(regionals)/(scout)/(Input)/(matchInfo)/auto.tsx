@@ -14,18 +14,24 @@ interface Note {
 
 const matchInfo: React.FC = () => {
   //Backend Value Constants
-  const IntakeStatus = [
-    { label: 'No Attempt', value: '0' },
-    { label: 'Missed', value: '1' },
-    { label: 'Successful', value: '2' },
-  ];
+  // const IntakeStatus = [
+  //   { label: 'No Attempt', value: '0' },
+  //   { label: 'Missed', value: '1' },
+  //   { label: 'Successful', value: '2' },
+  // ];
 
-  const ActionName = [
-    { label: 'No Action', value: '0' },
-    { label: 'Amp Made', value: '1' },
-    { label: 'Amp Missed', value: '2' },
-    { label: 'Speaker Made', value: '3' },
-    { label: 'Speaker Missed', value: '4' },
+  // const ActionName = [
+  //   { label: 'No Action', value: '0' },
+  //   { label: 'Amp Made', value: '1' },
+  //   { label: 'Amp Missed', value: '2' },
+  //   { label: 'Speaker Made', value: '3' },
+  //   { label: 'Speaker Missed', value: '4' },
+  // ];
+
+  //backend values
+  const noteStatus = [
+    { label: 'Missed', value: '0'},
+    { label: 'Made', value: '1'}
   ];
 
   //Backend Value State vars
@@ -45,22 +51,22 @@ const matchInfo: React.FC = () => {
   const { teamNumber } = useGlobalSearchParams<{ teamNumber: string }>();
   const { qualMatch } = useGlobalSearchParams<{ qualMatch: string }>();
   const [notes, setNotes] = useState<Note[]>([
-    { id: 's1', color: 'orange', used: false },
-    { id: 's2', color: 'orange', used: false },
-    { id: 's3', color: 'orange', used: false },
-    { id: 'R', color: 'green', used: false },
-    { id: 'm1', color: 'orange', used: false },
-    { id: 'm2', color: 'orange', used: false },
-    { id: 'm3', color: 'orange', used: false },
-    { id: 'm4', color: 'orange', used: false },
-    { id: 'm5', color: 'orange', used: false },
+    { id: 'S1', color: 'orange', used: false },
+    { id: 'S2', color: 'orange', used: false },
+    { id: 'S3', color: 'orange', used: false },
+    { id: 'R', color: 'orange', used: false },
+    { id: 'M1', color: 'orange', used: false },
+    { id: 'M2', color: 'orange', used: false },
+    { id: 'M3', color: 'orange', used: false },
+    { id: 'M4', color: 'orange', used: false },
+    { id: 'M5', color: 'orange', used: false },
   ]);
   const [buttonPresses, setButtonPresses] = useState<string[]>([]);
-  const isAnyNoteGreen = notes.some(note => note.color === 'green');
+  // const isAnyNoteGreen = notes.some(note => note.color === 'green');
   const [taxiPressed, setTaxiPressed] = useState<boolean>(false);
   const { leftNotes, rightNotes } = useMemo(() => {
-    const sNotes = notes.filter(note => note.id.startsWith('s') || note.id.startsWith('R'));
-    const mNotes = notes.filter(note => note.id.startsWith('m')); // Include "R" in mNotes for simplicity
+    const sNotes = notes.filter(note => note.id.startsWith('S') || note.id.startsWith('R'));
+    const mNotes = notes.filter(note => note.id.startsWith('M')); // Include "R" in mNotes for simplicity
 
     return alliance === "Red" ? { leftNotes: mNotes, rightNotes: sNotes } : { leftNotes: sNotes, rightNotes: mNotes };
   }, [notes, alliance]);
@@ -69,118 +75,27 @@ const matchInfo: React.FC = () => {
   const [hasNote, setHasNote] = useState<boolean>(true);
 
   const handlePressNote = (noteId: string): void => {
-
     setNotes((currentNotes) =>
       currentNotes.map((note) => {
-        if (note.id === noteId && !note.used && !hasNote) { //!hasNote disables the color swap if the robot has a note
+        if (note.id === noteId) {
+          // Toggle the color of the clicked note
           return { ...note, color: note.color === 'green' ? 'orange' : 'green' };
+        } else {
+          // Keep the color unchanged for other notes
+          return note;
         }
-        if (note.color === 'green')
-        {
-          console.log(hasNote);
-          if(hasNote)
-          {
-            note.color = 'green'; //if the robot has a note, then keep the currently green note as green. 
-          }
-          else
-          {
-            note.color = 'orange'; //changes the color of the currently green note to orange. 
-          }
-        }
-        return note;
       })
     );
   };
+  
 
-  const handlePress = (item: string): void => {
-    //Taxi entry
-    if (item === 'TAXI') {
-      if (taxiPressed) {
-        return;
-      }
-      setButtonPresses(currentPresses => [...currentPresses, item]);
-      setTaxiPressed(true);
+  const handleTaxiPress = (item: string): void => {
+    if (taxiPressed) {
       return;
     }
-
-    if (!isAnyNoteGreen) {
-      // Optionally, provide feedback to the user that a note needs to be selected first.
-      return;
-    }
-
-    // Step 1: Find the currently green note
-    const greenNoteIndex = notes.findIndex(note => note.color === 'green');
-    console.log(greenNoteIndex)
-
-    // If there's a green note, prepare the entry for the buttonPresses and update the notes state
-    if (greenNoteIndex !== -1) {
-      const greenNote = notes[greenNoteIndex];
-      const entry = `${greenNote.id.toUpperCase()} - ${item}`;
-
-      // Step 2: Add the entry to buttonPresses
-      setButtonPresses(currentPresses => [...currentPresses, entry]);
-      //maybe swap this guy?
-
-      // Step 3: Mark the note as used and reset its color
-      // Note: Since we're directly modifying the state based on the previous state,
-      // it's better to use the functional update form of the setState hook.
-
-      //IF THE NOTE IS R, THIS IS ALREADY TRUE, SO IT SHOULD JUST TRIGGER THE INTAKE FUNCTION IMMEDIATELY
-      if(item === 'Intake')
-      {
-        //Conditionally resets the color based on intake status of the robot. If the robot intakes a note,
-        //selection of other notes is disabled until another button is pressed. After the second action log for the intake
-        //note, the note is marked as used.  
-        setNotes(currentNotes =>
-          currentNotes.map((note, index) => 
-              index === greenNoteIndex ? { ...note, color: 'green', used: false } : note
-          )
-        );
-        
-        //log for debugging
-        console.log("note: " + greenNote + "green note entry: " + entry);
-      }
-      else
-      {
-        setNotes(currentNotes =>
-          currentNotes.map((note, index) => 
-              index === greenNoteIndex ? { ...note, color: 'orange', used: true } : note
-          )
-        );
-        setHasNote(false);
-      }
-      //maybe disable intake push if setHasNote is true?
+    setTaxiPressed(true);
+    return;
   }
-  else {
-    // If no note is green, just add the item
-    setButtonPresses(currentPresses => [...currentPresses, item]);
-  }
-};
-
-  const handleDeletePress = (index: number) => {
-    const entry = buttonPresses[index];
-
-    // Check if the entry directly matches special cases like "TAXI"
-    if (entry === 'TAXI') {
-      setTaxiPressed(false);
-    } else {
-      // Assuming the format is "NOTEID - ACTION" (e.g., "R - Speaker")
-      const noteIdPattern = entry.split(' - ')[0].toLowerCase(); // This will extract "r" from "R - Speaker"
-      const matchedNote = notes.find(note => note.id.toLowerCase() === noteIdPattern);
-
-      if (matchedNote) {
-        // If a matching note is found, update its 'used' state
-        setNotes(currentNotes =>
-          currentNotes.map(note =>
-            note.id.toLowerCase() === noteIdPattern ? { ...note, used: false } : note
-          )
-        );
-      }
-    }
-
-    // Remove the entry from the list regardless of the type
-    setButtonPresses(currentPresses => currentPresses.filter((_, i) => i !== index));
-  };
 
   const handleSendAutoData = () => {
 
@@ -188,97 +103,231 @@ const matchInfo: React.FC = () => {
     const path = `${regional}/teams/${teamNumber}/Match-Info/${qualMatch}`;
 
     const allNotes: string[] = ["S1", "S2", "S3", "M1", "M2", "M3", "M4", "M5", "R"]
-    //value 1: didnt use/missed intake/successful intake (0/1/2)
-    //value 2: didnt use/amp made/amp missed/speaker made/speaker missed (0/1/2/3/4) 
-    //value 3: didnt taxi/taxi (0/1) | will be pushed directly to match qual directory w/o note info because it is independent of note. 
+    //value 1: missed / made(0/1)
+    //value 2: didnt taxi/taxi (0/1) | will be pushed directly to match qual directory w/o note info because it is independent of note. 
     let action = 0;
-    let intake = 0;
     let taxiStatus = 0;
 
     //sets default values
     allNotes.map((note) => {
 
-      if(note === "R") //R starts already in the robot, so no intake data is necessary
-      {
+        // set(ref(database, path + `/Auto/${note}/Intake`), intake);
         set(ref(database, path + `/Auto/${note}/Action`), action); 
-      }
-      else
-      {
-        set(ref(database, path + `/Auto/${note}/Intake`), intake);
-        set(ref(database, path + `/Auto/${note}/Action`), action); 
-      }
         
     })
 
     // Handle Taxi separately
+    if(taxiPressed)
+    {
+      taxiStatus = 1;
+    }
     set(ref(database, path + `/Auto/Taxi`), taxiStatus);
 
 
-    //Goes through buttonPresses array (actions list at the bottom) and assigns values based on what the user has put in the list. 
-    //Each note is its own directory in firebase, where intake and action data is stored. 
-    buttonPresses.map((entry) => { 
-      let entryArr = entry.split(" - ");
-      
-      console.log(entryArr[0] + ", item: " + entryArr[1])
-      if(entryArr[1] === "Intake" && entryArr[0] != "R")
+    //Goes through notes array (actions list at the bottom) and assigns values based on whether or not note is green. 
+    //Each note is its own directory in firebase, where attempt data is stored. 
+    notes.map((currentNote) => {
+      if(currentNote.color === "green")
       {
-        console.log(entryArr[0] + ": Intake");
-        intake = 2;
-        console.log(intake);
-        set(ref(database, path + `/Auto/${entryArr[0]}/Intake`), intake);
-      }
-      else if(entryArr[1] === "MISSED Intake" && entryArr[0] != "R") //since R is the note the robot starts with, it doesn't need intake stats. 
-      {
-        console.log(entryArr[0] + ": Missed Intake");
-        intake = 1;
-        console.log(intake);
-        set(ref(database, path + `/Auto/${entryArr[0]}/Intake`), intake);
-
-      }
-      else if(entryArr[1] === "AMP")
-      {
-        console.log(entryArr[0] + ": AMP");
         action = 1;
-        console.log(action);
-        set(ref(database, path + `/Auto/${entryArr[0]}/Action`), action);
-
+        console.log(action)
+        set(ref(database, path + `/Auto/${currentNote.id}/Action`), action);
       }
-      else if(entryArr[1] === "MISSED AMP")
-      {
-        action = 2;
-        console.log(entryArr[0] + ": MISSED AMP");
-        console.log(action);
-        set(ref(database, path + `/Auto/${entryArr[0]}/Action`), action);
-
-      }
-      else if(entryArr[1] === "SPEAKER")
-      {
-        action = 3;
-        console.log(entryArr[0] + ": SPEAKER");
-        console.log(action);
-        set(ref(database, path + `/Auto/${entryArr[0]}/Action`), action);
-
-      }
-      else if(entryArr[1] === "MISSED SPEAKER")
-      {
-        action = 4;
-        console.log(entryArr[0] + ": MISSED SPEAKER");
-        console.log(action);
-        set(ref(database, path + `/Auto/${entryArr[0]}/Action`), action);
-      }
-      else if(entryArr[0] === "TAXI")
-      {
-        taxiStatus = 1;
-        console.log(entryArr[0] + ": TAXI");
-        console.log(taxiStatus);
-        set(ref(database, path + `/Auto/Taxi`), taxiStatus);
-      }
-      
     })
-
-
-
   }
+
+      //else if(entryArr[1] === "MISSED AMP")
+//       {
+//         action = 2;
+//         console.log(entryArr[0] + ": MISSED AMP");
+//         console.log(action);
+//         set(ref(database, path + `/Auto/${entryArr[0]}/Action`), action);
+
+//       }
+//   const handlePress = (item: string): void => {
+//     //Taxi entry
+//     if (item === 'TAXI') {
+//       if (taxiPressed) {
+//         return;
+//       }
+//       setButtonPresses(currentPresses => [...currentPresses, item]);
+//       setTaxiPressed(true);
+//       return;
+//     }
+
+//     if (!isAnyNoteGreen) {
+//       // Optionally, provide feedback to the user that a note needs to be selected first.
+//       return;
+//     }
+
+//     // Step 1: Find the currently green note
+//     const greenNoteIndex = notes.findIndex(note => note.color === 'green');
+//     console.log(greenNoteIndex)
+
+//     // If there's a green note, prepare the entry for the buttonPresses and update the notes state
+//     if (greenNoteIndex !== -1) {
+//       const greenNote = notes[greenNoteIndex];
+//       const entry = `${greenNote.id.toUpperCase()} - ${item}`;
+
+//       // Step 2: Add the entry to buttonPresses
+//       setButtonPresses(currentPresses => [...currentPresses, entry]);
+//       //maybe swap this guy?
+
+//       // Step 3: Mark the note as used and reset its color
+//       // Note: Since we're directly modifying the state based on the previous state,
+//       // it's better to use the functional update form of the setState hook.
+
+//       //IF THE NOTE IS R, THIS IS ALREADY TRUE, SO IT SHOULD JUST TRIGGER THE INTAKE FUNCTION IMMEDIATELY
+//       if(item === 'Intake')
+//       {
+//         //Conditionally resets the color based on intake status of the robot. If the robot intakes a note,
+//         //selection of other notes is disabled until another button is pressed. After the second action log for the intake
+//         //note, the note is marked as used.  
+//         setNotes(currentNotes =>
+//           currentNotes.map((note, index) => 
+//               index === greenNoteIndex ? { ...note, color: 'green', used: false } : note
+//           )
+//         );
+        
+//         //log for debugging
+//         console.log("note: " + greenNote + "green note entry: " + entry);
+//       }
+//       else
+//       {
+//         setNotes(currentNotes =>
+//           currentNotes.map((note, index) => 
+//               index === greenNoteIndex ? { ...note, color: 'orange', used: true } : note
+//           )
+//         );
+//         setHasNote(false);
+//       }
+//       //maybe disable intake push if setHasNote is true?
+//   }
+//   else {
+//     // If no note is green, just add the item
+//     setButtonPresses(currentPresses => [...currentPresses, item]);
+//   }
+// };
+
+//   const handleDeletePress = (index: number) => {
+//     const entry = buttonPresses[index];
+
+//     // Check if the entry directly matches special cases like "TAXI"
+//     if (entry === 'TAXI') {
+//       setTaxiPressed(false);
+//     } else {
+//       // Assuming the format is "NOTEID - ACTION" (e.g., "R - Speaker")
+//       const noteIdPattern = entry.split(' - ')[0].toLowerCase(); // This will extract "r" from "R - Speaker"
+//       const matchedNote = notes.find(note => note.id.toLowerCase() === noteIdPattern);
+
+//       if (matchedNote) {
+//         // If a matching note is found, update its 'used' state
+//         setNotes(currentNotes =>
+//           currentNotes.map(note =>
+//             note.id.toLowerCase() === noteIdPattern ? { ...note, used: false } : note
+//           )
+//         );
+//       }
+//     }
+
+//     // Remove the entry from the list regardless of the type
+//     setButtonPresses(currentPresses => currentPresses.filter((_, i) => i !== index));
+//   };
+
+//   const handleSendAutoData = () => {
+
+//     //each note is a "directory", and stores two sets of values
+//     const path = `${regional}/teams/${teamNumber}/Match-Info/${qualMatch}`;
+
+//     const allNotes: string[] = ["S1", "S2", "S3", "M1", "M2", "M3", "M4", "M5", "R"]
+//     //value 1: didnt use/missed intake/successful intake (0/1/2)
+//     //value 2: didnt use/amp made/amp missed/speaker made/speaker missed (0/1/2/3/4) 
+//     //value 3: didnt taxi/taxi (0/1) | will be pushed directly to match qual directory w/o note info because it is independent of note. 
+//     let action = 0;
+//     let intake = 0;
+//     let taxiStatus = 0;
+
+//     //sets default values
+//     allNotes.map((note) => {
+
+//       if(note === "R") //R starts already in the robot, so no intake data is necessary
+//       {
+//         set(ref(database, path + `/Auto/${note}/Action`), action); 
+//       }
+//       else
+//       {
+//         set(ref(database, path + `/Auto/${note}/Intake`), intake);
+//         set(ref(database, path + `/Auto/${note}/Action`), action); 
+//       }
+        
+//     })
+
+//     // Handle Taxi separately
+//     set(ref(database, path + `/Auto/Taxi`), taxiStatus);
+
+
+//     //Goes through buttonPresses array (actions list at the bottom) and assigns values based on what the user has put in the list. 
+//     //Each note is its own directory in firebase, where intake and action data is stored. 
+//     buttonPresses.map((entry) => { 
+//       let entryArr = entry.split(" - ");
+      
+//       console.log(entryArr[0] + ", item: " + entryArr[1])
+//       if(entryArr[1] === "Intake" && entryArr[0] != "R")
+//       {
+//         console.log(entryArr[0] + ": Intake");
+//         intake = 2;
+//         console.log(intake);
+//         set(ref(database, path + `/Auto/${entryArr[0]}/Intake`), intake);
+//       }
+//       else if(entryArr[1] === "MISSED Intake" && entryArr[0] != "R") //since R is the note the robot starts with, it doesn't need intake stats. 
+//       {
+//         console.log(entryArr[0] + ": Missed Intake");
+//         intake = 1;
+//         console.log(intake);
+//         set(ref(database, path + `/Auto/${entryArr[0]}/Intake`), intake);
+
+//       }
+//       else if(entryArr[1] === "AMP")
+//       {
+//         console.log(entryArr[0] + ": AMP");
+//         action = 1;
+//         console.log(action);
+//         set(ref(database, path + `/Auto/${entryArr[0]}/Action`), action);
+
+//       }
+//       else if(entryArr[1] === "MISSED AMP")
+//       {
+//         action = 2;
+//         console.log(entryArr[0] + ": MISSED AMP");
+//         console.log(action);
+//         set(ref(database, path + `/Auto/${entryArr[0]}/Action`), action);
+
+//       }
+//       else if(entryArr[1] === "SPEAKER")
+//       {
+//         action = 3;
+//         console.log(entryArr[0] + ": SPEAKER");
+//         console.log(action);
+//         set(ref(database, path + `/Auto/${entryArr[0]}/Action`), action);
+
+//       }
+//       else if(entryArr[1] === "MISSED SPEAKER")
+//       {
+//         action = 4;
+//         console.log(entryArr[0] + ": MISSED SPEAKER");
+//         console.log(action);
+//         set(ref(database, path + `/Auto/${entryArr[0]}/Action`), action);
+//       }
+//       else if(entryArr[0] === "TAXI")
+//       {
+//         taxiStatus = 1;
+//         console.log(entryArr[0] + ": TAXI");
+//         console.log(taxiStatus);
+//         set(ref(database, path + `/Auto/Taxi`), taxiStatus);
+//       }
+      
+//     })
+//   }
   console.log(qualMatch + " seating: " + alliance);
 
   return (
@@ -287,8 +336,8 @@ const matchInfo: React.FC = () => {
         <BackButton buttonName="Home Page" />
         <Text style={styles.title}>Autonomous</Text>
 
-        <View style={styles.border}>
-        <View style={styles.buttonrow}>
+        {/* <View style={styles.border}> */}
+        {/* <View style={styles.buttonrow}>
           <Pressable onPress={() => {
             if(hasNote)
             {
@@ -305,10 +354,10 @@ const matchInfo: React.FC = () => {
            }} style={styles.speakerMissButton}>
             <Text style={styles.buttonText}>Missed Speaker</Text>
           </Pressable>
-          </View>
+          </View> */}
 
           
-        <View style={styles.buttonrow}>
+        {/* <View style={styles.buttonrow}>
           <Pressable onPress={() => {
             if(hasNote)
             {
@@ -324,11 +373,11 @@ const matchInfo: React.FC = () => {
             }
            }} style={styles.ampMissButton}>
             <Text style={styles.buttonText}>Missed Amp</Text>
-          </Pressable>
-          </View>
+          </Pressable> */}
+          {/* </View> */}
 
           
-        <View style={styles.buttonrow}>
+        {/* <View style={styles.buttonrow}>
           <Pressable onPress={() => {
             //Because of batching, setHasNote completes its setting after the handlePress function runs. This means that
             //it can't be used for comparisons in handlePress, which is why item value is used for those comparisons,
@@ -353,14 +402,15 @@ const matchInfo: React.FC = () => {
         } style={styles.intakeMissButton}>
             <Text style={styles.buttonText}>Missed Intake</Text>
           </Pressable>
-          </View>
-          <Pressable onPress={() => handlePress('TAXI')} style={styles.taxiButton}>
-            <Text style={styles.buttonText}>Taxi</Text>
-          </Pressable>
+          </View> */}
           
-        </View>
+          
+        {/* </View> */}
 
         <View style={styles.border}>
+        <Pressable onPress={() => handleTaxiPress('TAXI')} style={styles.taxiButton}>
+            <Text style={styles.buttonText}>Taxi</Text>
+        </Pressable>
         <View style={styles.notesContainer}>
           {/* Left Column */}
           <View style={styles.notesColumn}>
@@ -396,16 +446,7 @@ const matchInfo: React.FC = () => {
         </View>
         </View>
 
-        <View style={styles.border}>
-          <Text style={styles.listTitle}>List</Text>
-          {buttonPresses.map((press, index) => (
-            <Pressable key={index} onPress={() => handleDeletePress(index)} style={styles.listItemContainer}>
-              <Text style={styles.listItem}>{press}</Text>
-              <Text style={styles.closeButtonText}>X</Text>
-            </Pressable>
-          ))}
-        </View>
-
+       
         <Pressable
           style={styles.buttonOne}
           onPress={() => {
@@ -420,6 +461,20 @@ const matchInfo: React.FC = () => {
     </ScrollView >
   );
 };
+
+/*
+ <View style={styles.border}>
+          <Text style={styles.listTitle}>List</Text>
+          {buttonPresses.map((press, index) => (
+            <Pressable key={index}  style={styles.listItemContainer}> 
+            {/* onPress={() => handleDeletePress(index)} THis goes above, check past code for reference}
+            <Text style={styles.listItem}>{press}</Text>
+            <Text style={styles.closeButtonText}>X</Text>
+          </Pressable>
+        ))}
+      </View>
+
+*/
 
 const styles = StyleSheet.create({
   title: {
