@@ -14,18 +14,24 @@ interface Note {
 
 const matchInfo: React.FC = () => {
   //Backend Value Constants
-  const IntakeStatus = [
-    { label: 'No Attempt', value: '0' },
-    { label: 'Missed', value: '1' },
-    { label: 'Successful', value: '2' },
-  ];
+  // const IntakeStatus = [
+  //   { label: 'No Attempt', value: '0' },
+  //   { label: 'Missed', value: '1' },
+  //   { label: 'Successful', value: '2' },
+  // ];
 
-  const ActionName = [
-    { label: 'No Action', value: '0' },
-    { label: 'Amp Made', value: '1' },
-    { label: 'Amp Missed', value: '2' },
-    { label: 'Speaker Made', value: '3' },
-    { label: 'Speaker Missed', value: '4' },
+  // const ActionName = [
+  //   { label: 'No Action', value: '0' },
+  //   { label: 'Amp Made', value: '1' },
+  //   { label: 'Amp Missed', value: '2' },
+  //   { label: 'Speaker Made', value: '3' },
+  //   { label: 'Speaker Missed', value: '4' },
+  // ];
+
+  //backend values
+  const noteStatus = [
+    { label: 'Missed', value: '0'},
+    { label: 'Made', value: '1'}
   ];
 
   //Backend Value State vars
@@ -45,22 +51,22 @@ const matchInfo: React.FC = () => {
   const { teamNumber } = useGlobalSearchParams<{ teamNumber: string }>();
   const { qualMatch } = useGlobalSearchParams<{ qualMatch: string }>();
   const [notes, setNotes] = useState<Note[]>([
-    { id: 's1', color: 'orange', used: false },
-    { id: 's2', color: 'orange', used: false },
-    { id: 's3', color: 'orange', used: false },
+    { id: 'S1', color: 'orange', used: false },
+    { id: 'S2', color: 'orange', used: false },
+    { id: 'S3', color: 'orange', used: false },
     { id: 'R', color: 'orange', used: false },
-    { id: 'm1', color: 'orange', used: false },
-    { id: 'm2', color: 'orange', used: false },
-    { id: 'm3', color: 'orange', used: false },
-    { id: 'm4', color: 'orange', used: false },
-    { id: 'm5', color: 'orange', used: false },
+    { id: 'M1', color: 'orange', used: false },
+    { id: 'M2', color: 'orange', used: false },
+    { id: 'M3', color: 'orange', used: false },
+    { id: 'M4', color: 'orange', used: false },
+    { id: 'M5', color: 'orange', used: false },
   ]);
   const [buttonPresses, setButtonPresses] = useState<string[]>([]);
   // const isAnyNoteGreen = notes.some(note => note.color === 'green');
   const [taxiPressed, setTaxiPressed] = useState<boolean>(false);
   const { leftNotes, rightNotes } = useMemo(() => {
-    const sNotes = notes.filter(note => note.id.startsWith('s') || note.id.startsWith('R'));
-    const mNotes = notes.filter(note => note.id.startsWith('m')); // Include "R" in mNotes for simplicity
+    const sNotes = notes.filter(note => note.id.startsWith('S') || note.id.startsWith('R'));
+    const mNotes = notes.filter(note => note.id.startsWith('M')); // Include "R" in mNotes for simplicity
 
     return alliance === "Red" ? { leftNotes: mNotes, rightNotes: sNotes } : { leftNotes: sNotes, rightNotes: mNotes };
   }, [notes, alliance]);
@@ -83,17 +89,61 @@ const matchInfo: React.FC = () => {
   };
   
 
-    const handleTaxiPress = (item: string): void => {
-      if (taxiPressed) {
-        return;
-      }
-      setTaxiPressed(true);
+  const handleTaxiPress = (item: string): void => {
+    if (taxiPressed) {
       return;
     }
+    setTaxiPressed(true);
+    return;
+  }
 
-    const handlePress = (item: string): void => {
+  const handleSendAutoData = () => {
 
+    //each note is a "directory", and stores two sets of values
+    const path = `${regional}/teams/${teamNumber}/Match-Info/${qualMatch}`;
+
+    const allNotes: string[] = ["S1", "S2", "S3", "M1", "M2", "M3", "M4", "M5", "R"]
+    //value 1: missed / made(0/1)
+    //value 2: didnt taxi/taxi (0/1) | will be pushed directly to match qual directory w/o note info because it is independent of note. 
+    let action = 0;
+    let taxiStatus = 0;
+
+    //sets default values
+    allNotes.map((note) => {
+
+        // set(ref(database, path + `/Auto/${note}/Intake`), intake);
+        set(ref(database, path + `/Auto/${note}/Action`), action); 
+        
+    })
+
+    // Handle Taxi separately
+    if(taxiPressed)
+    {
+      taxiStatus = 1;
     }
+    set(ref(database, path + `/Auto/Taxi`), taxiStatus);
+
+
+    //Goes through notes array (actions list at the bottom) and assigns values based on whether or not note is green. 
+    //Each note is its own directory in firebase, where attempt data is stored. 
+    notes.map((currentNote) => {
+      if(currentNote.color === "green")
+      {
+        action = 1;
+        console.log(action)
+        set(ref(database, path + `/Auto/${currentNote.id}/Action`), action);
+      }
+    })
+  }
+
+      //else if(entryArr[1] === "MISSED AMP")
+//       {
+//         action = 2;
+//         console.log(entryArr[0] + ": MISSED AMP");
+//         console.log(action);
+//         set(ref(database, path + `/Auto/${entryArr[0]}/Action`), action);
+
+//       }
 //   const handlePress = (item: string): void => {
 //     //Taxi entry
 //     if (item === 'TAXI') {
@@ -396,21 +446,11 @@ const matchInfo: React.FC = () => {
         </View>
         </View>
 
-        <View style={styles.border}>
-          <Text style={styles.listTitle}>List</Text>
-          {buttonPresses.map((press, index) => (
-            <Pressable key={index}  style={styles.listItemContainer}> 
-            {/* onPress={() => handleDeletePress(index)} THis goes above, check past code for reference*/}
-              <Text style={styles.listItem}>{press}</Text>
-              <Text style={styles.closeButtonText}>X</Text>
-            </Pressable>
-          ))}
-        </View>
-
+       
         <Pressable
           style={styles.buttonOne}
           onPress={() => {
-            // handleSendAutoData();
+            handleSendAutoData();
             router.push(`/(matchInfo)/teleop?regional=${regional}&teamNumber=${teamNumber}&qualMatch=${qualMatch}`)
           }
         }       
@@ -421,6 +461,20 @@ const matchInfo: React.FC = () => {
     </ScrollView >
   );
 };
+
+/*
+ <View style={styles.border}>
+          <Text style={styles.listTitle}>List</Text>
+          {buttonPresses.map((press, index) => (
+            <Pressable key={index}  style={styles.listItemContainer}> 
+            {/* onPress={() => handleDeletePress(index)} THis goes above, check past code for reference}
+            <Text style={styles.listItem}>{press}</Text>
+            <Text style={styles.closeButtonText}>X</Text>
+          </Pressable>
+        ))}
+      </View>
+
+*/
 
 const styles = StyleSheet.create({
   title: {
