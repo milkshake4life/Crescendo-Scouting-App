@@ -1,12 +1,13 @@
 import { Link, router, useGlobalSearchParams, useLocalSearchParams } from "expo-router";
-import { Pressable, Button, Image, Text, View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, TextInput } from "react-native";
+import { Pressable, Button, Image, Text, View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity } from "react-native";
 import { useFonts } from 'expo-font';
 //importing the back-button component from the filee
 import BackButton from '../../../backButton';
 import { Dropdown } from 'react-native-element-dropdown';
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { database } from "../../../../firebaseConfig";
 import { onValue, ref, set } from "firebase/database";
+
 
 interface DropdownItem{
   label: string;
@@ -84,6 +85,12 @@ const robotInfo = () => {
       [dropdownKey]: false,
     }));
   };
+
+
+
+
+
+
 
   return (
     <KeyboardAvoidingView
@@ -189,7 +196,20 @@ const robotInfo = () => {
             setIsFocus(false);
           }}
         />
+
+        {/* button to access the camera view, where pictures are taken */}
+        <Pressable
+          style={styles.sendButton}
+              onPress={() => {
+                router.push(`/(matchInfo)/camera?regional=${regional}&teamNumber=${teamNumber}`);
+              }}>
+              <Text style={styles.sendButtonText}>Take Picture</Text>   
+        </Pressable>
+        
+
       </View>
+
+      {/*send data button*/} 
           <Pressable
             style={styles.sendButton}
             onPress={() => {
