@@ -91,6 +91,7 @@ const matchInfo: React.FC = () => {
 
   const handleTaxiPress = (item: string): void => {
     if (taxiPressed) {
+      setTaxiPressed(false);
       return;
     }
     setTaxiPressed(true);
@@ -136,14 +137,278 @@ const matchInfo: React.FC = () => {
     })
   }
 
-      //else if(entryArr[1] === "MISSED AMP")
-//       {
-//         action = 2;
-//         console.log(entryArr[0] + ": MISSED AMP");
-//         console.log(action);
-//         set(ref(database, path + `/Auto/${entryArr[0]}/Action`), action);
+  console.log(qualMatch + " seating: " + alliance);
 
-//       }
+  return (
+    <ScrollView>
+      <View style={styles.mainContainer}>
+        <BackButton buttonName="Home Page" />
+        <Text style={styles.title}>Autonomous</Text>
+
+
+        <View style={styles.border}>
+        <Pressable onPress={() =>
+            // backgroundColor: 'rgba(0, 130, 190, 255)'
+            handleTaxiPress('TAXI')} 
+            style={
+              {
+                backgroundColor: !taxiPressed ? 'rgba(0, 130, 190, 255)' : 'rgba(0, 59, 73, 94)', // Button color
+                paddingHorizontal: '20%',
+                paddingVertical: 10,
+                marginVertical: 5, // Adjust for space between buttons
+                marginLeft: 5,//PLEASE CHANGE THIS 
+                marginRight: 5,
+                alignContent: 'center',
+              }
+            }>
+            <Text style={styles.buttonText}>Taxi</Text>
+        </Pressable>
+        <View style={styles.notesContainer}>
+          {/* Left Column */}
+          <View style={styles.notesColumn}>
+            {leftNotes.map((note) => (
+              <Pressable
+                key={note.id}
+                onPress={() => handlePressNote(note.id)}
+                disabled={note.used}
+                style={[styles.noteWrapper, note.used && styles.usedNote]}
+              >
+                <View style={[styles.noteBase, { borderColor: note.color }]}>
+                  <Text style={styles.noteText}>{note.id.toUpperCase()}</Text>
+                </View>
+              </Pressable>
+            ))}
+          </View>
+
+          {/* Right Column */}
+          <View style={styles.notesColumn}>
+            {rightNotes.map((note) => (
+              <Pressable
+                key={note.id}
+                onPress={() => handlePressNote(note.id)}
+                disabled={note.used}
+                style={[styles.noteWrapper, note.used && styles.usedNote]}
+              >
+                <View style={[styles.noteBase, { borderColor: note.color }]}>
+                  <Text style={styles.noteText}>{note.id.toUpperCase()}</Text>
+                </View>
+              </Pressable>
+            ))}
+          </View>
+        </View>
+        </View>
+
+       
+        <Pressable
+          style={styles.buttonOne}
+          onPress={() => {
+            handleSendAutoData();
+            router.push(`/(matchInfo)/teleop?regional=${regional}&teamNumber=${teamNumber}&qualMatch=${qualMatch}`)
+          }
+        }       
+        >
+          <Text style={styles.buttonOneText}>Teleoperation</Text>
+        </Pressable>
+      </View>
+    </ScrollView >
+  );
+};
+
+/*
+ <View style={styles.border}>
+          <Text style={styles.listTitle}>List</Text>
+          {buttonPresses.map((press, index) => (
+            <Pressable key={index}  style={styles.listItemContainer}> 
+            {/* onPress={() => handleDeletePress(index)} THis goes above, check past code for reference}
+            <Text style={styles.listItem}>{press}</Text>
+            <Text style={styles.closeButtonText}>X</Text>
+          </Pressable>
+        ))}
+      </View>
+
+*/
+
+const styles = StyleSheet.create({
+  title: {
+    fontFamily: 'BPoppins',
+    fontSize: 40,
+    textAlign: 'center',
+    marginTop: -45,
+    marginBottom: 30,
+  },
+  buttonOne: {
+    marginTop: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 53,
+    borderRadius: 4,
+    backgroundColor: "rgba(0, 130, 190, 255)",
+    borderWidth: 2,
+    borderColor: "rgba(0, 130, 190, 255)",
+  },
+  buttonOneText: {
+    fontSize: 16,
+    lineHeight: 21,
+    letterSpacing: 0.25,
+    color: "white",
+    fontFamily: "BPoppins",
+  },
+  speakerButton: {
+    backgroundColor: 'rgba(0, 130, 190, 255)', // Button color
+    paddingHorizontal: '15%',
+    paddingVertical: 10,
+    marginVertical: 5, // Adjust for space between buttons
+    marginLeft: 5,//PLEASE CHANGE THIS 
+    marginRight: 5,
+    alignContent: 'center',
+  },
+  speakerMissButton: {
+    backgroundColor: 'rgba(0, 130, 190, 255)', // Button color
+    paddingHorizontal: '7%',
+    paddingVertical: 10,
+    marginVertical: 5, // Adjust for space between buttons
+    marginLeft: 5,//PLEASE CHANGE THIS 
+    marginRight: 5,
+    alignContent: 'center',
+  },
+  ampButton: {
+    backgroundColor: 'rgba(0, 130, 190, 255)', // Button color
+    paddingHorizontal: '19%',
+    paddingVertical: 10,
+    marginVertical: 5, // Adjust for space between buttons
+    marginLeft: 5,//PLEASE CHANGE THIS 
+    marginRight: 5,
+    alignContent: 'center',
+  },
+  ampMissButton: {
+    backgroundColor: 'rgba(0, 130, 190, 255)', // Button color
+    paddingHorizontal: '11%',
+    paddingVertical: 10,
+    marginVertical: 5, // Adjust for space between buttons
+    marginLeft: 5,//PLEASE CHANGE THIS 
+    marginRight: 5,
+    alignContent: 'center',
+  },
+  intakeButton: {
+    backgroundColor: 'rgba(0, 130, 190, 255)', // Button color
+    paddingHorizontal: '17%',
+    paddingVertical: 10,
+    marginVertical: 5, // Adjust for space between buttons
+    marginLeft: 5,//PLEASE CHANGE THIS 
+    marginRight: 5,
+    alignContent: 'center',
+  },
+  intakeMissButton: {
+    backgroundColor: 'rgba(0, 130, 190, 255)', // Button color
+    paddingHorizontal: '9%',
+    paddingVertical: 10,
+    marginVertical: 5, // Adjust for space between buttons
+    marginLeft: 5,//PLEASE CHANGE THIS 
+    marginRight: 5,
+    alignContent: 'center',
+  },
+  //moving taxibutton to change conditionally based on button press
+  taxiButton: {
+    backgroundColor: 'rgba(0, 130, 190, 255)', // Button color
+    paddingHorizontal: '20%',
+    paddingVertical: 10,
+    marginVertical: 5, // Adjust for space between buttons
+    marginLeft: 5,//PLEASE CHANGE THIS 
+    marginRight: 5,
+    alignContent: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  mainContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    padding: 20,
+    width: "100%",
+  },
+  listTitle: {
+    fontSize: 20,
+    fontFamily:'BPoppins',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  listItemContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#E6E5E5', // Apply background color to the entire item
+    marginBottom: 5,
+    padding: 10, // Add padding inside the item for spacing
+    borderRadius: 5, // Optional: for rounded corners
+  },
+  listItem: {
+    color: '#000', // Text color for the list item
+    fontFamily: 'BPoppins',
+    flex: 1, // Allows text to fill the row and push the "X" to the end
+  },
+  closeButtonText: {
+    color: '#333', // Color for the "X"
+    fontFamily:'BPoppins',
+    marginLeft: 10, // Ensure spacing between the text and "X"
+  },
+  usedNote: {
+    backgroundColor: '#E6E5E5', // Gray background for used notes
+  },
+  notesContainer: {
+    flexDirection: 'row', // Align columns side by side
+    justifyContent: 'space-around',
+    alignItems: 'flex-start',
+    width: '100%',
+  },
+  notesColumn: {
+    flexDirection: 'column', // Arrange notes vertically
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  noteWrapper: {
+    marginVertical: 10, // Adjust spacing between notes
+  },
+  noteBase: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noteText: {
+    // Your text style here
+    color: 'black', // Choose the text color that suits your design
+    // Position the text in the center of the ring
+    position: 'absolute',
+    textAlign: 'center',
+    width: '100%', // Ensure the text is centered in the ring
+    lineHeight: 40, // Adjust line height to vertically center text in the ring
+    fontFamily: "BPoppins",
+  },
+  border: {
+    padding: 10,
+    borderRadius: 10, //curves
+    borderWidth: 3,
+    borderColor: 'rgba(0, 130, 190, 255)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    width: '100%',
+    marginBottom:9,
+  },
+  buttonrow: {
+    flexDirection: 'row',
+  }
+});
+
+export default matchInfo;
+
+
+
 //   const handlePress = (item: string): void => {
 //     //Taxi entry
 //     if (item === 'TAXI') {
@@ -328,13 +593,8 @@ const matchInfo: React.FC = () => {
       
 //     })
 //   }
-  console.log(qualMatch + " seating: " + alliance);
 
-  return (
-    <ScrollView>
-      <View style={styles.mainContainer}>
-        <BackButton buttonName="Home Page" />
-        <Text style={styles.title}>Autonomous</Text>
+
 
         {/* <View style={styles.border}> */}
         {/* <View style={styles.buttonrow}>
@@ -406,250 +666,4 @@ const matchInfo: React.FC = () => {
           
           
         {/* </View> */}
-
-        <View style={styles.border}>
-        <Pressable onPress={() => handleTaxiPress('TAXI')} style={styles.taxiButton}>
-            <Text style={styles.buttonText}>Taxi</Text>
-        </Pressable>
-        <View style={styles.notesContainer}>
-          {/* Left Column */}
-          <View style={styles.notesColumn}>
-            {leftNotes.map((note) => (
-              <Pressable
-                key={note.id}
-                onPress={() => handlePressNote(note.id)}
-                disabled={note.used}
-                style={[styles.noteWrapper, note.used && styles.usedNote]}
-              >
-                <View style={[styles.noteBase, { borderColor: note.color }]}>
-                  <Text style={styles.noteText}>{note.id.toUpperCase()}</Text>
-                </View>
-              </Pressable>
-            ))}
-          </View>
-
-          {/* Right Column */}
-          <View style={styles.notesColumn}>
-            {rightNotes.map((note) => (
-              <Pressable
-                key={note.id}
-                onPress={() => handlePressNote(note.id)}
-                disabled={note.used}
-                style={[styles.noteWrapper, note.used && styles.usedNote]}
-              >
-                <View style={[styles.noteBase, { borderColor: note.color }]}>
-                  <Text style={styles.noteText}>{note.id.toUpperCase()}</Text>
-                </View>
-              </Pressable>
-            ))}
-          </View>
-        </View>
-        </View>
-
-       
-        <Pressable
-          style={styles.buttonOne}
-          onPress={() => {
-            handleSendAutoData();
-            router.push(`/(matchInfo)/teleop?regional=${regional}&teamNumber=${teamNumber}&qualMatch=${qualMatch}`)
-          }
-        }       
-        >
-          <Text style={styles.buttonOneText}>Teleoperation</Text>
-        </Pressable>
-      </View>
-    </ScrollView >
-  );
-};
-
-/*
- <View style={styles.border}>
-          <Text style={styles.listTitle}>List</Text>
-          {buttonPresses.map((press, index) => (
-            <Pressable key={index}  style={styles.listItemContainer}> 
-            {/* onPress={() => handleDeletePress(index)} THis goes above, check past code for reference}
-            <Text style={styles.listItem}>{press}</Text>
-            <Text style={styles.closeButtonText}>X</Text>
-          </Pressable>
-        ))}
-      </View>
-
-*/
-
-const styles = StyleSheet.create({
-  title: {
-    fontFamily: 'BPoppins',
-    fontSize: 40,
-    textAlign: 'center',
-    marginTop: -45,
-    marginBottom: 30,
-  },
-  buttonOne: {
-    marginTop: 30,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 53,
-    borderRadius: 4,
-    backgroundColor: "rgba(0, 130, 190, 255)",
-    borderWidth: 2,
-    borderColor: "rgba(0, 130, 190, 255)",
-  },
-  buttonOneText: {
-    fontSize: 16,
-    lineHeight: 21,
-    letterSpacing: 0.25,
-    color: "white",
-    fontFamily: "BPoppins",
-  },
-  speakerButton: {
-    backgroundColor: 'rgba(0, 130, 190, 255)', // Button color
-    paddingHorizontal: '15%',
-    paddingVertical: 10,
-    marginVertical: 5, // Adjust for space between buttons
-    marginLeft: 5,//PLEASE CHANGE THIS 
-    marginRight: 5,
-    alignContent: 'center',
-  },
-  speakerMissButton: {
-    backgroundColor: 'rgba(0, 130, 190, 255)', // Button color
-    paddingHorizontal: '7%',
-    paddingVertical: 10,
-    marginVertical: 5, // Adjust for space between buttons
-    marginLeft: 5,//PLEASE CHANGE THIS 
-    marginRight: 5,
-    alignContent: 'center',
-  },
-  ampButton: {
-    backgroundColor: 'rgba(0, 130, 190, 255)', // Button color
-    paddingHorizontal: '19%',
-    paddingVertical: 10,
-    marginVertical: 5, // Adjust for space between buttons
-    marginLeft: 5,//PLEASE CHANGE THIS 
-    marginRight: 5,
-    alignContent: 'center',
-  },
-  ampMissButton: {
-    backgroundColor: 'rgba(0, 130, 190, 255)', // Button color
-    paddingHorizontal: '11%',
-    paddingVertical: 10,
-    marginVertical: 5, // Adjust for space between buttons
-    marginLeft: 5,//PLEASE CHANGE THIS 
-    marginRight: 5,
-    alignContent: 'center',
-  },
-  intakeButton: {
-    backgroundColor: 'rgba(0, 130, 190, 255)', // Button color
-    paddingHorizontal: '17%',
-    paddingVertical: 10,
-    marginVertical: 5, // Adjust for space between buttons
-    marginLeft: 5,//PLEASE CHANGE THIS 
-    marginRight: 5,
-    alignContent: 'center',
-  },
-  intakeMissButton: {
-    backgroundColor: 'rgba(0, 130, 190, 255)', // Button color
-    paddingHorizontal: '9%',
-    paddingVertical: 10,
-    marginVertical: 5, // Adjust for space between buttons
-    marginLeft: 5,//PLEASE CHANGE THIS 
-    marginRight: 5,
-    alignContent: 'center',
-  },
-  taxiButton: {
-    backgroundColor: 'rgba(0, 130, 190, 255)', // Button color
-    paddingHorizontal: '20%',
-    paddingVertical: 10,
-    marginVertical: 5, // Adjust for space between buttons
-    marginLeft: 5,//PLEASE CHANGE THIS 
-    marginRight: 5,
-    alignContent: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  mainContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    padding: 20,
-    width: "100%",
-  },
-  listTitle: {
-    fontSize: 20,
-    fontFamily:'BPoppins',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  listItemContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#E6E5E5', // Apply background color to the entire item
-    marginBottom: 5,
-    padding: 10, // Add padding inside the item for spacing
-    borderRadius: 5, // Optional: for rounded corners
-  },
-  listItem: {
-    color: '#000', // Text color for the list item
-    fontFamily: 'BPoppins',
-    flex: 1, // Allows text to fill the row and push the "X" to the end
-  },
-  closeButtonText: {
-    color: '#333', // Color for the "X"
-    fontFamily:'BPoppins',
-    marginLeft: 10, // Ensure spacing between the text and "X"
-  },
-  usedNote: {
-    backgroundColor: '#E6E5E5', // Gray background for used notes
-  },
-  notesContainer: {
-    flexDirection: 'row', // Align columns side by side
-    justifyContent: 'space-around',
-    alignItems: 'flex-start',
-    width: '100%',
-  },
-  notesColumn: {
-    flexDirection: 'column', // Arrange notes vertically
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  noteWrapper: {
-    marginVertical: 10, // Adjust spacing between notes
-  },
-  noteBase: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    borderWidth: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  noteText: {
-    // Your text style here
-    color: 'black', // Choose the text color that suits your design
-    // Position the text in the center of the ring
-    position: 'absolute',
-    textAlign: 'center',
-    width: '100%', // Ensure the text is centered in the ring
-    lineHeight: 40, // Adjust line height to vertically center text in the ring
-    fontFamily: "BPoppins",
-  },
-  border: {
-    padding: 10,
-    borderRadius: 10, //curves
-    borderWidth: 3,
-    borderColor: 'rgba(0, 130, 190, 255)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white',
-    width: '100%',
-    marginBottom:9,
-  },
-  buttonrow: {
-    flexDirection: 'row',
-  }
-});
-
-export default matchInfo;
+        
