@@ -64,6 +64,10 @@ def calculateEverything(path):
     postgameSumDrivingRating = 0
     postgameTotalDrivingRating = 0
 
+    postgameDisabledCount = 0
+    postgameDefenseCount = 0
+    postgameTotalMatches = 0
+
 
     #getting data
     for i in result.keys():
@@ -118,6 +122,15 @@ def calculateEverything(path):
                 drivingRatingResult = db.reference(specificPath + '/' + j).get()
                 postgameSumDrivingRating += drivingRatingResult
                 postgameTotalDrivingRating += 1
+            elif j == "Defense":
+                defenseResult = db.reference(specificPath + '/' + j).get()
+                if(defenseResult == 1):
+                    postgameDefenseCount += 1
+                postgameTotalMatches += 1
+            elif j == "Disabled":
+                disabledResult = db.reference(specificPath + '/' + j).get()
+                if(disabledResult == 1):
+                    postgameDisabledCount += 1
 
 
 
@@ -177,6 +190,12 @@ def calculateEverything(path):
         postgameAverageRating = 0
     else:
         postgameAverageRating = round(postgameSumDrivingRating / postgameTotalDrivingRating)
+    if postgameTotalMatches == 0:
+        postgameDefensePercent = 0
+        postgameDisabledPercent = 0
+    else:
+        postgameDefensePercent = postgameDefenseCount / postgameTotalMatches * 100
+        postgameDisabledPercent = postgameDisabledCount / postgameTotalMatches * 100
 
 
 
@@ -219,6 +238,11 @@ def calculateEverything(path):
 
     # Post game
     db.reference(statsPath + 'Stats/Percentage/Postgame/Driving Rating').set(postgameAverageRating)
+    db.reference(statsPath + 'Stats/Percentage/Postgame/Defense').set(postgameDefensePercent)
+    db.reference(statsPath + 'Stats/Percentage/Postgame/Disabled').set(postgameDisabledPercent)
+    db.reference(statsPath + 'Stats/Fraction/Postgame/Defense').set(postgameDefenseCount)
+    db.reference(statsPath + 'Stats/Fraction/Postgame/Disabled').set(postgameDisabledCount)
+    db.reference(statsPath + 'Stats/Fraction/Postgame/Total').set(postgameTotalMatches)
 
 
 

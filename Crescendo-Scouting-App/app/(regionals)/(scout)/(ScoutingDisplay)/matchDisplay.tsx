@@ -52,26 +52,6 @@ const matchDisplay = () => {
 
   const [autoTotal, setAutoTotal] = useState<string | null>(null);
 
-  // const [autoM1SpeakerPercent, setM1SpeakerPercent] = useState<string | null>(null);
-  // const [autoM2SpeakerPercent, setM2SpeakerPercent] = useState<string | null>(null);
-  // const [autoM3SpeakerPercent, setM3SpeakerPercent] = useState<string | null>(null);
-  // const [autoM4SpeakerPercent, setM4SpeakerPercent] = useState<string | null>(null);
-  // const [autoM5SpeakerPercent, setM5SpeakerPercent] = useState<string | null>(null);
-  // const [autoS1SpeakerPercent, setS1SpeakerPercent] = useState<string | null>(null);
-  // const [autoS2SpeakerPercent, setS2SpeakerPercent] = useState<string | null>(null);
-  // const [autoS3SpeakerPercent, setS3SpeakerPercent] = useState<string | null>(null);
-  // const [autoRSpeakerPercent, setRSpeakerPercent] = useState<string | null>(null);
-
-  // const [autoM1IntakePercent, setM1IntakePercent] = useState<string | null>(null);
-  // const [autoM2IntakePercent, setM2IntakePercent] = useState<string | null>(null);
-  // const [autoM3IntakePercent, setM3IntakePercent] = useState<string | null>(null);
-  // const [autoM4IntakePercent, setM4IntakePercent] = useState<string | null>(null);
-  // const [autoM5IntakePercent, setM5IntakePercent] = useState<string | null>(null);
-  // const [autoS1IntakePercent, setS1IntakePercent] = useState<string | null>(null);
-  // const [autoS2IntakePercent, setS2IntakePercent] = useState<string | null>(null);
-  // const [autoS3IntakePercent, setS3IntakePercent] = useState<string | null>(null);
-  // const [autoRIntakePercent, setRIntakePercent] = useState<string | null>(null);
-
 
   //teleop constants
   const [teleopAmpPercent, setTeleopAmpPercent] = useState<string | null>(null);
@@ -115,6 +95,12 @@ const matchDisplay = () => {
 
   //postgame constants
   const [postgameAverageDriverRating, setPostgameAverageDriverRating] = useState<string | null>(null);
+  const [postgameDisabledPercent, setPostgameDisabledPercent] = useState<string | null>(null);
+  const [postgameDefensePercent, setPostgameDefensePercent] = useState<string | null>(null);
+  const [postgameDisabledFraction, setPostgameDisabledFraction] = useState<string | null>(null);
+  const [postgameDefenseFraction, setPostgameDefenseFraction] = useState<string | null>(null);
+  const [postgameTotal, setPostgameTotal] = useState<string | null>(null);
+
 
   useEffect(() => {
     //log for debugging
@@ -152,123 +138,6 @@ const matchDisplay = () => {
 
   }, [teamNumber, regional])
   // defining teamNumber and regional as state variables, because this allows their values to change.
-
-  // const getM1AutoPercentage = (autoType: string) => {
-  //   switch (autoType) {
-  //     case 'Amp':
-  //       return autoM1AmpPercent;
-  //     case 'Speaker':
-  //       return autoM1SpeakerPercent;
-  //     case 'Intake':
-  //       return autoM1IntakePercent; // Replace with the actual state variable for Intake
-  //     default:
-  //       return 'N/A';
-  //   }
-  // };
-
-  // const getM2AutoPercentage = (autoType: string) => {
-  //   switch (autoType) {
-  //     case 'Amp':
-  //       return autoM2AmpPercent;
-  //     case 'Speaker':
-  //       return autoM2SpeakerPercent;
-  //     case 'Intake':
-  //       return autoM2IntakePercent; // Replace with the actual state variable for Intake
-  //     default:
-  //       return 'N/A';
-  //   }
-  // };
-
-  // const getM3AutoPercentage = (autoType: string) => {
-  //   switch (autoType) {
-  //     case 'Amp':
-  //       return autoM3AmpPercent;
-  //     case 'Speaker':
-  //       return autoM3SpeakerPercent;
-  //     case 'Intake':
-  //       return autoM3IntakePercent; // Replace with the actual state variable for Intake
-  //     default:
-  //       return 'N/A';
-  //   }
-  // };
-
-  // const getM4AutoPercentage = (autoType: string) => {
-  //   switch (autoType) {
-  //     case 'Amp':
-  //       return autoM4AmpPercent;
-  //     case 'Speaker':
-  //       return autoM4SpeakerPercent;
-  //     case 'Intake':
-  //       return autoM4IntakePercent; // Replace with the actual state variable for Intake
-  //     default:
-  //       return 'N/A';
-  //   }
-  // };
-
-  // const getM5AutoPercentage = (autoType: string) => {
-  //   switch (autoType) {
-  //     case 'Amp':
-  //       return autoM5AmpPercent;
-  //     case 'Speaker':
-  //       return autoM5SpeakerPercent;
-  //     case 'Intake':
-  //       return autoM5IntakePercent; // Replace with the actual state variable for Intake
-  //     default:
-  //       return 'N/A';
-  //   }
-  // };
-
-  // const getS1AutoPercentage = (autoType: string) => {
-  //   switch (autoType) {
-  //     case 'Amp':
-  //       return autoS1AmpPercent;
-  //     case 'Speaker':
-  //       return autoS1SpeakerPercent;
-  //     case 'Intake':
-  //       return autoS1IntakePercent; // Replace with the actual state variable for Intake
-  //     default:
-  //       return 'N/A';
-  //   }
-  // };
-
-  // const getS2AutoPercentage = (autoType: string) => {
-  //   switch (autoType) {
-  //     case 'Amp':
-  //       return autoS2AmpPercent;
-  //     case 'Speaker':
-  //       return autoS2SpeakerPercent;
-  //     case 'Intake':
-  //       return autoS2IntakePercent; // Replace with the actual state variable for Intake
-  //     default:
-  //       return 'N/A';
-  //   }
-  // };
-
-  // const getS3AutoPercentage = (autoType: string) => {
-  //   switch (autoType) {
-  //     case 'Amp':
-  //       return autoS3AmpPercent;
-  //     case 'Speaker':
-  //       return autoS3SpeakerPercent;
-  //     case 'Intake':
-  //       return autoS3IntakePercent; // Replace with the actual state variable for Intake
-  //     default:
-  //       return 'N/A';
-  //   }
-  // };
-
-  // const getRAutoPercentage = (autoType: string) => {
-  //   switch (autoType) {
-  //     case 'Amp':
-  //       return autoRAmpPercent;
-  //     case 'Speaker':
-  //       return autoRSpeakerPercent;
-  //     case 'Intake':
-  //       return autoRIntakePercent;
-  //     default:
-  //       return 'N/A';
-  //   }
-  // };
 
   //accessing data
   useEffect(() => {
@@ -311,27 +180,6 @@ const matchDisplay = () => {
 
     const autoTotalRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Fraction/Auto/Total') 
 
-
-    // const autoM1SpeakerRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Speaker/M1') 
-    // const autoM2SpeakerRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Speaker/M2') 
-    // const autoM3SpeakerRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Speaker/M3') 
-    // const autoM4SpeakerRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Speaker/M4') 
-    // const autoM5SpeakerRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Speaker/M5') 
-    // const autoS1SpeakerRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Speaker/S1') 
-    // const autoS2SpeakerRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Speaker/S2') 
-    // const autoS3SpeakerRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Speaker/S3') 
-    // const autoRSpeakerRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Speaker/R') 
-
-    // const autoM1IntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/M1') 
-    // const autoM2IntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/M2') 
-    // const autoM3IntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/M3') 
-    // const autoM4IntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/M4') 
-    // const autoM5IntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/M5') 
-    // const autoS1IntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/S1') 
-    // const autoS2IntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/S2') 
-    // const autoS3IntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/S3') 
-    // const autoRIntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/R') 
-
     // teleop paths
     const teleopAmpPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Percentage/Teleop/Amp')
     const teleopGroundPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Percentage/Teleop/Ground Intake')
@@ -373,7 +221,14 @@ const matchDisplay = () => {
     const endgameTotalRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Fraction/Endgame/Total')
 
     //postgame paths
-    const postgameAverageDriverRatingRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Postgame/Driving Rating')
+    const postgameAverageDriverRatingRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Percentage/Postgame/Driving Rating')
+    const postgameDisabledPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Percentage/Postgame/Disabled')
+    const postgameDefensePercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Percentage/Postgame/Defense')
+    const postgameDisabledFractionRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Fraction/Postgame/Disabled')
+    const postgameDefenseFractionRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Fraction/Postgame/Defense')
+    const postgameTotalRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Fraction/Postgame/Total')
+
+
 
     // Callback function to handle snapshot changes
     const handleSnapshot = (snapshot: DataSnapshot, setPosition: React.Dispatch<React.SetStateAction<string | null>>) => {
@@ -422,26 +277,6 @@ const matchDisplay = () => {
 
     const autoTotalListener = onValue(autoTotalRef, (snapshot) => handleSnapshot(snapshot, setAutoTotal));
 
-    // const autoM1SpeakerListener = onValue(autoM1SpeakerRef, (snapshot) => handleSnapshot(snapshot, setM1SpeakerPercent));
-    // const autoM2SpeakerListener = onValue(autoM2SpeakerRef, (snapshot) => handleSnapshot(snapshot, setM2SpeakerPercent));
-    // const autoM3SpeakerListener = onValue(autoM3SpeakerRef, (snapshot) => handleSnapshot(snapshot, setM3SpeakerPercent));
-    // const autoM4SpeakerListener = onValue(autoM4SpeakerRef, (snapshot) => handleSnapshot(snapshot, setM4SpeakerPercent));
-    // const autoM5SpeakerListener = onValue(autoM5SpeakerRef, (snapshot) => handleSnapshot(snapshot, setM5SpeakerPercent));
-    // const autoS1SpeakerListener = onValue(autoS1SpeakerRef, (snapshot) => handleSnapshot(snapshot, setS1SpeakerPercent));
-    // const autoS2SpeakerListener = onValue(autoS2SpeakerRef, (snapshot) => handleSnapshot(snapshot, setS2SpeakerPercent));
-    // const autoS3SpeakerListener = onValue(autoS3SpeakerRef, (snapshot) => handleSnapshot(snapshot, setS3SpeakerPercent));
-    // const autoRSpeakerListener = onValue(autoRSpeakerRef, (snapshot) => handleSnapshot(snapshot, setRSpeakerPercent));
-
-    // const autoM1IntakeListener = onValue(autoM1IntakeRef, (snapshot) => handleSnapshot(snapshot, setM1IntakePercent));
-    // const autoM2IntakeListener = onValue(autoM2IntakeRef, (snapshot) => handleSnapshot(snapshot, setM2IntakePercent));
-    // const autoM3IntakeListener = onValue(autoM3IntakeRef, (snapshot) => handleSnapshot(snapshot, setM3IntakePercent));
-    // const autoM4IntakeListener = onValue(autoM4IntakeRef, (snapshot) => handleSnapshot(snapshot, setM4IntakePercent));
-    // const autoM5IntakeListener = onValue(autoM5IntakeRef, (snapshot) => handleSnapshot(snapshot, setM5IntakePercent));
-    // const autoS1IntakeListener = onValue(autoS1IntakeRef, (snapshot) => handleSnapshot(snapshot, setS1IntakePercent));
-    // const autoS2IntakeListener = onValue(autoS2IntakeRef, (snapshot) => handleSnapshot(snapshot, setS2IntakePercent));
-    // const autoS3IntakeListener = onValue(autoS3IntakeRef, (snapshot) => handleSnapshot(snapshot, setS3IntakePercent));
-    // const autoRIntakeListener = onValue(autoRIntakeRef, (snapshot) => handleSnapshot(snapshot, setRIntakePercent));
-
     // teleop
     const teleopAmpPercentListener = onValue(teleopAmpPercentRef, (snapshot) => handleSnapshot(snapshot, setTeleopAmpPercent))
     const teleopGroundPercentListener = onValue(teleopGroundPercentRef, (snapshot) => handleSnapshot(snapshot, setTeleopGroundIntakePercent))
@@ -483,6 +318,12 @@ const matchDisplay = () => {
     const endgameTotalListener = onValue(endgameTotalRef, (snapshot) => handleSnapshot(snapshot, setEndgameTotal))
     //postgame
     const postgameAverageDriverRatingListener = onValue(postgameAverageDriverRatingRef, (snapshot) => handleSnapshot(snapshot, setPostgameAverageDriverRating))
+    const postgameDisabledPercentListener = onValue(postgameDisabledPercentRef, (snapshot) => handleSnapshot(snapshot, setPostgameDisabledPercent))
+    const postgameDefensePercentListener = onValue(postgameDefensePercentRef, (snapshot) => handleSnapshot(snapshot, setPostgameDefensePercent))
+    const postgameDisabledFractionListener = onValue(postgameDisabledFractionRef, (snapshot) => handleSnapshot(snapshot, setPostgameDisabledFraction))
+    const postgameDefenseFractionListener = onValue(postgameDefenseFractionRef, (snapshot) => handleSnapshot(snapshot, setPostgameDefenseFraction))
+    const postgameTotalListener = onValue(postgameTotalRef, (snapshot) => handleSnapshot(snapshot, setPostgameTotal))
+
 
     // Clean up listeners on component unmount
     return () => {
@@ -562,6 +403,11 @@ const matchDisplay = () => {
 
       //postgame listeners
       off(postgameAverageDriverRatingRef, 'value', postgameAverageDriverRatingListener);
+      off(postgameDisabledPercentRef, 'value', postgameDisabledPercentListener);
+      off(postgameDefensePercentRef, 'value', postgameDefensePercentListener);
+      off(postgameDisabledFractionRef, 'value', postgameDisabledFractionListener);
+      off(postgameDefenseFractionRef, 'value', postgameDefenseFractionListener);
+      off(postgameTotalRef, 'value', postgameTotalListener);
     };
 
   }, [teamNumber, regional]);
@@ -660,6 +506,8 @@ const matchDisplay = () => {
         <Text style={styles.itemTitle}>Overall</Text>
         <View style={styles.border}>
           <InfoItem title="Driver Rating:" info={postgameAverageDriverRating} />
+          <InfoPercentFractionItem title="Disabled: " percent={postgameDisabledPercent} fraction = {postgameDisabledFraction} total = {postgameTotal}/>
+          <InfoPercentFractionItem title="Defense: " percent={postgameDefensePercent} fraction = {postgameDefenseFraction} total = {postgameTotal}/>
         </View>
       </View>
     </ScrollView>
