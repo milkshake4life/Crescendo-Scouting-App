@@ -91,10 +91,23 @@ const DrivingRatingSlider: React.FC<{ value: number; onValueChange: (value: numb
   );
 };
 
+//ADD: defense + disabled check box
 
+
+//       <CheckBox
+//         title="Defense"
+//         checked={isChecked}
+//         onPress={() => setIsChecked(!isChecked)}
+//         containerStyle={styles.checkboxContainer}
+//       />
+
+/*
+
+*/
 const MatchInfo: React.FC = () => {
   const [sliderValue, setSliderValue] = useState<number>(1);
-  const [isChecked, setIsChecked] = React.useState(false);
+  const [isDefenseChecked, setIsDefenseChecked] = React.useState(false);
+  const [isDisabledChecked, setIsDisabledChecked] = React.useState(false);
   const [counter, setCounter] = useState(0)
   const { regional } = useGlobalSearchParams<{ regional: string }>();
   const { teamNumber } = useGlobalSearchParams<{ teamNumber: string }>();
@@ -114,6 +127,25 @@ const MatchInfo: React.FC = () => {
     // Add your submission logic here
     const path = `${regional}/teams/${teamNumber}/Match-Info/${qualMatch}`;
     set(ref(database, path + '/Driving Rating'), sliderValue)
+
+    let defenseValue = 0;
+    let disabledValue = 0;
+
+    if(isDefenseChecked)
+    {
+      defenseValue = 1;
+    }
+    if(isDisabledChecked)
+    {
+      disabledValue = 1;
+    }
+    
+
+    //defense, disabled stuff
+    set(ref(database, path + '/Defense'), defenseValue)
+    set(ref(database, path + '/Disabled'), disabledValue)
+
+
   };
 
   return (
@@ -127,6 +159,23 @@ const MatchInfo: React.FC = () => {
         <DrivingRatingSlider value={sliderValue} onValueChange={(value) => setSliderValue(value)} />
 
         {/* Checkbox with margin */}
+        {/* Defense */}
+          <CheckBox
+            title="Defense"
+            checked={isDefenseChecked}
+            onPress={() => setIsDefenseChecked(!isDefenseChecked)}
+            containerStyle={styles.checkboxContainer}
+          />
+
+          {/* Disabled */}
+          <CheckBox
+            title="Disabled"
+            checked={isDisabledChecked}
+            onPress={() => setIsDisabledChecked(!isDisabledChecked)}
+            containerStyle={styles.checkboxContainer}
+          />
+
+
 
         {/* <Text style={styles.subtitle}>Penalties</Text>
 
@@ -239,6 +288,9 @@ const styles = StyleSheet.create({
   counterContainer: {
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  checkboxContainer: {
+    marginVertical: 20,
   },
 
 });
