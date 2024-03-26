@@ -28,36 +28,49 @@ const matchDisplay = () => {
   const [pregameTotal, setPregameTotal] = useState<string | null>(null);
 
   //auto constants
-  const [autoTaxiPercent, setTaxiPercent] = useState<string | null>(null);
-  const [autoM1AmpPercent, setM1AutoPercent] = useState<string | null>(null);
-  const [autoM2AmpPercent, setM2AutoPercent] = useState<string | null>(null);
-  const [autoM3AmpPercent, setM3AutoPercent] = useState<string | null>(null);
-  const [autoM4AmpPercent, setM4AutoPercent] = useState<string | null>(null);
-  const [autoM5AmpPercent, setM5AutoPercent] = useState<string | null>(null);
-  const [autoS1AmpPercent, setS1AutoPercent] = useState<string | null>(null);
-  const [autoS2AmpPercent, setS2AutoPercent] = useState<string | null>(null);
-  const [autoS3AmpPercent, setS3AutoPercent] = useState<string | null>(null);
-  const [autoRAmpPercent, setRAutoPercent] = useState<string | null>(null);
+  const [autoTaxiPercent, setAutoTaxiPercent] = useState<string | null>(null);
+  const [autoM1Percent, setAutoM1Percent] = useState<string | null>(null);
+  const [autoM2Percent, setAutoM2Percent] = useState<string | null>(null);
+  const [autoM3Percent, setAutoM3Percent] = useState<string | null>(null);
+  const [autoM4Percent, setAutoM4Percent] = useState<string | null>(null);
+  const [autoM5Percent, setAutoM5Percent] = useState<string | null>(null);
+  const [autoS1Percent, setAutoS1Percent] = useState<string | null>(null);
+  const [autoS2Percent, setAutoS2Percent] = useState<string | null>(null);
+  const [autoS3Percent, setAutoS3Percent] = useState<string | null>(null);
+  const [autoRPercent, setAutoRPercent] = useState<string | null>(null);
 
-  const [autoM1SpeakerPercent, setM1SpeakerPercent] = useState<string | null>(null);
-  const [autoM2SpeakerPercent, setM2SpeakerPercent] = useState<string | null>(null);
-  const [autoM3SpeakerPercent, setM3SpeakerPercent] = useState<string | null>(null);
-  const [autoM4SpeakerPercent, setM4SpeakerPercent] = useState<string | null>(null);
-  const [autoM5SpeakerPercent, setM5SpeakerPercent] = useState<string | null>(null);
-  const [autoS1SpeakerPercent, setS1SpeakerPercent] = useState<string | null>(null);
-  const [autoS2SpeakerPercent, setS2SpeakerPercent] = useState<string | null>(null);
-  const [autoS3SpeakerPercent, setS3SpeakerPercent] = useState<string | null>(null);
-  const [autoRSpeakerPercent, setRSpeakerPercent] = useState<string | null>(null);
+  const [autoTaxiFraction, setAutoTaxiFraction] = useState<string | null>(null);
+  const [autoM1Fraction, setAutoM1Fraction] = useState<string | null>(null);
+  const [autoM2Fraction, setAutoM2Fraction] = useState<string | null>(null);
+  const [autoM3Fraction, setAutoM3Fraction] = useState<string | null>(null);
+  const [autoM4Fraction, setAutoM4Fraction] = useState<string | null>(null);
+  const [autoM5Fraction, setAutoM5Fraction] = useState<string | null>(null);
+  const [autoS1Fraction, setAutoS1Fraction] = useState<string | null>(null);
+  const [autoS2Fraction, setAutoS2Fraction] = useState<string | null>(null);
+  const [autoS3Fraction, setAutoS3Fraction] = useState<string | null>(null);
+  const [autoRFraction, setAutoRFraction] = useState<string | null>(null);
 
-  const [autoM1IntakePercent, setM1IntakePercent] = useState<string | null>(null);
-  const [autoM2IntakePercent, setM2IntakePercent] = useState<string | null>(null);
-  const [autoM3IntakePercent, setM3IntakePercent] = useState<string | null>(null);
-  const [autoM4IntakePercent, setM4IntakePercent] = useState<string | null>(null);
-  const [autoM5IntakePercent, setM5IntakePercent] = useState<string | null>(null);
-  const [autoS1IntakePercent, setS1IntakePercent] = useState<string | null>(null);
-  const [autoS2IntakePercent, setS2IntakePercent] = useState<string | null>(null);
-  const [autoS3IntakePercent, setS3IntakePercent] = useState<string | null>(null);
-  const [autoRIntakePercent, setRIntakePercent] = useState<string | null>(null);
+  const [autoTotal, setAutoTotal] = useState<string | null>(null);
+
+  // const [autoM1SpeakerPercent, setM1SpeakerPercent] = useState<string | null>(null);
+  // const [autoM2SpeakerPercent, setM2SpeakerPercent] = useState<string | null>(null);
+  // const [autoM3SpeakerPercent, setM3SpeakerPercent] = useState<string | null>(null);
+  // const [autoM4SpeakerPercent, setM4SpeakerPercent] = useState<string | null>(null);
+  // const [autoM5SpeakerPercent, setM5SpeakerPercent] = useState<string | null>(null);
+  // const [autoS1SpeakerPercent, setS1SpeakerPercent] = useState<string | null>(null);
+  // const [autoS2SpeakerPercent, setS2SpeakerPercent] = useState<string | null>(null);
+  // const [autoS3SpeakerPercent, setS3SpeakerPercent] = useState<string | null>(null);
+  // const [autoRSpeakerPercent, setRSpeakerPercent] = useState<string | null>(null);
+
+  // const [autoM1IntakePercent, setM1IntakePercent] = useState<string | null>(null);
+  // const [autoM2IntakePercent, setM2IntakePercent] = useState<string | null>(null);
+  // const [autoM3IntakePercent, setM3IntakePercent] = useState<string | null>(null);
+  // const [autoM4IntakePercent, setM4IntakePercent] = useState<string | null>(null);
+  // const [autoM5IntakePercent, setM5IntakePercent] = useState<string | null>(null);
+  // const [autoS1IntakePercent, setS1IntakePercent] = useState<string | null>(null);
+  // const [autoS2IntakePercent, setS2IntakePercent] = useState<string | null>(null);
+  // const [autoS3IntakePercent, setS3IntakePercent] = useState<string | null>(null);
+  // const [autoRIntakePercent, setRIntakePercent] = useState<string | null>(null);
 
 
   //teleop constants
@@ -140,122 +153,122 @@ const matchDisplay = () => {
   }, [teamNumber, regional])
   // defining teamNumber and regional as state variables, because this allows their values to change.
 
-  const getM1AutoPercentage = (autoType: string) => {
-    switch (autoType) {
-      case 'Amp':
-        return autoM1AmpPercent;
-      case 'Speaker':
-        return autoM1SpeakerPercent;
-      case 'Intake':
-        return autoM1IntakePercent; // Replace with the actual state variable for Intake
-      default:
-        return 'N/A';
-    }
-  };
+  // const getM1AutoPercentage = (autoType: string) => {
+  //   switch (autoType) {
+  //     case 'Amp':
+  //       return autoM1AmpPercent;
+  //     case 'Speaker':
+  //       return autoM1SpeakerPercent;
+  //     case 'Intake':
+  //       return autoM1IntakePercent; // Replace with the actual state variable for Intake
+  //     default:
+  //       return 'N/A';
+  //   }
+  // };
 
-  const getM2AutoPercentage = (autoType: string) => {
-    switch (autoType) {
-      case 'Amp':
-        return autoM2AmpPercent;
-      case 'Speaker':
-        return autoM2SpeakerPercent;
-      case 'Intake':
-        return autoM2IntakePercent; // Replace with the actual state variable for Intake
-      default:
-        return 'N/A';
-    }
-  };
+  // const getM2AutoPercentage = (autoType: string) => {
+  //   switch (autoType) {
+  //     case 'Amp':
+  //       return autoM2AmpPercent;
+  //     case 'Speaker':
+  //       return autoM2SpeakerPercent;
+  //     case 'Intake':
+  //       return autoM2IntakePercent; // Replace with the actual state variable for Intake
+  //     default:
+  //       return 'N/A';
+  //   }
+  // };
 
-  const getM3AutoPercentage = (autoType: string) => {
-    switch (autoType) {
-      case 'Amp':
-        return autoM3AmpPercent;
-      case 'Speaker':
-        return autoM3SpeakerPercent;
-      case 'Intake':
-        return autoM3IntakePercent; // Replace with the actual state variable for Intake
-      default:
-        return 'N/A';
-    }
-  };
+  // const getM3AutoPercentage = (autoType: string) => {
+  //   switch (autoType) {
+  //     case 'Amp':
+  //       return autoM3AmpPercent;
+  //     case 'Speaker':
+  //       return autoM3SpeakerPercent;
+  //     case 'Intake':
+  //       return autoM3IntakePercent; // Replace with the actual state variable for Intake
+  //     default:
+  //       return 'N/A';
+  //   }
+  // };
 
-  const getM4AutoPercentage = (autoType: string) => {
-    switch (autoType) {
-      case 'Amp':
-        return autoM4AmpPercent;
-      case 'Speaker':
-        return autoM4SpeakerPercent;
-      case 'Intake':
-        return autoM4IntakePercent; // Replace with the actual state variable for Intake
-      default:
-        return 'N/A';
-    }
-  };
+  // const getM4AutoPercentage = (autoType: string) => {
+  //   switch (autoType) {
+  //     case 'Amp':
+  //       return autoM4AmpPercent;
+  //     case 'Speaker':
+  //       return autoM4SpeakerPercent;
+  //     case 'Intake':
+  //       return autoM4IntakePercent; // Replace with the actual state variable for Intake
+  //     default:
+  //       return 'N/A';
+  //   }
+  // };
 
-  const getM5AutoPercentage = (autoType: string) => {
-    switch (autoType) {
-      case 'Amp':
-        return autoM5AmpPercent;
-      case 'Speaker':
-        return autoM5SpeakerPercent;
-      case 'Intake':
-        return autoM5IntakePercent; // Replace with the actual state variable for Intake
-      default:
-        return 'N/A';
-    }
-  };
+  // const getM5AutoPercentage = (autoType: string) => {
+  //   switch (autoType) {
+  //     case 'Amp':
+  //       return autoM5AmpPercent;
+  //     case 'Speaker':
+  //       return autoM5SpeakerPercent;
+  //     case 'Intake':
+  //       return autoM5IntakePercent; // Replace with the actual state variable for Intake
+  //     default:
+  //       return 'N/A';
+  //   }
+  // };
 
-  const getS1AutoPercentage = (autoType: string) => {
-    switch (autoType) {
-      case 'Amp':
-        return autoS1AmpPercent;
-      case 'Speaker':
-        return autoS1SpeakerPercent;
-      case 'Intake':
-        return autoS1IntakePercent; // Replace with the actual state variable for Intake
-      default:
-        return 'N/A';
-    }
-  };
+  // const getS1AutoPercentage = (autoType: string) => {
+  //   switch (autoType) {
+  //     case 'Amp':
+  //       return autoS1AmpPercent;
+  //     case 'Speaker':
+  //       return autoS1SpeakerPercent;
+  //     case 'Intake':
+  //       return autoS1IntakePercent; // Replace with the actual state variable for Intake
+  //     default:
+  //       return 'N/A';
+  //   }
+  // };
 
-  const getS2AutoPercentage = (autoType: string) => {
-    switch (autoType) {
-      case 'Amp':
-        return autoS2AmpPercent;
-      case 'Speaker':
-        return autoS2SpeakerPercent;
-      case 'Intake':
-        return autoS2IntakePercent; // Replace with the actual state variable for Intake
-      default:
-        return 'N/A';
-    }
-  };
+  // const getS2AutoPercentage = (autoType: string) => {
+  //   switch (autoType) {
+  //     case 'Amp':
+  //       return autoS2AmpPercent;
+  //     case 'Speaker':
+  //       return autoS2SpeakerPercent;
+  //     case 'Intake':
+  //       return autoS2IntakePercent; // Replace with the actual state variable for Intake
+  //     default:
+  //       return 'N/A';
+  //   }
+  // };
 
-  const getS3AutoPercentage = (autoType: string) => {
-    switch (autoType) {
-      case 'Amp':
-        return autoS3AmpPercent;
-      case 'Speaker':
-        return autoS3SpeakerPercent;
-      case 'Intake':
-        return autoS3IntakePercent; // Replace with the actual state variable for Intake
-      default:
-        return 'N/A';
-    }
-  };
+  // const getS3AutoPercentage = (autoType: string) => {
+  //   switch (autoType) {
+  //     case 'Amp':
+  //       return autoS3AmpPercent;
+  //     case 'Speaker':
+  //       return autoS3SpeakerPercent;
+  //     case 'Intake':
+  //       return autoS3IntakePercent; // Replace with the actual state variable for Intake
+  //     default:
+  //       return 'N/A';
+  //   }
+  // };
 
-  const getRAutoPercentage = (autoType: string) => {
-    switch (autoType) {
-      case 'Amp':
-        return autoRAmpPercent;
-      case 'Speaker':
-        return autoRSpeakerPercent;
-      case 'Intake':
-        return autoRIntakePercent;
-      default:
-        return 'N/A';
-    }
-  };
+  // const getRAutoPercentage = (autoType: string) => {
+  //   switch (autoType) {
+  //     case 'Amp':
+  //       return autoRAmpPercent;
+  //     case 'Speaker':
+  //       return autoRSpeakerPercent;
+  //     case 'Intake':
+  //       return autoRIntakePercent;
+  //     default:
+  //       return 'N/A';
+  //   }
+  // };
 
   //accessing data
   useEffect(() => {
@@ -274,37 +287,50 @@ const matchDisplay = () => {
     const pregameTotalRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Fraction/Pregame/Total');
 
     // auto paths
-    const autoTaxiRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Percentage/Auto/Taxi')
+    const autoTaxiPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Percentage/Auto/Taxi')
+    const autoM1PercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Percentage/Auto/M1') 
+    const autoM2PercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Percentage/Auto/M2') 
+    const autoM3PercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Percentage/Auto/M3') 
+    const autoM4PercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Percentage/Auto/M4') 
+    const autoM5PercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Percentage/Auto/M5') 
+    const autoS1PercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Percentage/Auto/S1') 
+    const autoS2PercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Percentage/Auto/S2') 
+    const autoS3PercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Percentage/Auto/S3') 
+    const autoRPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Percentage/Auto/R') 
 
-    const autoM1AmpRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Amp/M1') 
-    const autoM2AmpRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Amp/M2') 
-    const autoM3AmpRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Amp/M3') 
-    const autoM4AmpRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Amp/M4') 
-    const autoM5AmpRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Amp/M5') 
-    const autoS1AmpRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Amp/S1') 
-    const autoS2AmpRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Amp/S2') 
-    const autoS3AmpRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Amp/S3') 
-    const autoRAmpRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Amp/R') 
+    const autoTaxiFractionRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Fraction/Auto/Taxi')
+    const autoM1FractionRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Fraction/Auto/M1') 
+    const autoM2FractionRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Fraction/Auto/M2') 
+    const autoM3FractionRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Fraction/Auto/M3') 
+    const autoM4FractionRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Fraction/Auto/M4') 
+    const autoM5FractionRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Fraction/Auto/M5') 
+    const autoS1FractionRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Fraction/Auto/S1') 
+    const autoS2FractionRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Fraction/Auto/S2') 
+    const autoS3FractionRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Fraction/Auto/S3') 
+    const autoRFractionRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Fraction/Auto/R') 
 
-    const autoM1SpeakerRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Speaker/M1') 
-    const autoM2SpeakerRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Speaker/M2') 
-    const autoM3SpeakerRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Speaker/M3') 
-    const autoM4SpeakerRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Speaker/M4') 
-    const autoM5SpeakerRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Speaker/M5') 
-    const autoS1SpeakerRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Speaker/S1') 
-    const autoS2SpeakerRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Speaker/S2') 
-    const autoS3SpeakerRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Speaker/S3') 
-    const autoRSpeakerRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Speaker/R') 
+    const autoTotalRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Fraction/Auto/Total') 
 
-    const autoM1IntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/M1') 
-    const autoM2IntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/M2') 
-    const autoM3IntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/M3') 
-    const autoM4IntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/M4') 
-    const autoM5IntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/M5') 
-    const autoS1IntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/S1') 
-    const autoS2IntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/S2') 
-    const autoS3IntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/S3') 
-    const autoRIntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/R') 
+
+    // const autoM1SpeakerRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Speaker/M1') 
+    // const autoM2SpeakerRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Speaker/M2') 
+    // const autoM3SpeakerRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Speaker/M3') 
+    // const autoM4SpeakerRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Speaker/M4') 
+    // const autoM5SpeakerRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Speaker/M5') 
+    // const autoS1SpeakerRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Speaker/S1') 
+    // const autoS2SpeakerRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Speaker/S2') 
+    // const autoS3SpeakerRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Speaker/S3') 
+    // const autoRSpeakerRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Speaker/R') 
+
+    // const autoM1IntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/M1') 
+    // const autoM2IntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/M2') 
+    // const autoM3IntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/M3') 
+    // const autoM4IntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/M4') 
+    // const autoM5IntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/M5') 
+    // const autoS1IntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/S1') 
+    // const autoS2IntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/S2') 
+    // const autoS3IntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/S3') 
+    // const autoRIntakeRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Auto/Intake/R') 
 
     // teleop paths
     const teleopAmpPercentRef = ref(database, regional + '/teams/' + teamNumber + '/Stats/Percentage/Teleop/Amp')
@@ -372,37 +398,49 @@ const matchDisplay = () => {
     const pregameTotalListener = onValue(pregameTotalRef, (snapshot) => handleSnapshot(snapshot, setPregameTotal));
 
     //auto
-    const autoTaxiListener = onValue(autoTaxiRef, (snapshot) => handleSnapshot(snapshot, setTaxiPercent));
+    const autoTaxiPercentListener = onValue(autoTaxiPercentRef, (snapshot) => handleSnapshot(snapshot, setAutoTaxiPercent));
+    const autoM1PercentListener = onValue(autoM1PercentRef, (snapshot) => handleSnapshot(snapshot, setAutoM1Percent));
+    const autoM2PercentListener = onValue(autoM2PercentRef, (snapshot) => handleSnapshot(snapshot, setAutoM2Percent));
+    const autoM3PercentListener = onValue(autoM3PercentRef, (snapshot) => handleSnapshot(snapshot, setAutoM3Percent));
+    const autoM4PercentListener = onValue(autoM4PercentRef, (snapshot) => handleSnapshot(snapshot, setAutoM4Percent));
+    const autoM5PercentListener = onValue(autoM5PercentRef, (snapshot) => handleSnapshot(snapshot, setAutoM5Percent));
+    const autoS1PercentListener = onValue(autoS1PercentRef, (snapshot) => handleSnapshot(snapshot, setAutoS1Percent));
+    const autoS2PercentListener = onValue(autoS2PercentRef, (snapshot) => handleSnapshot(snapshot, setAutoS2Percent));
+    const autoS3PercentListener = onValue(autoS3PercentRef, (snapshot) => handleSnapshot(snapshot, setAutoS3Percent));
+    const autoRPercentListener = onValue(autoRPercentRef, (snapshot) => handleSnapshot(snapshot, setAutoRPercent));
 
-    const autoM1AmpListener = onValue(autoM1AmpRef, (snapshot) => handleSnapshot(snapshot, setM1AutoPercent));
-    const autoM2AmpListener = onValue(autoM2AmpRef, (snapshot) => handleSnapshot(snapshot, setM2AutoPercent));
-    const autoM3AmpListener = onValue(autoM3AmpRef, (snapshot) => handleSnapshot(snapshot, setM3AutoPercent));
-    const autoM4AmpListener = onValue(autoM4AmpRef, (snapshot) => handleSnapshot(snapshot, setM4AutoPercent));
-    const autoM5AmpListener = onValue(autoM5AmpRef, (snapshot) => handleSnapshot(snapshot, setM5AutoPercent));
-    const autoS1AmpListener = onValue(autoS1AmpRef, (snapshot) => handleSnapshot(snapshot, setS1AutoPercent));
-    const autoS2AmpListener = onValue(autoS2AmpRef, (snapshot) => handleSnapshot(snapshot, setS2AutoPercent));
-    const autoS3AmpListener = onValue(autoS3AmpRef, (snapshot) => handleSnapshot(snapshot, setS3AutoPercent));
-    const autoRAmpListener = onValue(autoRAmpRef, (snapshot) => handleSnapshot(snapshot, setRAutoPercent));
+    const autoTaxiFractionListener = onValue(autoTaxiFractionRef, (snapshot) => handleSnapshot(snapshot, setAutoTaxiFraction));
+    const autoM1FractionListener = onValue(autoM1FractionRef, (snapshot) => handleSnapshot(snapshot, setAutoM1Fraction));
+    const autoM2FractionListener = onValue(autoM2FractionRef, (snapshot) => handleSnapshot(snapshot, setAutoM2Fraction));
+    const autoM3FractionListener = onValue(autoM3FractionRef, (snapshot) => handleSnapshot(snapshot, setAutoM3Fraction));
+    const autoM4FractionListener = onValue(autoM4FractionRef, (snapshot) => handleSnapshot(snapshot, setAutoM4Fraction));
+    const autoM5FractionListener = onValue(autoM5FractionRef, (snapshot) => handleSnapshot(snapshot, setAutoM5Fraction));
+    const autoS1FractionListener = onValue(autoS1FractionRef, (snapshot) => handleSnapshot(snapshot, setAutoS1Fraction));
+    const autoS2FractionListener = onValue(autoS2FractionRef, (snapshot) => handleSnapshot(snapshot, setAutoS2Fraction));
+    const autoS3FractionListener = onValue(autoS3FractionRef, (snapshot) => handleSnapshot(snapshot, setAutoS3Fraction));
+    const autoRFractionListener = onValue(autoRFractionRef, (snapshot) => handleSnapshot(snapshot, setAutoRFraction));
 
-    const autoM1SpeakerListener = onValue(autoM1SpeakerRef, (snapshot) => handleSnapshot(snapshot, setM1SpeakerPercent));
-    const autoM2SpeakerListener = onValue(autoM2SpeakerRef, (snapshot) => handleSnapshot(snapshot, setM2SpeakerPercent));
-    const autoM3SpeakerListener = onValue(autoM3SpeakerRef, (snapshot) => handleSnapshot(snapshot, setM3SpeakerPercent));
-    const autoM4SpeakerListener = onValue(autoM4SpeakerRef, (snapshot) => handleSnapshot(snapshot, setM4SpeakerPercent));
-    const autoM5SpeakerListener = onValue(autoM5SpeakerRef, (snapshot) => handleSnapshot(snapshot, setM5SpeakerPercent));
-    const autoS1SpeakerListener = onValue(autoS1SpeakerRef, (snapshot) => handleSnapshot(snapshot, setS1SpeakerPercent));
-    const autoS2SpeakerListener = onValue(autoS2SpeakerRef, (snapshot) => handleSnapshot(snapshot, setS2SpeakerPercent));
-    const autoS3SpeakerListener = onValue(autoS3SpeakerRef, (snapshot) => handleSnapshot(snapshot, setS3SpeakerPercent));
-    const autoRSpeakerListener = onValue(autoRSpeakerRef, (snapshot) => handleSnapshot(snapshot, setRSpeakerPercent));
+    const autoTotalListener = onValue(autoTotalRef, (snapshot) => handleSnapshot(snapshot, setAutoTotal));
 
-    const autoM1IntakeListener = onValue(autoM1IntakeRef, (snapshot) => handleSnapshot(snapshot, setM1IntakePercent));
-    const autoM2IntakeListener = onValue(autoM2IntakeRef, (snapshot) => handleSnapshot(snapshot, setM2IntakePercent));
-    const autoM3IntakeListener = onValue(autoM3IntakeRef, (snapshot) => handleSnapshot(snapshot, setM3IntakePercent));
-    const autoM4IntakeListener = onValue(autoM4IntakeRef, (snapshot) => handleSnapshot(snapshot, setM4IntakePercent));
-    const autoM5IntakeListener = onValue(autoM5IntakeRef, (snapshot) => handleSnapshot(snapshot, setM5IntakePercent));
-    const autoS1IntakeListener = onValue(autoS1IntakeRef, (snapshot) => handleSnapshot(snapshot, setS1IntakePercent));
-    const autoS2IntakeListener = onValue(autoS2IntakeRef, (snapshot) => handleSnapshot(snapshot, setS2IntakePercent));
-    const autoS3IntakeListener = onValue(autoS3IntakeRef, (snapshot) => handleSnapshot(snapshot, setS3IntakePercent));
-    const autoRIntakeListener = onValue(autoRIntakeRef, (snapshot) => handleSnapshot(snapshot, setRIntakePercent));
+    // const autoM1SpeakerListener = onValue(autoM1SpeakerRef, (snapshot) => handleSnapshot(snapshot, setM1SpeakerPercent));
+    // const autoM2SpeakerListener = onValue(autoM2SpeakerRef, (snapshot) => handleSnapshot(snapshot, setM2SpeakerPercent));
+    // const autoM3SpeakerListener = onValue(autoM3SpeakerRef, (snapshot) => handleSnapshot(snapshot, setM3SpeakerPercent));
+    // const autoM4SpeakerListener = onValue(autoM4SpeakerRef, (snapshot) => handleSnapshot(snapshot, setM4SpeakerPercent));
+    // const autoM5SpeakerListener = onValue(autoM5SpeakerRef, (snapshot) => handleSnapshot(snapshot, setM5SpeakerPercent));
+    // const autoS1SpeakerListener = onValue(autoS1SpeakerRef, (snapshot) => handleSnapshot(snapshot, setS1SpeakerPercent));
+    // const autoS2SpeakerListener = onValue(autoS2SpeakerRef, (snapshot) => handleSnapshot(snapshot, setS2SpeakerPercent));
+    // const autoS3SpeakerListener = onValue(autoS3SpeakerRef, (snapshot) => handleSnapshot(snapshot, setS3SpeakerPercent));
+    // const autoRSpeakerListener = onValue(autoRSpeakerRef, (snapshot) => handleSnapshot(snapshot, setRSpeakerPercent));
+
+    // const autoM1IntakeListener = onValue(autoM1IntakeRef, (snapshot) => handleSnapshot(snapshot, setM1IntakePercent));
+    // const autoM2IntakeListener = onValue(autoM2IntakeRef, (snapshot) => handleSnapshot(snapshot, setM2IntakePercent));
+    // const autoM3IntakeListener = onValue(autoM3IntakeRef, (snapshot) => handleSnapshot(snapshot, setM3IntakePercent));
+    // const autoM4IntakeListener = onValue(autoM4IntakeRef, (snapshot) => handleSnapshot(snapshot, setM4IntakePercent));
+    // const autoM5IntakeListener = onValue(autoM5IntakeRef, (snapshot) => handleSnapshot(snapshot, setM5IntakePercent));
+    // const autoS1IntakeListener = onValue(autoS1IntakeRef, (snapshot) => handleSnapshot(snapshot, setS1IntakePercent));
+    // const autoS2IntakeListener = onValue(autoS2IntakeRef, (snapshot) => handleSnapshot(snapshot, setS2IntakePercent));
+    // const autoS3IntakeListener = onValue(autoS3IntakeRef, (snapshot) => handleSnapshot(snapshot, setS3IntakePercent));
+    // const autoRIntakeListener = onValue(autoRIntakeRef, (snapshot) => handleSnapshot(snapshot, setRIntakePercent));
 
     // teleop
     const teleopAmpPercentListener = onValue(teleopAmpPercentRef, (snapshot) => handleSnapshot(snapshot, setTeleopAmpPercent))
@@ -458,37 +496,29 @@ const matchDisplay = () => {
       off(pregameTotalRef, 'value', pregameTotalListener);
 
       //auto listeners
-      off(autoTaxiRef, 'value', autoTaxiListener);
+      off(autoTaxiPercentRef, 'value', autoTaxiPercentListener);
+      off(autoM1PercentRef, 'value', autoM1PercentListener);
+      off(autoM2PercentRef, 'value', autoM2PercentListener);
+      off(autoM3PercentRef, 'value', autoM3PercentListener);
+      off(autoM4PercentRef, 'value', autoM4PercentListener);
+      off(autoM5PercentRef, 'value', autoM5PercentListener);
+      off(autoS1PercentRef, 'value', autoS1PercentListener);
+      off(autoS2PercentRef, 'value', autoS2PercentListener);
+      off(autoS3PercentRef, 'value', autoS3PercentListener);
+      off(autoRPercentRef, 'value', autoRPercentListener);
 
-      off(autoM1AmpRef, 'value', autoM1AmpListener);
-      off(autoM2AmpRef, 'value', autoM2AmpListener);
-      off(autoM3AmpRef, 'value', autoM3AmpListener);
-      off(autoM4AmpRef, 'value', autoM4AmpListener);
-      off(autoM5AmpRef, 'value', autoM5AmpListener);
-      off(autoS1AmpRef, 'value', autoS1AmpListener);
-      off(autoS2AmpRef, 'value', autoS2AmpListener);
-      off(autoS3AmpRef, 'value', autoS3AmpListener);
-      off(autoRAmpRef, 'value', autoRAmpListener);
+      off(autoTaxiFractionRef, 'value', autoTaxiFractionListener);
+      off(autoM1FractionRef, 'value', autoM1FractionListener);
+      off(autoM2FractionRef, 'value', autoM2FractionListener);
+      off(autoM3FractionRef, 'value', autoM3FractionListener);
+      off(autoM4FractionRef, 'value', autoM4FractionListener);
+      off(autoM5FractionRef, 'value', autoM5FractionListener);
+      off(autoS1FractionRef, 'value', autoS1FractionListener);
+      off(autoS2FractionRef, 'value', autoS2FractionListener);
+      off(autoS3FractionRef, 'value', autoS3FractionListener);
+      off(autoRFractionRef, 'value', autoRFractionListener);
 
-      off(autoM1SpeakerRef, 'value', autoM1SpeakerListener);
-      off(autoM2SpeakerRef, 'value', autoM2SpeakerListener);
-      off(autoM3SpeakerRef, 'value', autoM3SpeakerListener);
-      off(autoM4SpeakerRef, 'value', autoM4SpeakerListener);
-      off(autoM5SpeakerRef, 'value', autoM5SpeakerListener);
-      off(autoS1SpeakerRef, 'value', autoS1SpeakerListener);
-      off(autoS2SpeakerRef, 'value', autoS2SpeakerListener);
-      off(autoS3SpeakerRef, 'value', autoS3SpeakerListener);
-      off(autoRSpeakerRef, 'value', autoRSpeakerListener);
-
-      off(autoM1IntakeRef, 'value', autoM1IntakeListener);
-      off(autoM2IntakeRef, 'value', autoM2IntakeListener);
-      off(autoM3IntakeRef, 'value', autoM3IntakeListener);
-      off(autoM4IntakeRef, 'value', autoM4IntakeListener);
-      off(autoM5IntakeRef, 'value', autoM5IntakeListener);
-      off(autoS1IntakeRef, 'value', autoS1IntakeListener);
-      off(autoS2IntakeRef, 'value', autoS2IntakeListener);
-      off(autoS3IntakeRef, 'value', autoS3IntakeListener);
-      off(autoRIntakeRef, 'value', autoRIntakeListener);
+      off(autoTotalRef, 'value', autoTotalListener);
 
       //teleop listeners
       off(teleopAmpPercentRef, 'value', teleopAmpPercentListener);
@@ -590,30 +620,16 @@ const matchDisplay = () => {
 
         <Text style={styles.itemTitle}>Autonomous</Text>
         <View style={styles.border}>
-          <InfoItem title="Taxi:" info={autoTaxiPercent} />
-          <InfoItem title={`${selectedAutoType} M1:`} info={getM1AutoPercentage(selectedAutoType)} />
-          <InfoItem title={`${selectedAutoType} M2:`} info={getM2AutoPercentage(selectedAutoType)} />
-          <InfoItem title={`${selectedAutoType} M3:`} info={getM3AutoPercentage(selectedAutoType)} />
-          <InfoItem title={`${selectedAutoType} M4:`} info={getM4AutoPercentage(selectedAutoType)} />
-          <InfoItem title={`${selectedAutoType} M5:`} info={getM5AutoPercentage(selectedAutoType)} />
-          <InfoItem title={`${selectedAutoType} S1:`} info={getS1AutoPercentage(selectedAutoType)} />
-          <InfoItem title={`${selectedAutoType} S2:`} info={getS2AutoPercentage(selectedAutoType)} />
-          <InfoItem title={`${selectedAutoType} S3:`} info={getS3AutoPercentage(selectedAutoType)} />
-          <InfoItem title={`${selectedAutoType} R:`} info={getRAutoPercentage(selectedAutoType)} />
-        </View>
-        <View style={styles.border}>
-          <View style={styles.autoButtons}>
-            <Pressable style = {styles.optionButton} >
-              <Text style={styles.optionText} onPress={() => setSelectedAutoType('Amp')}>Amp</Text>
-            </Pressable>
-            <Pressable style = {styles.optionButton} >
-              <Text style={styles.optionText} onPress={() => setSelectedAutoType('Speaker')}>Speaker</Text>
-            </Pressable>
-            <Pressable style = {styles.optionButton} >
-              <Text style={styles.optionText} onPress={() => setSelectedAutoType('Intake')}>Intake</Text>
-            </Pressable>
-          </View>
-          <Text style={styles.infoText}>{selectedAutoType !== 'filler' ? `Showing ${selectedAutoType} percentages` : ''}</Text>
+          <InfoPercentFractionItem title="Taxi:" percent={autoTaxiPercent} fraction = {autoTaxiFraction} total = {autoTotal}/>
+          <InfoPercentFractionItem title={`M1:`} percent={autoM1Percent} fraction = {autoM1Fraction} total = {autoTotal}/>
+          <InfoPercentFractionItem title={`M2:`} percent={autoM2Percent} fraction = {autoM2Fraction} total = {autoTotal}/>
+          <InfoPercentFractionItem title={`M3:`} percent={autoM3Percent} fraction = {autoM3Fraction} total = {autoTotal}/>
+          <InfoPercentFractionItem title={`M4:`} percent={autoM4Percent} fraction = {autoM4Fraction} total = {autoTotal}/>
+          <InfoPercentFractionItem title={`M5:`} percent={autoM5Percent} fraction = {autoM5Fraction} total = {autoTotal}/>
+          <InfoPercentFractionItem title={`S1:`} percent={autoS1Percent} fraction = {autoS1Fraction} total = {autoTotal}/>
+          <InfoPercentFractionItem title={`S2:`} percent={autoS2Percent} fraction = {autoS2Fraction} total = {autoTotal}/>
+          <InfoPercentFractionItem title={`S3:`} percent={autoS3Percent} fraction = {autoS3Fraction} total = {autoTotal}/>
+          <InfoPercentFractionItem title={`R:`}  percent={autoRPercent} fraction = {autoRFraction} total = {autoTotal}/>
         </View>
 
         <Text style={styles.itemTitle}>Teleoperation</Text>

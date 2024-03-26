@@ -43,14 +43,10 @@ def calculateEverything(path):
 
     #Auto variables
     taxiCount = 0
-    autoAmpCounts = {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 0, "S1": 0, "S2": 0, "S3": 0, "R": 0}
-    autoSpeakerCounts = {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 0, "S1": 0, "S2": 0, "S3": 0, "R": 0}
-    autoIntakeCounts = {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 0, "S1": 0, "S2": 0, "S3": 0}
+    autoCounts = {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 0, "S1": 0, "S2": 0, "S3": 0, "R": 0}
 
     totalTaxiCount = 0
-    totalAutoAmpCounts = {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 0, "S1": 0, "S2": 0, "S3": 0, "R": 0}
-    totalAutoSpeakerCounts = {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 0, "S1": 0, "S2": 0, "S3": 0, "R": 0} 
-    totalAutoIntakeCounts = {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 0, "S1": 0, "S2": 0, "S3": 0}
+    totalAutoCounts = 0
 
     #Teleop variables
 
@@ -86,29 +82,11 @@ def calculateEverything(path):
                         taxiValue = auto_result
                         if taxiValue == 1:
                             taxiCount += 1
-                            totalTaxiCount += 1
-                        else:
-                            totalTaxiCount += 1
                     else:
                         actionValue = auto_result.get("Action")
-                        intakeValue = auto_result.get("Intake")
-
-                        if actionValue == 1:  # Amp made
-                            autoAmpCounts[k] += 1
-                            totalAutoAmpCounts[k] += 1
-                        elif actionValue == 2:  # Amp missed
-                            totalAutoAmpCounts[k] += 1
-                        elif actionValue == 3:  # Speaker made
-                            autoSpeakerCounts[k] += 1
-                            totalAutoSpeakerCounts[k] += 1
-                        elif actionValue == 4:  # Speaker missed
-                            totalAutoSpeakerCounts[k] += 1
-
-                        if intakeValue == 1:  # Intake Missed
-                            totalAutoIntakeCounts[k] += 1
-                        elif intakeValue == 2:  # Intake successful
-                            autoIntakeCounts[k] += 1
-                            totalAutoIntakeCounts[k] += 1
+                        if actionValue == 1:  # Made
+                            autoCounts[k] += 1
+                totalAutoCounts += 1
             elif j == "Teleop":
                 teleopResult = db.reference(specificPath + '/' + j).get()
                 for k, teleop_result in teleopResult.items():
@@ -154,10 +132,8 @@ def calculateEverything(path):
         pregamePercentage = [int((startingPositionCounts[0] / totalPregameCount)*100), int((startingPositionCounts[1] / totalPregameCount) *100), int((startingPositionCounts[2] / totalPregameCount)*100)]
 
     #Auto
-    autoAmpPercentages = {key: int(autoAmpCounts[key] / totalAutoAmpCounts[key] * 100) if totalAutoAmpCounts[key] != 0 else 0 for key in autoAmpCounts}
-    autoSpeakerPercentages = {key: int(autoSpeakerCounts[key] / totalAutoSpeakerCounts[key] * 100) if totalAutoSpeakerCounts[key] != 0 else 0 for key in autoSpeakerCounts}
-    autoIntakePercentages = {key: int(autoIntakeCounts[key] / totalAutoIntakeCounts[key] * 100) if totalAutoIntakeCounts[key] != 0 else 0 for key in autoIntakeCounts}
-    autoTaxiPercentages = int(taxiCount / totalTaxiCount * 100) if totalTaxiCount != 0 else 0
+    autoPercentages = {key: int(autoCounts[key] / totalAutoCounts * 100) if totalAutoCounts != 0 else 0 for key in autoCounts}
+    autoTaxiPercentages = int(taxiCount / totalAutoCounts * 100) if totalAutoCounts != 0 else 0
 
     #Teleop
     if(totalTeleopAmpCount == 0):
@@ -218,13 +194,11 @@ def calculateEverything(path):
     # Auto
     db.reference(statsPath + 'Stats/Percentage/Auto').update({'Taxi': autoTaxiPercentages})
     db.reference(statsPath + 'Stats/Fraction/Auto').update({'Taxi': taxiCount})
-    db.reference(statsPath + 'Stats/Fraction/Auto').update({'TaxiTotal': totalTaxiCount})
-    for key, value in autoAmpPercentages.items():
-        db.reference(statsPath + f'Stats/Percentage/Auto/Amp/{key}').set(value)
-    for key, value in autoSpeakerPercentages.items():
-        db.reference(statsPath + f'Stats/Percentage/Auto/Speaker/{key}').set(value)
-    for key, value in autoIntakePercentages.items():
-        db.reference(statsPath + f'Stats/Percentage/Auto/Intake/{key}').set(value)
+    db.reference(statsPath + 'Stats/Fraction/Auto').update({'Total': totalAutoCounts})
+    for key, value in autoPercentages.items():
+        db.reference(statsPath + f'Stats/Percentage/Auto/{key}').set(value)
+    for key, value in autoCounts.items():
+        db.reference(statsPath + f'Stats/Fraction/Auto/{key}').set(value)
 
     # Teleop
     for i in range(len(teleopPercentage)):
