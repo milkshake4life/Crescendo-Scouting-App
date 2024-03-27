@@ -68,8 +68,6 @@ const robotPictureView = () => {
     }
   }
 
-  //switching camera shouldn't be necessary, so the option will be omitted for simplicity
-
   //camera ui logic (picture previews, capture button, etc)
   
   const cancelCameraPreview = async () => {
@@ -80,7 +78,7 @@ const robotPictureView = () => {
   //capture button
   const renderCaptureButton = () => (
     <TouchableOpacity
-      style={styles.camControl}
+      style={styles.capture}
       disabled={!isCameraReady} //disable capture if camera isn't ready
       onPress={takePicture} //can only capture if camera is ready + permissions granted
       >
@@ -213,6 +211,7 @@ const styles = StyleSheet.create({
       width: "100%",
       alignItems: "center",
       justifyContent: "center",
+      zIndex: 2,
     },
     cameraBackButton: {
       position: "absolute",
