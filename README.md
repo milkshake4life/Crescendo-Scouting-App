@@ -1,6 +1,6 @@
 # Crescendo-Scouting-App
 <div align="center">(optional) Project photo</div>
-<h1 align="center">Project Name</h1>
+<h1 align="center">589 Crescendo Scouting App</h1>
 <p align="center"><strong>One-line description</strong>
 <br/>
 
@@ -13,7 +13,18 @@ Answer these questions: What is your project? Why'd you build it?
  Summarize your goals, non-goals, and project requirements from your design doc. Make sure to link your design doc here as well.
  
  <h3>Sprint Goal</h3>
-<strong>FILL THIS IN</strong><br/>
+<strong>
+David Yu: Defense Checkbox on the robot scouting, Robot disabled Checkbox on the match scouting page, Defense rating for match scouting if the robot is a defensive bot, Add pages for team ranking/leaderboard
+ 
+Jayson Song: make the comments section at the end of the match scouting page.
+
+
+Christian Kantchev: Working (& storage-efficient) robot pictures as additional scouting field. 
+
+Ethan Lee: Leaderboard
+
+(All of the above is subject to change)
+</strong><br/>
 
 <h2>Key learnings</h2>
 <strong>FILL THIS IN</strong><br/>
