@@ -147,22 +147,7 @@ const matchInfo: React.FC = () => {
 
 
         <View style={styles.border}>
-        <Pressable onPress={() =>
-            // backgroundColor: 'rgba(0, 130, 190, 255)'
-            handleTaxiPress('TAXI')} 
-            style={
-              {
-                backgroundColor: !taxiPressed ? 'rgba(0, 130, 190, 255)' : 'rgba(0, 59, 73, 94)', // Button color
-                paddingHorizontal: '20%',
-                paddingVertical: 10,
-                marginVertical: 5, // Adjust for space between buttons
-                marginLeft: 5,//PLEASE CHANGE THIS 
-                marginRight: 5,
-                alignContent: 'center',
-              }
-            }>
-            <Text style={styles.buttonText}>Taxi</Text>
-        </Pressable>
+        
         <View style={styles.notesContainer}>
           {/* Left Column */}
           <View style={styles.notesColumn}>
@@ -195,7 +180,32 @@ const matchInfo: React.FC = () => {
               </Pressable>
             ))}
           </View>
+          
         </View>
+        <Pressable onPress={() =>
+            // backgroundColor: 'rgba(0, 130, 190, 255)'
+            handleTaxiPress('TAXI')} 
+            style={
+              {
+                backgroundColor: !taxiPressed ? 'rgba(0, 130, 190, 255)' : 'rgba(0, 59, 73, 94)', // Button color
+                // paddingHorizontal: '20%',
+                // paddingVertical: 10,
+                // marginVertical: 5, // Adjust for space between buttons
+                // marginLeft: 5,//PLEASE CHANGE THIS 
+                // marginRight: 5,
+                // alignContent: 'center',
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 4,
+                borderWidth: 2,
+                borderColor: "rgba(0, 130, 190, 255)",
+                paddingVertical: 8,
+                paddingHorizontal: 53,
+                marginVertical:'4%',
+              }
+            }>
+            <Text style={styles.buttonText}>Taxi</Text>
+        </Pressable>
         </View>
 
        
@@ -238,10 +248,10 @@ const styles = StyleSheet.create({
   },
   buttonOne: {
     marginTop: 30,
-    alignItems: "center",
-    justifyContent: "center",
     paddingVertical: 12,
     paddingHorizontal: 53,
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 4,
     backgroundColor: "rgba(0, 130, 190, 255)",
     borderWidth: 2,
@@ -319,8 +329,11 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
   buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    fontSize: 14,
+    lineHeight: 21,
+    letterSpacing: 0.25,
+    color: "white",
+    fontFamily: "BPoppins",
   },
   mainContainer: {
     flex: 1,

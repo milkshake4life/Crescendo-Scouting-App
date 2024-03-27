@@ -340,10 +340,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   buttonText: {
-    fontSize: 25,
+    fontSize: 30,
     color: 'rgba(0, 130, 190, 255)',
     fontFamily: 'BPoppins',
-    marginTop: -12,
+    marginTop: -15,
   },
   countContainer: {
     alignItems: 'center',
