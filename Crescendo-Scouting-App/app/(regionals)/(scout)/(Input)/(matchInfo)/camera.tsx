@@ -1,5 +1,5 @@
 import { Link, router, useGlobalSearchParams, useLocalSearchParams } from "expo-router";
-import { Pressable, Button, Image, Text, View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity } from "react-native";
+import { Pressable, Button, Image, Text, View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity, Dimensions } from "react-native";
 import { useFonts } from 'expo-font';
 //importing the back-button component from the filee
 import BackButton from '../../../../backButton';
@@ -10,11 +10,14 @@ import { onValue, ref, set } from "firebase/database";
 import { Camera, CameraType, CameraPictureOptions } from "expo-camera";
 
 
+const WINDOW_HEIGHT = Dimensions.get("window").height;
+const closeButtonSize = Math.floor(WINDOW_HEIGHT * 0.032);
+const captureSize = Math.floor(WINDOW_HEIGHT * 0.09);
 
 //Camera related stuff
 const robotPictureView = () => {
   //Camera variables
-  const [hasPermission, setHasPermission] = Camera.useCameraPermissions();
+  const [hasPermission, setHasPermission] = useState<boolean>(false);
   const [cameraType, setCameraType] = useState(CameraType.back); //defaults to back camera
   const [isPreview, setIsPreview] = useState(false);
   const [isCameraReady, setIsCameraReady] = useState(false);
@@ -22,12 +25,12 @@ const robotPictureView = () => {
 
   //Camera Permissions
   //unnecessary (?) and handled by useCameraPermissions in var declarations
-  //  useEffect(() => {
-  //     (async () => {
-  //       const { status } = await Camera.requestCameraPermissionsAsync();
-  //       setHasPermission(granted);
-  //     })();
-  //  }, []);
+   useEffect(() => {
+      (async () => {
+        const { status } = await Camera.requestCameraPermissionsAsync();
+        setHasPermission(status === "granted");
+      })();
+   }, []);
 
   //onCameraReady callback
   const onCameraReady = () => 
@@ -77,6 +80,7 @@ const robotPictureView = () => {
   //capture button
   const renderCaptureButton = () => (
     <TouchableOpacity
+      style={styles.camControl}
       disabled={!isCameraReady} //disable capture if camera isn't ready
       onPress={takePicture} //can only capture if camera is ready + permissions granted
       >
@@ -108,17 +112,20 @@ const robotPictureView = () => {
   //Camera stylings
   return(
     <View style={styles.container}>
+      <View style={styles.cameraBackButton}>
         <BackButton buttonName={"pitScouting"}></BackButton>
+      </View>
         <Camera 
             // ref={cameraRef}
-            style={styles.container}
+            autoFocus={true}
+            style={styles.camContainer}
             type={cameraType}
             onCameraReady={onCameraReady}
-            onMountError={(error) => {
-                console.log("cammera error", error);
+            onMountError={(error: any) => {
+                console.log("camera error", error);
             }}
         />
-        <View style={styles.container}>
+        <View style={styles.camContainer}>
             {isPreview && renderClosePreviewButton()}
             {!isPreview && renderCaptureButton()}
         </View>
@@ -195,6 +202,39 @@ const styles = StyleSheet.create({
     iconStyle: {
       width: 20,
       height: 20,
+    },
+    camContainer: {
+      ...StyleSheet.absoluteFillObject,
+    },
+    camControl: {
+      position: "absolute",
+      flexDirection: "row",
+      bottom: 38,
+      width: "100%",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    cameraBackButton: {
+      position: "absolute",
+      top: 35,
+      left: 15,
+      height: closeButtonSize,
+      width: closeButtonSize,
+      borderRadius: Math.floor(closeButtonSize / 2),
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "#c4c5c4",
+      opacity: 0.7,
+      zIndex: 2,
+    },
+    capture: {
+      backgroundColor: "#f5f6f5",
+      borderRadius: 5,
+      height: captureSize,
+      width: captureSize,
+      // borderRadius: Math.floor(captureSize / 2),
+      marginHorizontal: 31,
+      zIndex: 2,
     },
   });
   
