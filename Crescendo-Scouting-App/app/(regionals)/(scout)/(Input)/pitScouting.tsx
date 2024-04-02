@@ -7,6 +7,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import React, { useEffect, useState } from "react";
 import { database } from "../../../../firebaseConfig";
 import { onValue, ref, set } from "firebase/database";
+import Checkbox from 'expo-checkbox';
 
 interface DropdownItem{
   label: string;
@@ -84,6 +85,8 @@ const robotInfo = () => {
       [dropdownKey]: false,
     }));
   };
+
+  const [isChecked, setChecked] = useState(false);
 
   return (
     <KeyboardAvoidingView
@@ -189,6 +192,11 @@ const robotInfo = () => {
             setIsFocus(false);
           }}
         />
+        <Text style={ styles.buttontitle }>Defense Data</Text>
+        <View style = {styles.row}>
+          <Checkbox style={styles.checkbox} color='rgba(0, 130, 190, 255)'value={isChecked} onValueChange={setChecked} />
+          <Text>Defense Robot</Text>
+        </View>
       </View>
           <Pressable
             style={styles.sendButton}
@@ -215,6 +223,10 @@ const styles = StyleSheet.create({
     alignItems: 'center', // Centers content horizontally in the container
     padding: 20, // Optional: Adds padding to the container
     width: "100%",
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   title:{
     fontFamily: 'BPoppins',
@@ -272,6 +284,9 @@ const styles = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
+  },
+  checkbox: {
+    margin: 8
   },
 });
 
