@@ -16,9 +16,9 @@ interface DropdownItem{
 const robotInfo = () => {
   const ScoringData = [
     { label: 'No Scoring', value: '1' },
-    { label: 'Amp', value: '2' },
-    { label: 'Speaker', value: '3' },
-    { label: 'Speaker and Amp', value: '4' },
+    { label: 'Amp Only', value: '2' },
+    { label: 'Speaker Only', value: '3' },
+    { label: 'Both', value: '4' },
   ];
   const ClimbingData = [
     { label: 'No Climb', value: '5' },
@@ -27,12 +27,12 @@ const robotInfo = () => {
   ];
   const IntakeData = [
     { label: 'No Intake', value: '8' },
-    { label: 'Ground', value: '9' },
-    { label: 'Source', value: '10' },
-    { label: 'Ground and Source', value: '11' },
+    { label: 'Ground Only', value: '9' },
+    { label: 'Source Only', value: '10' },
+    { label: 'Both', value: '11' },
   ];
   const DrivingData = [
-    { label: 'Restricted', value: '12' },
+    { label: 'N/A', value: '12' },
     { label: 'Drive Over Notes', value: '13' },
     { label: 'Drive Under Stage', value: '14' },
     { label: 'Both', value: '15' },
@@ -54,9 +54,6 @@ const robotInfo = () => {
   let modifiedRegional = regional
   if(regional === 'Orange County'){
     modifiedRegional = 'Orange-County'
-  }
-  else if (regional === 'Port Hueneme') {
-    modifiedRegional = 'Port-Hueneme'
   }
   const {teamNumber} = useGlobalSearchParams<{ teamNumber:string } > ();
 
@@ -94,36 +91,39 @@ const robotInfo = () => {
       <ScrollView>
         <View style={ styles.container }>
         <BackButton buttonName='Home Page'/>
-          <Text style={ styles.title }>Pit Scouting</Text>
-          {/* <Text style={ styles.subtitle }>Input the team's data</Text> */}
+          <Text style={ styles.title }>Robot Scouting!</Text>
+          <Text style={ styles.subtitle }>Input team's data!</Text>
 
       <View style={styles.container}>
-      <Text style={ styles.buttontitle }>Visionary Data</Text>
+      <Text style={ styles.buttontitle }>Visionary data!</Text>
       <TextInput
             style={styles.input}
             value={vision}
             onChangeText={setVision}
-            placeholder="Input Visionary System"
+            placeholder="Visionary System"
           />
-      <Text style={ styles.buttontitle }>Drive Train Data</Text>
+      <Text style={ styles.buttontitle }>Drive Train Data!</Text>
       <TextInput
             style={styles.input}
             value={driveTrain}
             onChangeText={setDriveTrain}
-            placeholder="Input Drive Train"
+            placeholder="Drive Train"
          />
         <Text style={ styles.buttontitle }>Scoring Data</Text>
         <Dropdown
           style={[styles.dropdown, isFocus && { borderColor: 'blue', position: 'relative', bottom: dropdownHeight + 10, }]}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
           data={ScoringData}
+          search
           maxHeight={300}
           labelField="label"
           valueField="value"
           placeholder={!isFocus ? 'Select item' : '...'}
           value={selectedScoringValue || '1'}
+          searchPlaceholder="Search..."
           onFocus={() => handleFocus('scoringData')}
           onBlur={() => handleBlur('scoringData')}
           onChange={(item: DropdownItem) => {
@@ -132,18 +132,21 @@ const robotInfo = () => {
             setIsFocus(false);
           }}
         />
-        <Text style={ styles.buttontitle }>Climbing Data</Text>
+        <Text style={ styles.buttontitle }>Climbing Data!</Text>
         <Dropdown
           style={[styles.dropdown, isFocus && { borderColor: 'blue', position: 'relative', bottom: 300 }]}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
           data={ClimbingData}
+          search
           maxHeight={300}
           labelField="label"
           valueField="value"
           placeholder={!isFocus ? 'Select item' : '...'}
           value={selectedClimbingValue || '5'}
+          searchPlaceholder="Search..."
           onFocus={() => handleFocus('climbingData')}
           onBlur={() => handleBlur('climbingData')}
           onChange={(item: DropdownItem) => {
@@ -151,18 +154,21 @@ const robotInfo = () => {
             setIsFocus(false);
           }}
         />
-        <Text style={ styles.buttontitle }>Intake Data</Text>
+        <Text style={ styles.buttontitle }>Intake Data!</Text>
         <Dropdown
           style={[styles.dropdown, isFocus && { borderColor: 'blue', position: 'relative', bottom: 300 }]}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
           data={IntakeData}
+          search
           maxHeight={300}
           labelField="label"
           valueField="value"
           placeholder={!isFocus ? 'Select item' : '...'}
           value={selectedIntakeValue || '8'}
+          searchPlaceholder="Search..."
           onFocus={() => handleFocus('intakeData')}
           onBlur={() => handleBlur('intakeData')}
           onChange={(item: DropdownItem) => {
@@ -170,18 +176,21 @@ const robotInfo = () => {
             setIsFocus(false);
           }}
         />
-        <Text style={ styles.buttontitle }>Driving Data</Text>
+        <Text style={ styles.buttontitle }>Driving Data!</Text>
         <Dropdown
           style={[styles.dropdown, isFocus && { borderColor: 'blue'}]}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
           data={DrivingData}
+          search
           maxHeight={300}
           labelField="label"
           valueField="value"
           placeholder={!isFocus ? 'Select item' : '...'}
           value={selectedDrivingValue || '12'}
+          searchPlaceholder="Search..."
           onFocus={() => handleFocus('Data')}
           onBlur={() => handleBlur('drivingData')}
           onChange={(item: DropdownItem) => {
@@ -193,7 +202,7 @@ const robotInfo = () => {
           <Pressable
             style={styles.sendButton}
             onPress={() => {
-              router.push(`/(matchInfo)/thanks?regional=${regional}`);
+              router.push(`/(matchInfo)/thanks`);
               handleSendData();
             }}>
             <Text style={styles.sendButtonText}>Send Data</Text>
@@ -218,12 +227,17 @@ const styles = StyleSheet.create({
   },
   title:{
     fontFamily: 'BPoppins',
-    fontSize: 35,
+    fontSize: 32,
+  },
+  subtitle:{
+    fontFamily: 'BPoppins',
+    fontSize: 15,
+    color: 'rgba(127, 127, 127, 255)',
+    marginBottom: 30,
   },
   buttontitle:{
     fontFamily: 'BPoppins',
-    fontSize: 20,
-    color: 'rgba(0, 130, 190, 255)',
+    fontSize: 12,
    
   },
   input: {
@@ -236,22 +250,8 @@ const styles = StyleSheet.create({
     width: '90%', // Set width as needed
     borderRadius: 5, // Optional: if you want rounded corners
   },
-  sendButton: {
-    marginTop: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: '3%',
-    paddingHorizontal: '15%',
-    borderRadius: 4,
-    backgroundColor: 'rgba(0, 130, 190, 255)',
-    borderWidth: 1,
-    borderColor: 'white',
-
-  },
-  sendButtonText: {
-    color:'white',
-    fontFamily: 'BPoppins',
-  },
+  sendButton: {},
+  sendButtonText: {},
   dropdown: {
     height: 50,
     width: '90%', // or some other appropriate width
@@ -273,6 +273,11 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
   },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+
 });
 
 export default robotInfo;

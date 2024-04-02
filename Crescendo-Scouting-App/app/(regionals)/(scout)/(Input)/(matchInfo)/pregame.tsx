@@ -1,5 +1,14 @@
 import { Link, router, useGlobalSearchParams } from "expo-router";
-import { Pressable, Button, Text, View, StyleSheet, ScrollView } from "react-native";
+import {
+  Pressable,
+  Button,
+  Text,
+  View,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  LayoutAnimation,
+} from "react-native";
 import BackButton from "../../../../backButton";
 import { onValue, ref, set } from "@firebase/database";
 import { database } from "../../../../../firebaseConfig";
@@ -8,14 +17,15 @@ import { Dropdown } from "react-native-element-dropdown";
 import { CheckBox } from "react-native-elements";
 import React from "react";
 
-
 const matchInfo = () => {
-
   const { regional } = useGlobalSearchParams<{ regional: string }>();
   const { teamNumber } = useGlobalSearchParams<{ teamNumber: string }>();
-  let modifiedRegional = regional
-  if (regional === 'Orange County') {
-    modifiedRegional = 'Orange-County'
+  let modifiedRegional = regional;
+  if (regional === "Orange County") {
+    modifiedRegional = "Orange-County";
+  }
+  else if(regional === "Port Hueneme") {
+    modifiedRegional = "Port-Hueneme";
   }
 
   interface DropdownItem {
@@ -23,22 +33,49 @@ const matchInfo = () => {
     value: string;
   }
 
+  const startingPosition: DropdownItem[] = [
+    { label: "Amp", value: "1" },
+    { label: "Middle", value: "2" },
+    { label: "Source", value: "3" },
+  ];
+
   const [qualMatch, setQualMatch] = useState<DropdownItem[]>([]);
   const [isFocus, setIsFocus] = useState(false);
+  const [isStartingPosFocus, setIsStartingPosFocus] = useState(false);
   const [selectedQualMatch, setSelectedQualMatch] = useState<string | null>(null);
-  const [selectedAlliance, setSelectedAlliance] = useState<"Red" | "Blue" | null>(null);
-  const [selectedSeating, setSelectedSeating] = useState<"Amp" | "Source" | null>(null);
-  const [selectedStartingPosition, setSelectedStartingPosition] = useState<"Amp" | "Middle" | "Source" | null>(null);
+
+  const [selectedAlliance, setSelectedAlliance] = useState< "Red" | "Blue" | null >("Blue");
+  //state var for alliance slider
+  const [isOn, toggleIsOn] = useState<boolean>(true);
+
+  //defaults to source, since the slider starts on source
+  const [selectedSeating, setSelectedSeating] = useState< "Amp" | "Source" | null >("Amp");  //defaults to amp, since slider switched
+  //state var for the slider
+  const [seating, toggleSeating] = useState<boolean>(true);
+
+  //issue might involve how startingPosition isn't a dropdown item
+  const [selectedStartingPosition, setSelectedStartingPosition] = useState<
+    1 | 2 | 3 | null 
+  >(null);
+
+  //making another selected starting position string for displaying
+  const [selectedStartingPositionString, setSelectedStartingPositionString] = useState<string | null>("Starting Position");
+
+
+
 
   const fetchTeams = () => {
-    const qualMatchRef = ref(database, modifiedRegional + '/teams/' + teamNumber + '/Match-Info'); // Adjusted path
+    const qualMatchRef = ref(
+      database,
+      modifiedRegional + "/teams/" + teamNumber + "/Match-Info"
+    ); // Adjusted path
     onValue(qualMatchRef, (snapshot) => {
       const qualMatch = snapshot.val();
       if (qualMatch) {
         const processedData = Object.keys(qualMatch).map((qualMatch) => {
           return {
-            label: qualMatch,  // Using the team number as the label
-            value: qualMatch,  // Also using the team number as the value
+            label: qualMatch, // Using the team number as the label
+            value: qualMatch, // Also using the team number as the value
           };
         });
         setQualMatch(processedData);
@@ -54,180 +91,311 @@ const matchInfo = () => {
 
   const handleSetStartingPositionData = () => {
     const path = `${modifiedRegional}/teams/${teamNumber}/Match-Info/${selectedQualMatch}/Starting-Position`;
-    
-    set(ref(database, path), selectedStartingPosition)
-  }
+
+    set(ref(database, path), selectedStartingPosition);
+  };
+
+  const onColor = "rgba(0, 130, 190, 255)";
+  const offColor = "#d11127";
 
   return (
     <ScrollView>
       <View>
         <BackButton buttonName="Home Page" />
-        <Text>Plese Input the Pre Game Information!</Text>
-        <Text>Qualification Match</Text>
-        <Dropdown
-          style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
-          placeholderStyle={styles.placeholderStyle}
-          selectedTextStyle={styles.selectedTextStyle}
-          inputSearchStyle={styles.inputSearchStyle}
-          iconStyle={styles.iconStyle}
-          data={qualMatch}
-          search
-          maxHeight={300}
-          labelField="label"
-          valueField="value"
-          placeholder={!isFocus ? 'Select match' : '...'}
-          searchPlaceholder="Search..."
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
-          onChange={item => {
-            setSelectedQualMatch(item.value);  // Update the state to the new value
-            setIsFocus(false);  // Assuming you want to unfocus the dropdown after selection
-          }}
-        />
-        <Text>Alliance</Text>
-        <CheckBox
-          title="Red"
-          checked={selectedAlliance === "Red"}
-          onPress={() => setSelectedAlliance(selectedAlliance === "Red" ? null : "Red")}
-          containerStyle={styles.checkboxContainer}
-        />
-        <CheckBox
-          title="Blue"
-          checked={selectedAlliance === "Blue"}
-          onPress={() => setSelectedAlliance(selectedAlliance === "Blue" ? null : "Blue")}
-          containerStyle={styles.checkboxContainer}
-        />
+        <Text style={styles.title}> Pre-Game </Text>
+        <Text style={styles.subtitle}>Qualification Match</Text>
+        <View style={styles.container}>
+          <View style={styles.border}>
+            <View style={styles.dropdownContainer}>
+              <Dropdown
+                style={[styles.dropdown, isFocus && { borderColor: "blue" }]}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                iconStyle={styles.iconStyle}
+                data={qualMatch}
+                maxHeight={300}
+                labelField="label"
+                valueField="value"
+                placeholder={!isFocus ? "Select match" : "..."}
+                onFocus={() => setIsFocus(true)}
+                onBlur={() => setIsFocus(false)}
+                onChange={(item) => {
+                  setSelectedQualMatch(item.value); // Update the state to the new value
+                  setIsFocus(false); // Assuming you want to unfocus the dropdown after selection
+                }}
+              />
+            </View>
+          </View>
+        
+        <Text style={styles.subtitle}> Alliance </Text>
+        <View style={styles.container}>
+          <View style={styles.borderTwo}>
+            <View style={styles.ButtonsContainer}>
+              <TouchableOpacity
+                style={{
+                  height: 50,
+                  width: 300,
+                  borderRadius: 5,
+                  borderWidth: 2,
+                  overflow: "hidden",
+                  borderColor: isOn ? onColor : offColor,
+                }}
+                onPress={() => {
+                  LayoutAnimation.easeInEaseOut();
+                  let displayedText: string | null = "";
+                  if(selectedAlliance === "Red")
+                  {
+                    displayedText = "Blue"
+                    //toggleIsOn(!isOn);
+                    console.log(selectedAlliance + " = red, switched to " + displayedText + ", switching toggle to " + seating);  
+                  }
+                  else
+                  {
+                    displayedText = "Red"
+                    //this isnt updating on time probably due to batching. 
+                    //toggleIsOn(!isOn);
+                    console.log(selectedAlliance + " = blue, switched to " + displayedText + ", switching toggle to " + seating);
+                  }
 
-        <Text>Seating</Text>
-        <CheckBox
-          title="Amp"
-          checked={selectedSeating === "Amp"}
-          onPress={() => setSelectedSeating(selectedSeating === "Amp" ? null : "Amp")}
-          containerStyle={styles.checkboxContainer}
-        />
-        <CheckBox
-          title="Source"
-          checked={selectedSeating === "Source"}
-          onPress={() => setSelectedSeating(selectedSeating === "Source" ? null : "Source")}
-          containerStyle={styles.checkboxContainer}
-        />
+                  setSelectedAlliance(displayedText as "Red" | "Blue" | null)
+                  toggleIsOn(!isOn);
+                  console.log(selectedAlliance);
+                }}
+              >
+                <View
+                  style={{
+                    height: "100%",
+                    width: "50%",
+                    backgroundColor: isOn ? onColor : offColor,
+                    alignSelf: isOn ? "flex-end" : "flex-start",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text
+                    style={{ color: "white", fontSize: 15, fontWeight: "500", fontFamily: 'BPoppins' }}
+                  >
+                    {isOn ? "Blue" : "Red"}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              
+            </View>
+          </View>
+        </View>
 
-        <Text>Starting Position</Text>
-        <CheckBox
-          title="Amp"
-          checked={selectedStartingPosition === "Amp"}
-          onPress={() => setSelectedStartingPosition(selectedStartingPosition === "Amp" ? null : "Amp")}
-          containerStyle={styles.checkboxContainer}
-        />
-        <CheckBox
-          title="Middle"
-          checked={selectedStartingPosition === "Middle"}
-          onPress={() => setSelectedStartingPosition(selectedStartingPosition === "Middle" ? null : "Middle")}
-          containerStyle={styles.checkboxContainer}
-        />
-        <CheckBox
-          title="Source"
-          checked={selectedStartingPosition === "Source"}
-          onPress={() => setSelectedStartingPosition(selectedStartingPosition === "Source" ? null : "Source")}
-          containerStyle={styles.checkboxContainer}
-        />
+        {/* <Text style={styles.subtitle}> Seating </Text>
+        <View style={styles.container}>
+          <View style={styles.borderTwo}>
+            <View style={styles.ButtonsContainer}>
+              <TouchableOpacity
+                style={{
+                  height: 60,
+                  width: 150,
+                  borderRadius: 5,
+                  borderWidth: 2,
+                  overflow: "hidden",
+                  borderColor: onColor,
+                }}
+                onPress={() => {
+                  LayoutAnimation.easeInEaseOut();
+                  //source = false, amp = true | determined by logging
+                  //starts on source: on first press it should switch to amp
+                  //then it should switch via toggle?
 
+                  //first press
+                  let displayedText: string | null = selectedSeating;
+                  if(displayedText === "Source")
+                  {
+                    displayedText = "Amp"
+                    toggleSeating(!seating);
+                    console.log(selectedSeating + " = source, switched to " + displayedText + ", switching toggle to " + seating);  
+                  }
+                  else
+                  {
+                    displayedText = "Source"
+                    //this isnt updating on time probably due to batching. 
+                    toggleSeating(!seating);
+
+                    console.log(selectedSeating + " = amp, switched to " + displayedText + ", switching toggle to " + seating);
+                  }
+
+                  setSelectedSeating(displayedText as "Amp" | "Source" | null)
+                  console.log(selectedSeating);
+                }}
+              >
+                <View
+                  style={{
+                    height: "100%",
+                    width: "50%",
+                    backgroundColor: onColor,
+                    alignSelf: seating ? "flex-end" : "flex-start",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text
+                    style={{ color: "white", fontSize: 12, fontWeight: "500" }}
+                  >
+                    {seating ? "Source" : "Amp"}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View> */}
+
+        <Text style={styles.subtitle}> Starting Position </Text>
+        <View style={styles.container}>
+          <View style={styles.border}>
+            <View style={styles.dropdownContainer}>
+              <Dropdown
+                style={[styles.dropdown, isFocus && { borderColor: "blue" }]}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                iconStyle={styles.iconStyle}
+                data={startingPosition}
+                value={selectedStartingPositionString}
+                maxHeight={300}
+                labelField="label"
+                valueField="value"
+                placeholder={!isStartingPosFocus ? "Starting Position" : "..."}
+                onFocus={() => setIsStartingPosFocus(true)}
+                onBlur={() => setIsStartingPosFocus(false)}
+                onChange={item => {
+                  setSelectedStartingPositionString(item.value); //sets the displayed item
+                  setSelectedStartingPosition(+item.value as 1 | 2 | 3 | null); //sets the value we are going to push to the backend
+                  //debugging log
+                  console.log(item.value + " label: " + item.label) 
+                  setIsStartingPosFocus(false); // Assuming you want to unfocus the dropdown after selection
+                }}
+              />
+            </View>
+          </View>
+        </View>
         <Pressable
           style={styles.buttonOne}
           onPress={() => {
-            if (selectedAlliance && selectedSeating && selectedStartingPosition && selectedQualMatch) {
+            //console.log("Alliance: "+ selectedAlliance + " startingPos: " + selectedStartingPosition + ", qualification match: " + selectedQualMatch)
+            if (
+              selectedAlliance &&
+              selectedSeating &&
+              selectedStartingPosition &&
+              selectedQualMatch
+            ) {
               handleSetStartingPositionData();
-              router.push(`/(matchInfo)/auto?regional=${modifiedRegional}&teamNumber=${teamNumber}&qualMatch=${selectedQualMatch}&alliance=${selectedAlliance}&seating=${selectedSeating}`)
-            }
-            else{
-              alert('Please fill out all the fields before continuing.')
+              router.push(
+                `/(matchInfo)/auto?regional=${modifiedRegional}&teamNumber=${teamNumber}&qualMatch=${selectedQualMatch}&alliance=${selectedAlliance}&seating=${selectedSeating}`
+              );
+            } else {
+              alert("Please fill out all the fields before continuing.");
             }
           }}
         >
           <Text style={styles.buttonOneText}>Auto</Text>
         </Pressable>
+        </View>
       </View>
     </ScrollView>
-
   );
 };
 
 const styles = StyleSheet.create({
-  backButtonText: {
-    fontFamily: 'BPoppins',
-    fontSize: 15,
-    color: 'white',
-    marginBottom: 30,
-  },
-  backButton: {
-    marginTop: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 82,
-    borderRadius: 4,
-    elevation: 3,
-    backgroundColor: 'rgba(0, 130, 190, 255)',
-    borderWidth: 1,
-    borderColor: 'white',
-  },
   buttonOne: {
-    marginTop: 0,
-    marginBottom: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginTop: '15%',
+    alignItems: "center",
+    justifyContent: "center",
     paddingVertical: 12,
-    paddingHorizontal: 53,
+    paddingHorizontal: '20%',
     borderRadius: 4,
-    elevation: 3,
-    backgroundColor: 'rgba(0, 130, 190, 255)',
+    backgroundColor: "rgba(0, 130, 190, 255)",
     borderWidth: 2,
-    borderColor: 'white',
+    borderColor: "rgba(0, 130, 190, 255)",
+    marginBottom:'13%',
   },
   buttonOneText: {
     fontSize: 16,
     lineHeight: 21,
-    fontWeight: 'bold',
     letterSpacing: 0.25,
-    color: 'white',
-    fontFamily: 'BPoppins',
+    color: "white",
+    fontFamily: "BPoppins",
+
   },
+  
   dropdown: {
     height: 50,
-    width: '80%', // or some other appropriate width
-    borderColor: 'gray',
+    width: "95%", // or some other appropriate width
+    borderColor: "gray",
     borderWidth: 0.5,
     borderRadius: 8,
-    paddingHorizontal: 8,
+    paddingHorizontal: 3,
     // Add margin for some spacing if needed
-    marginTop: 10,
-    marginBottom: 40,
-  },
-  label: {
-    position: 'absolute',
-    backgroundColor: 'white',
-    left: 22,
-    top: 8,
-    zIndex: 999,
-    paddingHorizontal: 8,
-    fontSize: 14,
+    marginTop: '2%',
+    marginBottom: '4%',
+
   },
   placeholderStyle: {
     fontSize: 16,
+    marginLeft: '5%',
+    color:'gray',
   },
   selectedTextStyle: {
     fontSize: 16,
+    marginLeft: '5%',
   },
   iconStyle: {
     width: 20,
     height: 20,
   },
-  inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
+  border: {
+    paddingVertical:'4%',
+    paddingHorizontal:'10%',
+    borderRadius: 10,
+    borderWidth: 3,
+    borderColor: "rgba(0, 130, 190, 255)",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
+    width: "94%",
+
   },
-  checkboxContainer: {
-    marginVertical: 20,
+  borderTwo: {
+    paddingVertical: 15,
+    paddingHorizontal: '3%',
+    borderRadius: 10,
+    borderWidth: 3,
+    borderColor: "rgba(0, 130, 190, 255)",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
+    width: "94%",
+
+  },
+  title: {
+    fontFamily: "BPoppins",
+    fontSize: 40,
+    textAlign: "center",
+  },
+  subtitle: {
+    fontFamily: "BPoppins",
+    fontSize: 25,
+    textAlign: "center",
+    color: "rgba(0, 130, 190, 255)",
+    marginTop: "10%",
+  },
+  container: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  dropdownContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  ButtonsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });
 

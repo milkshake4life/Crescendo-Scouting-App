@@ -7,12 +7,12 @@
 //   return (
 //     <View>
 //       <BackButton buttonName="Home Page" />
-//       <Text>Please Review Your Information</Text>
+//       <Text>Please Input the End Game Information!</Text>
 //       <Pressable
 //             style={styles.buttonOne}
-//             onPress={() => router.push(`/(matchInfo)/thanks`)}
+//             onPress={() => router.push(`/(matchInfo)/postgame`)}
 //             >
-//                 <Text style={styles.buttonOneText}>Submit</Text>
+//                 <Text style={styles.buttonOneText}>Post Game</Text>
 //             </Pressable>
 //     </View>
 //   );

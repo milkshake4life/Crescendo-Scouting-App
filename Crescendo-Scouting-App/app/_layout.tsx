@@ -20,6 +20,12 @@ const RootLayout = () => {
                     headerTitle: "Regional"
                 }}
             />
+            <Stack.Screen
+                name = "credits"
+                options = {{
+                    headerTitle: "Credits"
+                }}
+            />
         </Stack>
     );
 };
