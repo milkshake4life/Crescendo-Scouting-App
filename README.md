@@ -18,12 +18,10 @@ David Yu: Defense Checkbox on the robot scouting, Robot disabled Checkbox on the
  
 Jayson Song: make the comments section at the end of the match scouting page.
 
+Christian Kantchev: Research camera feasibility as well as storing pictures for future feature. 
 
-Christian Kantchev: Working (& storage-efficient) robot pictures as additional scouting field. 
+Ethan Lee: Research and plan out future leaderboard feature. 
 
-Ethan Lee: Leaderboard
-
-(All of the above is subject to change)
 </strong><br/>
 
 <h2>Key learnings</h2>
