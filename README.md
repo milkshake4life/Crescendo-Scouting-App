@@ -1,13 +1,13 @@
 # Crescendo-Scouting-App
 <div align="center">(optional) Project photo</div>
 <h1 align="center">589 Crescendo Scouting App</h1>
-<p align="center"><strong>One-line description</strong>
+<p align="center"><strong>FIRST Robotics Competition scouting made simple</strong>
 <br/>
 
 <h2>About</h2>
 <!-- <strong>FILL THIS IN</strong><br/>
 Answer these questions: What is your project? Why'd you build it? -->
-    The Crescendo Scouting App seeks to trivialize robot scouting during FIRST robotics competitions. By providing users with a platform where they can both store and access robot data, this application greatly optimizes the existing scouting procedures of many FIRST robotics competition (FRC) teams.
+    The Crescendo Scouting App seeks to trivialize robot scouting during FIRST robotics competitions. By providing users with a platform where they can both store and access robot data, this application greatly optimizes the existing scouting procedures of many FIRST robotics competition (FRC) teams. <br>
     Our team wanted to create a platform for 589 Falkon Robotics to improve its outdated scouting procedures. Now, instead of using cumbersome Google Forms, 589 scouters can fill out intuitive forms built for scouting at FRC competitions, and plan out strategies more effectively by viewing the data in an easy-to-understand way. 
 
 <h2>Goal and requirements</h2>
@@ -42,11 +42,11 @@ All of this and more can be found on the app's <a href="https://docs.google.com/
  <h3>Sprint Goal</h3>
 <strong>
 David Yu: Defense Checkbox on the robot scouting, Robot disabled Checkbox on the match scouting page, Defense rating for match scouting if the robot is a defensive bot, Add pages for team ranking/leaderboard
- 
+<br>
 Jayson Song: make the comments section at the end of the match scouting page.
-
+<br>
 Christian Kantchev: Research camera feasibility as well as storing pictures for future feature. 
-
+<br>
 Ethan Lee: Research and plan out future leaderboard feature. 
 
 </strong><br/>
@@ -58,8 +58,9 @@ So... what did you learn? (start this, but **come back to it at the end of the s
 <h2>Running your project</h2>
 <!-- <strong>FILL THIS IN</strong><br/> -->
 <h3>Prerequisite:</h3>
-Install and set up the Expo Go app on a mobile device of choice.
+Install and set up the Expo Go app on a mobile device of choice. <br>
 
+<h3>Process:</h3>
 <ul>
     <li>MacOS:
         <ol>
@@ -92,6 +93,7 @@ Install and set up the Expo Go app on a mobile device of choice.
 </ul>
 
 Run the app by entering the main project directory (/Crescendo-Scouting-App/Crescendo-Scouting-App) and running the command: <i>npm run start</i>
+<br>
 Scan the generated QR code using a mobile device camera, and follow the QR code into the Expo Go app, where the functional app will appear.
 
 Eventually, the app will be publicly released on the app store, so users will be able to download the app there. For now, it is still privately released as our team continues to add features and iron out bugs. 
