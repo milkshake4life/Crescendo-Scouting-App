@@ -198,6 +198,8 @@ const robotInfo = () => {
         />
 
         {/* button to access the camera view, where pictures are taken */}
+        {/* switching focus: going to set up photo uploads to work on backend photo processing, then 
+        will come back to do taking photos */}
         <Pressable
           style={styles.sendButton}
               onPress={() => {
