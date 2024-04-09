@@ -1,5 +1,3 @@
-# Crescendo-Scouting-App
-<div align="center">(optional) Project photo</div>
 <h1 align="center">589 Crescendo Scouting App</h1>
 <p align="center"><strong>FIRST Robotics Competition scouting made simple</strong>
 <br/>
@@ -39,21 +37,34 @@ All of this and more can be found on the app's <a href="https://docs.google.com/
 
 
  
- <h3>Sprint Goal</h3>
+<h3>Sprint Goal</h3>
 <strong>
 David Yu: Defense Checkbox on the robot scouting, Robot disabled Checkbox on the match scouting page, Defense rating for match scouting if the robot is a defensive bot, Add pages for team ranking/leaderboard
-<br>
+<br><br>
 Jayson Song: make the comments section at the end of the match scouting page.
-<br>
+<br><br>
 Christian Kantchev: Research camera feasibility as well as storing pictures for future feature. 
-<br>
+<br><br>
 Ethan Lee: Research and plan out future leaderboard feature. 
 
 </strong><br/>
 
-<h2>Key learnings</h2>
-<strong>FILL THIS IN</strong><br/>
-So... what did you learn? (start this, but **come back to it at the end of the sprint**)
+<h2>Key learnings:</h2>
+From this project, our team learned several valuable skills, both in software development and in life. Initially, we learned the importance of careful planning when working in a team. Without our Kanban board and a model of what we wanted the app to accomplish (found in our Project Design Document), we likely would have fallen victim to scope creep or not have had the sense of urgency needed to complete such a project on time. Additionally, we also learned the importance of accountability and communication. There were times when team members had to step in and help each other with issues, and it was precisely that ability to ask for help and to provide help that was a main factor in our team's success with this app. 
+<br><br>
+As developers, we all saw growth in our skill with app development, and especially with the React Native framework. We went from not knowing much typescript or React at all to being able to create a fully functioning product within the span of 8 weeks - a tight deadline for sure. However, thanks to extensive commitment to learning and improvement, our team gained proficiency with React Native, Expo, Firebase, and git CLI - skills which will doubtlessly help us later in our development careers.
+<br><br>
+The sprint at the end of the project was a surprising change of pace. However, it was nothing we couldn't handle. Since our app had mostly been finished by then, much of our time was devoted to research and development of new features, as well as reading, assessing, and implementing features based on user feedback (such as extra form categories). The features users requested have been implemented, and the new features are well on their way to implementation. 
+<br><br>
+Overall, this experience has expanded the horizons of what we thought our capabilities were, and we couldn't be happier with the final product.
+<br><br>
+<!-- Sincerely, 
+The 589 Scouting App Team
+ -->
+
+
+
+
 
 <h2>Running your project</h2>
 <!-- <strong>FILL THIS IN</strong><br/> -->
@@ -99,7 +110,7 @@ Scan the generated QR code using a mobile device camera, and follow the QR code 
 Eventually, the app will be publicly released on the app store, so users will be able to download the app there. For now, it is still privately released as our team continues to add features and iron out bugs. 
 
 <h2>Misc.</h2>
-Feel free to add anything else you want here :)
+More features on the way soon. 
 
 <h2>Copyright</h2>
 This project is licensed under the terms of the MIT license and protected by Udacity Honor Code and Community Code of Conduct. See <a href="LICENSE.md">license</a> and <a href="LICENSE.DISCLAIMER.md">disclaimer</a>.
