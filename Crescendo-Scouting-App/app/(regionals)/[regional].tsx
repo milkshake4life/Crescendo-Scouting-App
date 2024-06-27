@@ -10,6 +10,10 @@ import { DataSnapshot, get, getDatabase, onValue, ref } from "firebase/database"
 //secureStore stuff
 import { deleteTeamKeys, retrieveRegional, retrieveTeam, storeSecureTeam, } from "../Contexts/TeamSecureCache";
 
+//testing queries:
+import { fetchQueriedTeams } from "./rankings";
+
+
 //importing the context providers
 //trying new solution
 //import { UseTeamContext, TeamContextProvider } from "../Contexts/team-content";
@@ -107,7 +111,19 @@ const RegionalPage = () => {
                 setIsFocus(false);  // Assuming you want to unfocus the dropdown after selection
               }}
             />
-  
+
+              {/*Button to test querying*/}
+            <Pressable
+              style={styles.buttonOne}
+              onPress={() => {
+                //testing DatabaseQuery interface as a parameter. Better readability than just passing everything in
+                fetchQueriedTeams({regional:'Orange-County', statType: 'Percentage', gameSection: 'Teleop', stat: 'Speaker'});
+              }}
+            >
+              <Text style={styles.buttonText}>QUERY!</Text>
+            </Pressable>  
+
+
             <Pressable
               style={styles.buttonOne}
               onPress={() => {
