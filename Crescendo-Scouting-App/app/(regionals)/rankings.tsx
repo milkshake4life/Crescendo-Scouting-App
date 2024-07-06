@@ -29,15 +29,26 @@ export interface DatabaseQuery {
   statType: 'Percentage' | 'Fraction';
   //TODO: ask ethan about what each of these represent. Postgame and endgame have different stat structures, so i'll handle 
   //them later. 
-  //only handling teleop for now. Will add more options later.
-  gameSection: 'Teleop' | 'Auto' | 'Endgame' | 'Postgame' | 'Pregame'; 
-  //only looking at these two. will accomodate more at a later stage. Odd data points (i.e. driver rating) will be 
-  //more complicated to add. 
-  stat: 'Amp' | 'Speaker';
+  //gameSection: 'Teleop' | 'Auto' | 'Endgame' | 'Postgame' | 'Pregame'; 
+
+  //Game section is irrelevant. Firebase can only query by one statistic, so we only need the main ones. Auto has
+  //too many data points, so if anything we can display auto scoring patterns as heatmaps underneath the team.
+  //The only section we care about is Teleop. Default to that.
+
+  //The only stats we care about. 
+  stat: 'Speaker' | 'Amp'
+
 }
 
-//function will probably take regional, stat type (percent or fraction), and filter (speaker, amp, autos, etc).
-export const fetchQueriedTeams = (q: DatabaseQuery) => {
+export interface DataPoint {
+  key: string;
+  stat: string;
+}
+
+
+//Ranks teams by a desired statistic from the teleop section and returns an array of teams in order. 
+//This will likely be called in a page that is an offshoot of the regional page, so the array of data will then be translated to UI (probably via the spread (...) operator)
+export const fetchQueriedTeams = (q: DatabaseQuery): DataPoint[] => {
   //simply create a query using orderbychild and passing in the relevant path as part of our query. 
   //see https://firebase.google.com/docs/database/web/lists-of-data#sort_data for more. 
   //Also, flooring should be easy. Just use modifiers (i.e. startAt()) to only return items whose values are > the floor.
@@ -46,22 +57,39 @@ export const fetchQueriedTeams = (q: DatabaseQuery) => {
   
   //path variable built off of q parameter data. 
   //assumes q has the correctly formatted regional passed in.
-  const pathToChild: string = `Stats/${q.statType}/${q.gameSection}/${q.stat}`;
+  const pathToChild: string = `Stats/${q.statType}/Teleop/${q.stat}`;
   
   const rankingQuery = query(ref(database, `${q.regional}/teams`), orderByChild(pathToChild));
   
   //queries simply create another reference. This ref can be treated the same way as the original database reference. 
   
+  let results: DataPoint[] = [];
+
   const queryListener = onValue(rankingQuery, (snapshot) => {
-    //this prints the teams correctly ranked from least to greatest accuracy
-    //data.val doesn't return a number, probably because it points to a large amount of data (all of the data
-    //under the team directory). Next step is to find out how to access the numerical value of the data.
     
     //access the value of the child via data.child(<path string>).val();
     snapshot.forEach((data) => {
-      console.log('team ' + data.key + '\'s % speaker accuracy is ' + data.child(pathToChild).val());
-    })
+      let stat: string = "";
+      if(q.statType == 'Fraction')
+      {
+        //stat "total" keys are simply the stat name + " Total"
 
+        //Queries will look like:
+        //data.child(pathToChild).val() will give the "made"
+        //data.child(pathToChild + " Total").val() will give the "total"
+        stat = data.child(pathToChild).val() + "/" + data.child(pathToChild + " Total").val();
+
+        console.log('team ' + data.key + '\'s speaker accuracy as a fraction is ' + stat)
+      }
+      else //stats = percentage
+      {
+        stat = data.child(pathToChild).val();
+        console.log('team ' + data.key + '\'s % speaker accuracy is ' + stat);
+      }
+
+      //appending the team and its data to an array which will be returned by the function?
+      results.push({key: data.key, stat: stat});
+    })
     //for future use, key and child will probably be stored as pairs in an array, and the function will return the
     //array. (most likely arr[] = [...data])
     //The returned array will probably be displayed after a spread using a foreach or something similar
@@ -76,5 +104,5 @@ export const fetchQueriedTeams = (q: DatabaseQuery) => {
 
 
   })
-  
+  return results;
 }

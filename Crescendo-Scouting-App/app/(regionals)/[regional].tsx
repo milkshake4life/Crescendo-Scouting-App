@@ -117,7 +117,7 @@ const RegionalPage = () => {
               style={styles.buttonOne}
               onPress={() => {
                 //testing DatabaseQuery interface as a parameter. Better readability than just passing everything in
-                fetchQueriedTeams({regional:'Orange-County', statType: 'Percentage', gameSection: 'Teleop', stat: 'Speaker'});
+                fetchQueriedTeams({regional:'Orange-County', statType: 'Fraction', stat: 'Speaker'});
               }}
             >
               <Text style={styles.buttonText}>QUERY!</Text>
