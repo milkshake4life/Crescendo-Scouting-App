@@ -21,8 +21,8 @@ import { fetchQueriedTeams } from "./rankings";
 //new solution:
 //import { TeamContext, RegionalContext } from "../Contexts/teamRegContext";
 
-
-interface DropdownItem {
+//making this an export for use in other pages. 
+export interface DropdownItem {
   label: string;
   value: string;
 }
@@ -116,8 +116,10 @@ const RegionalPage = () => {
             <Pressable
               style={styles.buttonOne}
               onPress={() => {
+                //regional can be inferred via button press. 
+                router.push(`/rankings_page/?regional=${regional}`);
                 //testing DatabaseQuery interface as a parameter. Better readability than just passing everything in
-                fetchQueriedTeams({regional:'Orange-County', statType: 'Fraction', stat: 'Speaker'});
+                //fetchQueriedTeams({regional:'Orange-County', statType: 'Fraction', stat: 'Speaker'});
               }}
             >
               <Text style={styles.buttonText}>QUERY!</Text>

@@ -57,7 +57,10 @@ export const fetchQueriedTeams = (q: DatabaseQuery): DataPoint[] => {
   
   //path variable built off of q parameter data. 
   //assumes q has the correctly formatted regional passed in.
-  const pathToChild: string = `Stats/${q.statType}/Teleop/${q.stat}`;
+
+  //we actually want to sort by percentage made, but display the total makeup of that percentage. 
+  //const pathToChild: string = `Stats/${q.statType}/Teleop/${q.stat}`;
+  const pathToChild: string = `Stats/Percentage/Teleop/${q.stat}`;
   
   const rankingQuery = query(ref(database, `${q.regional}/teams`), orderByChild(pathToChild));
   
@@ -77,17 +80,18 @@ export const fetchQueriedTeams = (q: DatabaseQuery): DataPoint[] => {
         //Queries will look like:
         //data.child(pathToChild).val() will give the "made"
         //data.child(pathToChild + " Total").val() will give the "total"
-        stat = data.child(pathToChild).val() + "/" + data.child(pathToChild + " Total").val();
+        const modifiedPathToChild: string = `Stats/${q.statType}/Teleop/${q.stat}`
+        stat = data.child(modifiedPathToChild).val() + "/" + data.child(modifiedPathToChild + " Total").val();
 
-        console.log('team ' + data.key + '\'s speaker accuracy as a fraction is ' + stat)
+        console.log(`team ` + data.key + `\'s ${q.stat.toLowerCase()} accuracy as a fraction is ` + stat)
       }
       else //stats = percentage
       {
         stat = data.child(pathToChild).val();
-        console.log('team ' + data.key + '\'s % speaker accuracy is ' + stat);
+        console.log(`team ` + data.key + `\'s % ${q.stat.toLowerCase()} accuracy is ` + stat + '%');
       }
 
-      //appending the team and its data to an array which will be returned by the function?
+      //appending the team and its data to an array which will be returned by the function
       results.push({key: data.key, stat: stat});
     })
     //for future use, key and child will probably be stored as pairs in an array, and the function will return the

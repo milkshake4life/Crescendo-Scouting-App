@@ -21,6 +21,13 @@ const RegionalLayout = () => {
                     headerTitle: "Regional"
                 }}
             />
+            <Stack.Screen
+                name = "rankings_page" //Testing ranking display.
+                options = {{
+                    headerShown: false,
+                    headerTitle: "Regional"
+                }}
+            />
         </Stack>
     );
 };
