@@ -2,7 +2,7 @@ import { Link, router, useGlobalSearchParams, useLocalSearchParams } from "expo-
 import { Pressable, Button, Image, Text, View, StyleSheet } from "react-native";
 import { useFonts } from 'expo-font';
 //importing the back-button component from the filee
-import BackButton from '../backButton';
+import BackButton from '../Components/backButton';
 import { Dropdown } from 'react-native-element-dropdown';
 import React, { useContext, useEffect, useState } from "react";
 import { database } from "../../firebaseConfig";

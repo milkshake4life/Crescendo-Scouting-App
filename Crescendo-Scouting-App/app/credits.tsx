@@ -1,7 +1,7 @@
 import { Link, router } from "expo-router";
 import { Pressable, Button, Image, Text, View, StyleSheet, ScrollView } from "react-native";
 import { useFonts } from 'expo-font';
-import BackButton from './backButton';
+import BackButton from './Components/backButton';
  
 
 //Please style this page and check over your names to make sure they are correct

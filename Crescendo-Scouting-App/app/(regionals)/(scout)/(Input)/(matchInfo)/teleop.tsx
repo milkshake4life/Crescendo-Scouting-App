@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Pressable} from 'react-native';
-import BackButton from '../../../../backButton';
+import BackButton from '../../../../Components/backButton';
 import { Dropdown } from 'react-native-element-dropdown';
 import { router, useGlobalSearchParams } from 'expo-router';
 import { Slider } from 'react-native-elements';

@@ -16,7 +16,7 @@ return (
             style={styles.backButton}
             onPress={() => router.back()}
             >
-            <Image style = {styles.backButtonIcon} source={require('./../assets/images/back_arrow.png')} />
+            <Image style = {styles.backButtonIcon} source={require('./../../assets/images/back_arrow.png')} />
             </Pressable>
 )
 };

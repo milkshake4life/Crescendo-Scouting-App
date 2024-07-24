@@ -1,6 +1,6 @@
 import { Link, router, useGlobalSearchParams } from "expo-router";
 import { Pressable, Button, Text, View, StyleSheet, ScrollView } from "react-native";
-import BackButton from "../../../backButton";
+import BackButton from "../../../Components/backButton";
 import React, { useContext, useEffect, useState } from "react";
 //contexts
 import { retrieveRegional, retrieveTeam, deleteTeamKeys, } from "../../../Contexts/TeamSecureCache";

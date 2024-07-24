@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   LayoutAnimation,
 } from "react-native";
-import BackButton from "../../../../backButton";
+import BackButton from "../../../../Components/backButton";
 import { onValue, ref, set } from "@firebase/database";
 import { database } from "../../../../../firebaseConfig";
 import { useEffect, useState } from "react";

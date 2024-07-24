@@ -1,10 +1,10 @@
 import { Link, router, useGlobalSearchParams, useLocalSearchParams } from "expo-router";
-import { Pressable, Button, Image, Text, View, StyleSheet } from "react-native";
+import { Pressable, Button, Image, Text, View, StyleSheet, ScrollView } from "react-native";
 import { useFonts } from 'expo-font';
-import BackButton from "../backButton";
+import BackButton from "../Components/backButton";
 import { DatabaseQuery, DataPoint, fetchQueriedTeams } from "./rankings";
 import { Dropdown } from "react-native-element-dropdown";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DropdownItem } from "./[regional]";
 //import { TeamContextProvider } from "../../Contexts/team-content";
 
@@ -26,94 +26,82 @@ const rankingsPage = () => {
   const statTypes: DropdownItem[] = [{label: 'Fraction', value: 'Fraction'}, {label: 'Percentage', value: 'Percentage'}];
   const stats: DropdownItem[] = [{label: 'Speaker', value: 'Speaker'}, {label: 'Amp', value: 'Amp'}];
 
-  let sorted: DataPoint[];
-
-  const getRanking = (q: DatabaseQuery) => {
-    sorted = fetchQueriedTeams(q);
+  const [sorted, setSorted] = useState<DataPoint[]>([]);
+  const [isFetched, setIsFetched] = useState<boolean>(false);
+  
+  const getRanking = async (q: DatabaseQuery) => {
+    setSorted(fetchQueriedTeams(q, 5));
   }
 
-  const renderRankings = () => {
-    return sorted.map((key) => <Text>Team {key.key}: {key.stat}</Text>)
-  }
+  // useEffect(() => {
+
+  //   const getRanking = async (q: DatabaseQuery) => {
+  //     try {
+  //       setSorted(fetchQueriedTeams(q, 5));
+  //     } catch (error) {
+  //       console.error(error)
+  //     }
+
+  //   }
+    
+  // }, []);
+
+
+  // const renderRankings = () => {
+  //   return sorted?.map((key) => <Text>Team {key.key}: {key.stat}</Text>)
+  // }
   
     return (
       
-        <View style={styles.container}>
+        <ScrollView /*style={styles.mainContainer}*/>
             <BackButton buttonName='Regional Page' />
 
             {/* dropdown to set up the query */}
 
             <Text style={styles.title}> Team Rankings </Text>
-            <Dropdown
-              style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
-              placeholderStyle={styles.placeholderStyle}
-              selectedTextStyle={styles.selectedTextStyle}
-              inputSearchStyle={styles.inputSearchStyle}
-              iconStyle={styles.iconStyle}
-              data={statTypes}
-              search
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder={!isFocus ? 'Select stat type' : '...'}
-              searchPlaceholder="Search..."
-              onFocus={() => setIsFocus(true)}
-              onBlur={() => setIsFocus(false)}
-              onChange={item => {
-                setSelectedStatType(item.value);  // Update the state to the new value
-                setIsFocus(false);  // Assuming you want to unfocus the dropdown after selection
-              }}
-            />
-
-            {/*specific statistic*/}
-            <Dropdown
-              style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
-              placeholderStyle={styles.placeholderStyle}
-              selectedTextStyle={styles.selectedTextStyle}
-              inputSearchStyle={styles.inputSearchStyle}
-              iconStyle={styles.iconStyle}
-              data={stats}
-              search
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder={!isFocus ? 'Select stat' : '...'}
-              searchPlaceholder="Search..."
-              onFocus={() => setIsFocus(true)}
-              onBlur={() => setIsFocus(false)}
-              onChange={item => {
-                setSelectedStat(item.value);  // Update the state to the new value
-                setIsFocus(false);  // Assuming you want to unfocus the dropdown after selection
-              }}
-            />
+            
 
             <Pressable
               style={styles.buttonOne}
-              onPress={() => {
+              onPress={async () => {
                 //testing DatabaseQuery interface as a parameter. Better readability than just passing everything in
-                if(!selectedStat && !selectedStatType)
-                {
-                    alert(`Please make sure you have selected a stat and a stat type.`)
-                } else {
-                    getRanking({regional: modifiedRegional!, statType: selectedStatType as 'Fraction' | 'Percentage', stat: selectedStat as 'Speaker' | 'Amp'});
-                    renderRankings();
-                }
+                // if(!selectedStat && !selectedStatType)
+                // {
+                //     alert(`Please make sure you have selected a stat and a stat type.`)
+                // } else {
+                  //trying hardcoded
+                    await getRanking({regional: modifiedRegional!, statType: 'Fraction' /*Fraction' | 'Percentage'*/, stat: 'Speaker' /*'Speaker' | 'Amp'}*/});
+                    setIsFetched(true);
+                // }
               }}
             >
               <Text style={styles.buttonText}>QUERY!</Text>
             </Pressable>
 
-            
+            {sorted.length > 0 && isFetched ? (
+              sorted?.map((data) => (
+                <Text style={styles.subtitle}>
+                  {data.key}: {data.stat}
+                </Text>
+              ))
+            ) : (
+              <Text style={styles.subtitle}>No data available</Text>
+            )}
 
-            
 
-
-        </View>
+        </ScrollView>
         
     );
 };
 
 const styles = StyleSheet.create({
+    mainContainer: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      padding: 20,
+      width: "100%",
+    },
     container: {
         flex: 1, // Makes sure the container takes up the whole screen
         justifyContent: 'flex-start', // Centers content to the top of the page
@@ -122,7 +110,7 @@ const styles = StyleSheet.create({
       },
       containerRedirect: {
         flex: 1, // Makes sure the container takes up the whole screen
-        justifyContent: 'flex-start', // Centers content to the top of the page
+        // justifyContent: 'flex-start', // Centers content to the top of the page
         // alignItems: 'left', // Centers content horizontally in the container
         paddingLeft: '0%', 
       },
@@ -252,3 +240,47 @@ const styles = StyleSheet.create({
   });
 
 export default rankingsPage;
+
+
+/* <Dropdown
+              style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              inputSearchStyle={styles.inputSearchStyle}
+              iconStyle={styles.iconStyle}
+              data={statTypes}
+              search
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder={!isFocus ? 'Select stat type' : '...'}
+              searchPlaceholder="Search..."
+              onFocus={() => setIsFocus(true)}
+              onBlur={() => setIsFocus(false)}
+              onChange={item => {
+                setSelectedStatType(item.value);  // Update the state to the new value
+                setIsFocus(false);  // Assuming you want to unfocus the dropdown after selection
+              }}
+            />
+
+            {/*specific statistic*//*} 
+            <Dropdown
+              style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              inputSearchStyle={styles.inputSearchStyle}
+              iconStyle={styles.iconStyle}
+              data={stats}
+              search
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder={!isFocus ? 'Select stat' : '...'}
+              searchPlaceholder="Search..."
+              onFocus={() => setIsFocus(true)}
+              onBlur={() => setIsFocus(false)}
+              onChange={item => {
+                setSelectedStat(item.value);  // Update the state to the new value
+                setIsFocus(false);  // Assuming you want to unfocus the dropdown after selection
+              }}
+            /> */

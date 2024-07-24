@@ -2,11 +2,11 @@ import { Link, router, useGlobalSearchParams, useLocalSearchParams } from "expo-
 import { Pressable, Button, Image, Text, View, StyleSheet } from "react-native";
 import { useFonts } from 'expo-font';
 //importing the back-button component from the filee
-import BackButton from '../backButton';
+import BackButton from '../Components/backButton';
 import { Dropdown } from 'react-native-element-dropdown';
 import React, { useContext, useEffect, useState } from "react";
 import { database } from "../../firebaseConfig";
-import { DataSnapshot, get, getDatabase, onValue, ref, query, orderByValue, orderByChild, Database } from "firebase/database";
+import { DataSnapshot, get, getDatabase, onValue, ref, query, orderByValue, orderByChild, Database, startAt } from "firebase/database";
 //secureStore stuff
 import { deleteTeamKeys, retrieveRegional, retrieveTeam, storeSecureTeam, } from "../Contexts/TeamSecureCache";
 
@@ -48,7 +48,8 @@ export interface DataPoint {
 
 //Ranks teams by a desired statistic from the teleop section and returns an array of teams in order. 
 //This will likely be called in a page that is an offshoot of the regional page, so the array of data will then be translated to UI (probably via the spread (...) operator)
-export const fetchQueriedTeams = (q: DatabaseQuery): DataPoint[] => {
+//Takes a databasequery object as well as a number, which is the minimum number of attempts needed to display a team. 
+export const fetchQueriedTeams = (q: DatabaseQuery, floor: number): DataPoint[] => {
   //simply create a query using orderbychild and passing in the relevant path as part of our query. 
   //see https://firebase.google.com/docs/database/web/lists-of-data#sort_data for more. 
   //Also, flooring should be easy. Just use modifiers (i.e. startAt()) to only return items whose values are > the floor.
@@ -71,26 +72,31 @@ export const fetchQueriedTeams = (q: DatabaseQuery): DataPoint[] => {
   const queryListener = onValue(rankingQuery, (snapshot) => {
     
     //access the value of the child via data.child(<path string>).val();
+    //only display if the value of the desired stat is > floor
     snapshot.forEach((data) => {
       let stat: string = "";
-      if(q.statType == 'Fraction')
-      {
-        //stat "total" keys are simply the stat name + " Total"
+      const modifiedPathToChild: string = `Stats/${q.statType}/Teleop/${q.stat}`
 
-        //Queries will look like:
-        //data.child(pathToChild).val() will give the "made"
-        //data.child(pathToChild + " Total").val() will give the "total"
-        const modifiedPathToChild: string = `Stats/${q.statType}/Teleop/${q.stat}`
-        stat = data.child(modifiedPathToChild).val() + "/" + data.child(modifiedPathToChild + " Total").val();
+      //might need to change this to sort by percentage and return both percent and fraction rather than having
+      //two different queries
+      if(data.child(modifiedPathToChild + " Total").val() > floor) {
+        if(q.statType == 'Fraction')
+        {
+          //stat "total" keys are simply the stat name + " Total"
 
-        console.log(`team ` + data.key + `\'s ${q.stat.toLowerCase()} accuracy as a fraction is ` + stat)
+          //Queries will look like:
+          //data.child(pathToChild).val() will give the "made"
+          //data.child(pathToChild + " Total").val() will give the "total"
+          stat = data.child(modifiedPathToChild).val() + "/" + data.child(modifiedPathToChild + " Total").val();
+
+          console.log(`team ` + data.key + `\'s ${q.stat.toLowerCase()} accuracy as a fraction is ` + stat)
+        }
+        else//stats = percentage
+        {
+          stat = data.child(pathToChild).val();
+          console.log(`team ` + data.key + `\'s % ${q.stat.toLowerCase()} accuracy is ` + stat + '%');
+        }
       }
-      else //stats = percentage
-      {
-        stat = data.child(pathToChild).val();
-        console.log(`team ` + data.key + `\'s % ${q.stat.toLowerCase()} accuracy is ` + stat + '%');
-      }
-
       //appending the team and its data to an array which will be returned by the function
       results.push({key: data.key, stat: stat});
     })

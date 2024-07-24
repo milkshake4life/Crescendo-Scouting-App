@@ -1,6 +1,6 @@
 import { Link, router, useGlobalSearchParams, useLocalSearchParams } from "expo-router";
 import { Pressable, Button, Text, View, StyleSheet } from "react-native";
-import BackButton from "../../../backButton";
+import BackButton from "../../../Components/backButton";
 import { database } from '../../../.././firebaseConfig';
 import React, { useEffect, useState } from 'react';
 import { getDatabase, ref, get, DataSnapshot } from "firebase/database";

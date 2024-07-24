@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Pressable, Button, Image, Text, View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity, } from "react-native";
-import BackButton from '../../../../backButton';
+import BackButton from '../../../../Components/backButton';
 import { CheckBox } from 'react-native-elements';
 import Slider from '@react-native-community/slider';
 import { router, useGlobalSearchParams } from 'expo-router'

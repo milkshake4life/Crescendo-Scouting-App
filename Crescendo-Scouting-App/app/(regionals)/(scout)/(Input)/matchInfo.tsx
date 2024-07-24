@@ -1,6 +1,6 @@
 import { Link, router } from "expo-router";
 import { Pressable, Button, Text, View, StyleSheet } from "react-native";
-import BackButton from "../../../backButton";
+import BackButton from "../../../Components/backButton";
 
 
 const matchInfo = () => {

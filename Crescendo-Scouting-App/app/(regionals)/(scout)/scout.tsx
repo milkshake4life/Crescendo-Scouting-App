@@ -1,7 +1,7 @@
 import { Link, router, useGlobalSearchParams, useLocalSearchParams } from "expo-router";
 import { Pressable, Button, Image, Text, View, StyleSheet } from "react-native";
 import { useFonts } from 'expo-font';
-import BackButton from "../../backButton";
+import BackButton from "../../Components/backButton";
 //import { TeamContextProvider } from "../../Contexts/team-content";
 
 
