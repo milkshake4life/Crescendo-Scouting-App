@@ -6,6 +6,7 @@ import { DatabaseQuery, DataPoint, fetchQueriedTeams } from "./rankings";
 import { Dropdown } from "react-native-element-dropdown";
 import { useEffect, useState } from "react";
 import { DropdownItem } from "./[regional]";
+import TeamDisplay from "../Components/TeamDisplay";
 //import { TeamContextProvider } from "../../Contexts/team-content";
 
 
@@ -80,9 +81,13 @@ const rankingsPage = () => {
 
             {sorted.length > 0 && isFetched ? (
               sorted?.map((data) => (
-                <Text style={styles.subtitle}>
-                  {data.key}: {data.percentage}, {data.fraction}
-                </Text>
+                // <Text style={styles.subtitle}>
+                //   {data.key}: {data.percentage}, {data.fraction}
+                // </Text>
+                <TeamDisplay title={data.key}>
+                  <Text>Fraction: {data.fraction}</Text>
+                  <Text>Percent: {data.percentage}</Text>
+                </TeamDisplay>
               ))
             ) : (
               <Text style={styles.subtitle}>No data available</Text>
