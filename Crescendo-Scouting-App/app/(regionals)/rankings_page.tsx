@@ -70,7 +70,7 @@ const rankingsPage = () => {
                 //     alert(`Please make sure you have selected a stat and a stat type.`)
                 // } else {
                   //trying hardcoded
-                    await getRanking({regional: modifiedRegional!, statType: 'Fraction' /*Fraction' | 'Percentage'*/, stat: 'Speaker' /*'Speaker' | 'Amp'}*/});
+                    await getRanking({regional: modifiedRegional! /*, Fraction' | 'Percentage'*/, stat: 'Speaker' /*'Speaker' | 'Amp'}*/});
                     setIsFetched(true);
                 // }
               }}
@@ -81,7 +81,7 @@ const rankingsPage = () => {
             {sorted.length > 0 && isFetched ? (
               sorted?.map((data) => (
                 <Text style={styles.subtitle}>
-                  {data.key}: {data.stat}
+                  {data.key}: {data.percentage}, {data.fraction}
                 </Text>
               ))
             ) : (
