@@ -41,9 +41,14 @@ export interface DatabaseQuery {
 }
 
 export interface DataPoint {
+  //team name
   key: string;
+  //teleop
   fraction: string;
   percentage: string;
+  
+
+
 }
 
 
