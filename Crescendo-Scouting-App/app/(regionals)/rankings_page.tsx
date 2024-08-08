@@ -144,7 +144,7 @@ const rankingsPage = () => {
             <Pressable
               style={styles.buttonOne}
               onPress={async () => {
-                  await updateTBAranking("Ventura");
+                  await updateTBAranking(modifiedRegional);
                   console.log("done");
                 }}
             > 
@@ -159,6 +159,7 @@ const rankingsPage = () => {
                 <TeamDisplay title={data.key}>
                   <Text>Fraction: {data.fraction}</Text>
                   <Text>Percent: {data.percentage}</Text>
+                  <Text>Rank: {data.rank}</Text>
                 </TeamDisplay>
               ))
             ) : (

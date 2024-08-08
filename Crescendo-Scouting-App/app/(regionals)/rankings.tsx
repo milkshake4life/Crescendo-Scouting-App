@@ -14,10 +14,7 @@ import { deleteTeamKeys, retrieveRegional, retrieveTeam, storeSecureTeam, } from
 
 //This file stores every function that has something to do with the team ranking page. 
 
-//3 stats to sort by:
-//competition, amp, speaker, climb
-//+
-//a search bar function that lets you search by team name. 
+
 
 
 
@@ -27,56 +24,57 @@ import { deleteTeamKeys, retrieveRegional, retrieveTeam, storeSecureTeam, } from
 export interface DatabaseQuery {
   //assume regional is correctly formatted when passed in. Every other option forces correct formatting based on the directory in the db
   regional: string;
-  //statType: 'Percentage' | 'Fraction';
-  //TODO: ask ethan about what each of these represent. Postgame and endgame have different stat structures, so i'll handle 
-  //them later. 
-  //gameSection: 'Teleop' | 'Auto' | 'Endgame' | 'Postgame' | 'Pregame'; 
 
   //Game section is irrelevant. Firebase can only query by one statistic, so we only need the main ones. Auto has
   //too many data points, so if anything we can display auto scoring patterns as heatmaps underneath the team.
-  //The only section we care about is Teleop. Default to that.
+  //We'll default to teleop and figure out edge cases (climb, auto) later. 
 
-  //The only stats we care about. 
-  stat: 'Speaker' | 'Amp'
+
+  //4 stats to sort by: competition, amp, speaker, climb 
+  stat: 'Speaker' | 'Amp' | 'TBA'
+
+  //climb will be added later. 
 
 }
 
 export interface DataPoint {
   //team name
   key: string;
-  //teleop
-  fraction: string;
-  percentage: string;
+  //statistics
+  fraction?: string;
+  percentage?: string;
   
-
-
+  //rank
+  rank?: string;
 }
 
   ///Something we will have to consider later will be precompetition when no team data exists. There will have to be an alternate view displayed or some kind of alert when
   ///trying to query an empty database. 
 
-//Ranks teams by a desired statistic from the teleop section and returns an array of teams in order. 
+//Ranks teams by a desired statistic and returns an array of teams in order. (order will need to be reveresed later) 
 //This will likely be called in a page that is an offshoot of the regional page, so the array of data will then be translated to UI (probably via the spread (...) operator)
-//Takes a databasequery object as well as a number, which is the minimum number of attempts needed to display a team. 
+//Takes a DatabaseQuery object as well as a number, which is the minimum number of attempts needed to display a team. 
 export const fetchQueriedTeams = (q: DatabaseQuery, /*floor: number*/): DataPoint[] => {
   //simply create a query using orderbychild and passing in the relevant path as part of our query. 
   //see https://firebase.google.com/docs/database/web/lists-of-data#sort_data for more. 
   //Also, flooring should be easy. Just use modifiers (i.e. startAt()) to only return items whose values are > the floor.
 
   //To update the leaderboard, we will just have the user reload the page. Using a listener might be resource intensive. 
-  
-  //path variable built off of q parameter data. 
-  //assumes q has the correctly formatted regional passed in.
 
-  //we actually want to sort by percentage made, but display the total makeup of that percentage. 
-  //const pathToChild: string = `Stats/${q.statType}/Teleop/${q.stat}`;
-  //the path to get to the percentage data in the database
-  const pathToPercent: string = `Stats/Percentage/Teleop/${q.stat}`;
-  
-  const rankingQuery = query(ref(database, `${q.regional}/teams`), orderByChild(pathToPercent));
+  //the path to get to the data in the database
+  let path: string = ""
+  if(q.stat != 'TBA') {
+    path = `Stats/Percentage/Teleop/${q.stat}`;
+  } else {
+    path = `Stats/Rank`
+  }
+
+  //creates a query which orders the teams under the regional/teams directory by their percentage accuracy. 
+  const rankingQuery = query(ref(database, `${q.regional}/teams`), orderByChild(path));
   
   //queries simply create another reference. This ref can be treated the same way as the original database reference. 
   
+
   let results: DataPoint[] = [];
 
   const queryListener = onValue(rankingQuery, (snapshot) => {
@@ -84,39 +82,30 @@ export const fetchQueriedTeams = (q: DatabaseQuery, /*floor: number*/): DataPoin
     //access the value of the child via data.child(<path string>).val();
     //only display if the value of the desired stat is > floor
     snapshot.forEach((data) => {
-      let fraction: string = "";
-      let percentage: string = "";
-      //The path to get to our fraction data in the database
-      const pathToFraction: string = `Stats/Fraction/Teleop/${q.stat}`
-
-      //might need to change this to sort by percentage and return both percent and fraction rather than having
-      //two different queries
-      
-      //abandoning floor idea. 
-      // if(data.child(pathToFraction + " Total").val() > floor) {
+      if(q.stat != 'TBA') { //if not going by comp rankings
+        let fraction: string = "";
+        let percentage: string = "";
+        //The path to get to our percent and fraction data in the database
+        const pathToPercent: string = `Stats/Percentage/Teleop/${q.stat}`;
+        const pathToFraction: string = `Stats/Fraction/Teleop/${q.stat}`
+        
+        //stat "total" keys are simply the stat name + " Total"
+        //Queries will look like:
+        //data.child(pathToChild).val() will give the "made"
+        //data.child(pathToChild + " Total").val() will give the "total"  
         fraction = data.child(pathToFraction).val() + "/" + data.child(pathToFraction + " Total").val() 
         percentage = data.child(pathToPercent).val() + "%"
         console.log(`team ` + data.key + `\'s ${q.stat.toLowerCase()} accuracy was ${percentage}, at ${fraction}`)
-        //   //stat "total" keys are simply the stat name + " Total"
-        // if(q.statType == 'Fraction')
-        // {
 
-        //   //Queries will look like:
-        //   //data.child(pathToChild).val() will give the "made"
-        //   //data.child(pathToChild + " Total").val() will give the "total"
-        //   fraction = data.child(modifiedPathToChild).val() + "/" + data.child(modifiedPathToChild + " Total").val();
+        //appending the team and its data to an array which will be returned by the function
+        results.push({key: data.key, fraction: fraction, percentage: percentage});
+      } else { //if going by comp rankings
+        let teamRank = data.child(path).val()
 
-        //   console.log(`team ` + data.key + `\'s ${q.stat.toLowerCase()} accuracy as a fraction is ` + fraction)
-        // }
-        // else//stats = percentage
-        // {
-        //   fraction = data.child(pathToChild).val();
-        //   console.log(`team ` + data.key + `\'s % ${q.stat.toLowerCase()} accuracy is ` + percentage + '%');
-        // }
-        
-      // }
-      //appending the team and its data to an array which will be returned by the function
-      results.push({key: data.key, fraction: fraction, percentage: percentage});
+        results.push({key: data.key, rank: teamRank})
+      }
+
+
     })
     //for future use, key and child will probably be stored as pairs in an array, and the function will return the
     //array. (most likely arr[] = [...data])
@@ -132,9 +121,11 @@ export const fetchQueriedTeams = (q: DatabaseQuery, /*floor: number*/): DataPoin
 
 
   })
+  //because of .push, the original results array is in reverse order when sorting by percent. Reversing it here gives us the actual order.
+  //If space complexity is an issue, .toReversed can be swapped for .reverse()
+  if(q.stat != 'TBA' ) { return results.toReversed() };
   return results;
 }
-
 
 //This function will be used to allow the user to search teams. 
 export const searchTeams = (teamList: DataPoint[], teamString: string): DataPoint[] => {
@@ -265,7 +256,3 @@ fetch('API_ENDPOINT', options)
 
 
 
-
-
-//testing function (from: https://nodejs.org/en/learn/manipulating-files/writing-files-with-nodejs):
-//nvm i'll just print it. 
