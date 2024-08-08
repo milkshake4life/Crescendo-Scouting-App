@@ -6,7 +6,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { retrieveRegional, retrieveTeam, deleteTeamKeys, } from "../../../Contexts/TeamSecureCache";
 import { DataSnapshot, getDatabase, off, onValue, ref } from "@firebase/database";
 
-
+//an idea could be to phase this page out and display the whole matchDisplay view as a component underneath the team dropdown on the ranking page. 
 
 const matchDisplay = () => {
   

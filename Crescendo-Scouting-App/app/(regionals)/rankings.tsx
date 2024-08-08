@@ -11,15 +11,16 @@ import { DataSnapshot, get, getDatabase, onValue, ref, query, orderByValue, orde
 import { deleteTeamKeys, retrieveRegional, retrieveTeam, storeSecureTeam, } from "../Contexts/TeamSecureCache";
 
 
-// const { regional } = useGlobalSearchParams<{ regional: string }>();
-// let modifiedRegional = regional
-// if (regional === 'Orange County') {
-//   modifiedRegional = 'Orange-County'
-// }
-// else if (regional === 'Port Hueneme') {
-//   modifiedRegional = 'Port-Hueneme'
-// }
-///hihihi
+
+//This file stores every function that has something to do with the team ranking page. 
+
+//3 stats to sort by:
+//competition, amp, speaker, climb
+//+
+//a search bar function that lets you search by team name. 
+
+
+
 //an interface which handles query requests (in order to ensure that "leaderboard" requests are correctly formatted)
 //this is great (for now). might need to be redone later for endgame/postgame stats (since those are weird). But 
 //it helps a lot with readability. 
@@ -51,11 +52,13 @@ export interface DataPoint {
 
 }
 
+  ///Something we will have to consider later will be precompetition when no team data exists. There will have to be an alternate view displayed or some kind of alert when
+  ///trying to query an empty database. 
 
 //Ranks teams by a desired statistic from the teleop section and returns an array of teams in order. 
 //This will likely be called in a page that is an offshoot of the regional page, so the array of data will then be translated to UI (probably via the spread (...) operator)
 //Takes a databasequery object as well as a number, which is the minimum number of attempts needed to display a team. 
-export const fetchQueriedTeams = (q: DatabaseQuery, floor: number): DataPoint[] => {
+export const fetchQueriedTeams = (q: DatabaseQuery, /*floor: number*/): DataPoint[] => {
   //simply create a query using orderbychild and passing in the relevant path as part of our query. 
   //see https://firebase.google.com/docs/database/web/lists-of-data#sort_data for more. 
   //Also, flooring should be easy. Just use modifiers (i.e. startAt()) to only return items whose values are > the floor.
@@ -88,6 +91,8 @@ export const fetchQueriedTeams = (q: DatabaseQuery, floor: number): DataPoint[] 
 
       //might need to change this to sort by percentage and return both percent and fraction rather than having
       //two different queries
+      
+      //abandoning floor idea. 
       // if(data.child(pathToFraction + " Total").val() > floor) {
         fraction = data.child(pathToFraction).val() + "/" + data.child(pathToFraction + " Total").val() 
         percentage = data.child(pathToPercent).val() + "%"
@@ -129,3 +134,86 @@ export const fetchQueriedTeams = (q: DatabaseQuery, floor: number): DataPoint[] 
   })
   return results;
 }
+
+
+//This function will be used to allow the user to search teams. 
+export const searchTeams = (teamList: DataPoint[], teamString: string): DataPoint[] => {
+  let results: DataPoint[] = []
+
+  for(let i = 0; i < teamList.length; i++) {
+    if(teamList[i].key.includes(teamString)) {
+      results.push(teamList[i])
+    }
+  }
+
+  return results;
+
+}
+
+//update database with team information (to be called async upon form completion, since a form is submitted when a match is finished)
+//takes in an event key, which is necessary for using the TBA api and can be hardcoded as part of entering a regional's page
+//event key format:
+//<year><state abbreviation><first letter of city name><second first letter of city name>
+//i.e.: 2024caoc for orange county
+export const updateTBAranking = async (eventKey: string): Promise<void> => {
+  const [data, setData] = useState(null)
+
+
+  //fetches the rankings.
+  //Need to include TBAkey under this header: X-TBA-Auth-Key for request to work. Will do that tomorrow. 
+  fetch(`https://www.thebluealliance.com/apidocs/v3/event/${eventKey}/rankings`)
+    //maps the response to json. 
+    .then(response => response.json())
+    //maps the json into keys
+    .then(json => {
+      // for(let i = 0; i < json.length; i++) {
+      //   json[i]
+      // } 
+      try{
+        console.log(json);
+      }
+      catch (err) {
+        console.error(err)
+      }
+    })
+    //error handling
+    .catch(error => console.error(error));
+  
+}
+
+//To add an authorization header:
+/*
+fetch('API_ENDPOINT', options)  
+      .then(function(res) {
+        return res.json();
+       })
+      .then(function(resJson) {
+        return resJson;
+       })
+*/
+//Where options is an object formatted like so:
+/*
+ var options = {  
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Origin': '',
+        'Host': 'api.producthunt.com'
+      },
+      body: JSON.stringify({
+        'client_id': '(API KEY)',
+        'client_secret': '(API SECRET)',
+        'grant_type': 'client_credentials'
+      })
+    }
+*/
+//except since we are making a get request, the method will be GET, we won't have a body, and we'll have different headers. Namely  X-TBA-Auth-Key
+
+
+
+
+
+
+//testing function (from: https://nodejs.org/en/learn/manipulating-files/writing-files-with-nodejs):
+//nvm i'll just print it. 

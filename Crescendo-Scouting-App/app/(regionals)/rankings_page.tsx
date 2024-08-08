@@ -1,8 +1,8 @@
 import { Link, router, useGlobalSearchParams, useLocalSearchParams } from "expo-router";
-import { Pressable, Button, Image, Text, View, StyleSheet, ScrollView } from "react-native";
+import { Pressable, Button, Image, Text, View, StyleSheet, ScrollView, TextInput } from "react-native";
 import { useFonts } from 'expo-font';
 import BackButton from "../Components/backButton";
-import { DatabaseQuery, DataPoint, fetchQueriedTeams } from "./rankings";
+import { DatabaseQuery, DataPoint, fetchQueriedTeams, searchTeams, updateTBAranking } from "./rankings";
 import { Dropdown } from "react-native-element-dropdown";
 import { useEffect, useState } from "react";
 import { DropdownItem } from "./[regional]";
@@ -20,18 +20,33 @@ const rankingsPage = () => {
     modifiedRegional = 'Port-Hueneme'
   }
 
-  const [isFocus, setIsFocus] = useState(false);
   const [selectedStatType, setSelectedStatType] = useState<string | null>(null);
   const [selectedStat, setSelectedStat] = useState<string | null>(null);
-  
-  const statTypes: DropdownItem[] = [{label: 'Fraction', value: 'Fraction'}, {label: 'Percentage', value: 'Percentage'}];
+
+  const [isFocus, setIsFocus] = useState(false);
+  const [selectedValue, setSelectedValue] = useState<string | null>(null);
+
+
+  //stat types are being phased out. Instead, we will now display both fraction and percentage underneath the team like a dropdown.
+  // const statTypes: DropdownItem[] = [{label: 'Fraction', value: 'Fraction'}, {label: 'Percentage', value: 'Percentage'}];
+
   const stats: DropdownItem[] = [{label: 'Speaker', value: 'Speaker'}, {label: 'Amp', value: 'Amp'}];
+
 
   const [sorted, setSorted] = useState<DataPoint[]>([]);
   const [isFetched, setIsFetched] = useState<boolean>(false);
+
+  const [textInput, setTextInput] = useState<string>("");
+
   
+  //eventually this will be moved to a useeffect so that we always have information to display. By default we will display competition rankings (no idea how we are going to get those)
+  //And then users can select what to sort by in the dropdown (competition, speaker, amp) and search for individual teams using a search bar. 
   const getRanking = async (q: DatabaseQuery) => {
-    setSorted(fetchQueriedTeams(q, 5));
+    await setSorted(fetchQueriedTeams(q));
+  }
+
+  const searchByName = async (teamString: string) => {
+    await setSorted(searchTeams(sorted, teamString));
   }
 
   // useEffect(() => {
@@ -55,12 +70,34 @@ const rankingsPage = () => {
     return (
       
         <ScrollView /*style={styles.mainContainer}*/>
+          <>
             <BackButton buttonName='Regional Page' />
 
-            {/* dropdown to set up the query */}
 
             <Text style={styles.title}> Team Rankings </Text>
-            
+
+            {/* dropdown to set up the query (For some reason the text of the selected item does not remain in the dropdown after selection)*/}
+            {/* <Dropdown
+              style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              inputSearchStyle={styles.inputSearchStyle}
+              iconStyle={styles.iconStyle}
+              data={stats}
+              search
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder={!isFocus ? 'Select team' : '...'}
+              searchPlaceholder="Search..."
+              onFocus={() => setIsFocus(true)}
+              onBlur={() => setIsFocus(false)}
+              onChange={item => {
+                setSelectedValue(item.value);  // Update the state to the new value
+                setIsFocus(false);  // Assuming you want to unfocus the dropdown after selection
+              }}
+            /> */}
+
 
             <Pressable
               style={styles.buttonOne}
@@ -79,6 +116,41 @@ const rankingsPage = () => {
               <Text style={styles.buttonText}>QUERY!</Text>
             </Pressable>
 
+            <TextInput
+              onChangeText={setTextInput}
+              value={textInput}
+              placeholder="search team number: "
+            />
+
+            <Pressable
+              style={styles.buttonOne}
+              onPress={async () => {
+                    //search button:
+
+                    //if the searchbar is empty, we should return to the whole ranking.
+                    if(textInput.length > 0) {
+                      await searchByName(textInput);
+                    }
+                    else {
+                      await getRanking({regional: modifiedRegional! /*, Fraction' | 'Percentage'*/, stat: 'Speaker' /*'Speaker' | 'Amp'}*/})
+                    }
+
+                    //ITS PROBABLY NOT A BAD IDEA TO MAKE THESE ONE BUTTON. Or, when we implement the dropdown, just make the above function activate on form field change (i.e. textinput changes or query dropdown changes)
+                }}
+            > 
+              <Text style={styles.buttonText}>SEARCH!</Text>
+            </Pressable>
+
+            <Pressable
+              style={styles.buttonOne}
+              onPress={async () => {
+                  await updateTBAranking("2024caoc");
+                  console.log("done");
+                }}
+            > 
+              <Text style={styles.buttonText}>Test API call</Text>
+            </Pressable>
+
             {sorted.length > 0 && isFetched ? (
               sorted?.map((data) => (
                 // <Text style={styles.subtitle}>
@@ -92,7 +164,7 @@ const rankingsPage = () => {
             ) : (
               <Text style={styles.subtitle}>No data available</Text>
             )}
-
+        </>
 
         </ScrollView>
         
