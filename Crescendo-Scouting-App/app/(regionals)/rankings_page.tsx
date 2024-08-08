@@ -144,7 +144,7 @@ const rankingsPage = () => {
             <Pressable
               style={styles.buttonOne}
               onPress={async () => {
-                  await updateTBAranking("2024caoc");
+                  await updateTBAranking("Ventura");
                   console.log("done");
                 }}
             > 

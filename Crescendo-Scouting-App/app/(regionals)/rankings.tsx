@@ -6,7 +6,7 @@ import BackButton from '../Components/backButton';
 import { Dropdown } from 'react-native-element-dropdown';
 import React, { useContext, useEffect, useState } from "react";
 import { database } from "../../firebaseConfig";
-import { DataSnapshot, get, getDatabase, onValue, ref, query, orderByValue, orderByChild, Database, startAt } from "firebase/database";
+import { DataSnapshot, get, getDatabase, onValue, ref, query, orderByValue, orderByChild, Database, startAt, set } from "firebase/database";
 //secureStore stuff
 import { deleteTeamKeys, retrieveRegional, retrieveTeam, storeSecureTeam, } from "../Contexts/TeamSecureCache";
 
@@ -150,36 +150,88 @@ export const searchTeams = (teamList: DataPoint[], teamString: string): DataPoin
 
 }
 
-//update database with team information (to be called async upon form completion, since a form is submitted when a match is finished)
-//takes in an event key, which is necessary for using the TBA api and can be hardcoded as part of entering a regional's page
-//event key format:
-//<year><state abbreviation><first letter of city name><second first letter of city name>
-//i.e.: 2024caoc for orange county
-export const updateTBAranking = async (eventKey: string): Promise<void> => {
-  const [data, setData] = useState(null)
+//used for processing get request response data. 
+interface teamTable {
+  teamkey: string, 
+  rank: number,
+}
 
+//This function will be called upon form submission. 
+//update database with team information (to be called async upon form completion, since a form is submitted when a match is finished)
+//takes in the regional, which is needed to format the event key, and also for use in the firebase path.  
+export const updateTBAranking = async (regional: string): Promise<void> => {
+  //function to format event key
+  //event key format:
+  //<year><state abbreviation><first letter of city name><second first letter of city name> or <first letter><second letter> for one word names
+  //i.e.: 2024caoc for orange county
+
+  function getEventKey(regional: string): string {
+    let eventKey: string = "";
+    let splitRegional: string[] = []
+
+    eventKey += "2024" //since this was the 2024 season
+    eventKey += "ca" //since we are in california
+
+    //checks if regional name is two words.
+    if(regional.includes('-')) {
+      //splits the modified regional string parameter we format in the [regional] page into its parts
+      splitRegional = regional.split('-');
+      eventKey += splitRegional[0].charAt(0).toLowerCase(); //first word first letter
+      eventKey += splitRegional[1].charAt(0).toLowerCase(); //second word first letter  
+    }
+    else {
+      eventKey += regional.substring(0,2).toLowerCase();
+    }
+
+    return eventKey;
+  }
+  
+  let eventKey = getEventKey(regional);
+
+  var options = {
+    method: 'GET',
+    headers: {
+      //this key is one I registered. It can be exchanged for another read key later down the line. 
+      'X-TBA-Auth-Key': 'BAotEAOcEB2jKMLW30PaVeZwwDyFKoJplSMwI3gK9QeRBjJjnMfNF9K8ICWkwtKT'
+    }
+  }
 
   //fetches the rankings.
   //Need to include TBAkey under this header: X-TBA-Auth-Key for request to work. Will do that tomorrow. 
-  fetch(`https://www.thebluealliance.com/apidocs/v3/event/${eventKey}/rankings`)
-    //maps the response to json. 
-    .then(response => response.json())
-    //maps the json into keys
-    .then(json => {
-      // for(let i = 0; i < json.length; i++) {
-      //   json[i]
-      // } 
-      try{
-        console.log(json);
-      }
-      catch (err) {
-        console.error(err)
-      }
+  console.log(`https://www.thebluealliance.com/api/v3/event/${eventKey}/rankings`);
+
+  try {
+    const response = await fetch(`https://www.thebluealliance.com/api/v3/event/${eventKey}/rankings`, options);
+    console.log('Response status: ', response.status);
+
+    if(!response.ok) {
+      const errorText = await response.text();
+      console.error(`HTTP error: status: ${response.status}`, errorText);
+      return;
+    }
+
+    const json = await response.json();
+
+    json.rankings.forEach((ranking: any) => {
+      //We can get the teamkey to match the db directory by taking the substring after index 3, which removes "frc" from the string.
+      let teamvar: teamTable = {teamkey: ranking.team_key.substring(3), rank: ranking.rank};
+      console.log(`team_key: ${teamvar.teamkey}, rank: ${teamvar.rank}`);
+       
+      let path: string = `${regional}/teams/${teamvar.teamkey}/Stats/Rank`;
+
+      //creates/updates the team's rank in the db. 
+      set(ref(database, path), teamvar.rank);
+      //teamlist.push(teamvar);
     })
-    //error handling
-    .catch(error => console.error(error));
-  
+
+  } catch (error) {
+    console.error('Fetch error: ' + error);
+  }
+  //the json returned by the request is already sorted by rank. Maybe storing ranks will be unnecessary?
+  //I still think it will be better to put the ranks under the team directory in firebase.
+  //That way we don't need to make an api request every time we want to access the rankings. 
 }
+
 
 //To add an authorization header:
 /*
