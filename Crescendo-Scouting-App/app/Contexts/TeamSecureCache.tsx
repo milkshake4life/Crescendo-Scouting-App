@@ -72,7 +72,7 @@ export {storeSecureTeam, retrieveRegional, retrieveTeam, deleteTeamKeys,};
 
 
 //from regional:
-//a disfunctional back button w/ deletion, which is actually unnecessary due to reasons described in [regional].tsx
+//a dysfunctional back button w/ deletion, which is actually unnecessary due to reasons described in [regional].tsx
     // <Pressable 
     // style={styles.backButton}
     // onPress={async () => {

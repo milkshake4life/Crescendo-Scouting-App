@@ -20,17 +20,15 @@ const rankingsPage = () => {
     modifiedRegional = 'Port-Hueneme'
   }
 
-  const [selectedStatType, setSelectedStatType] = useState<string | null>(null);
-  const [selectedStat, setSelectedStat] = useState<string | null>(null);
-
+  //speaker, amp, climber, or competition
+  const [selectedStat, setSelectedStat] = useState<'Speaker' | 'Amp' | 'TBA'>("TBA");
   const [isFocus, setIsFocus] = useState(false);
-  const [selectedValue, setSelectedValue] = useState<string | null>(null);
 
 
   //stat types are being phased out. Instead, we will now display both fraction and percentage underneath the team like a dropdown.
   // const statTypes: DropdownItem[] = [{label: 'Fraction', value: 'Fraction'}, {label: 'Percentage', value: 'Percentage'}];
 
-  const stats: DropdownItem[] = [{label: 'Speaker', value: 'Speaker'}, {label: 'Amp', value: 'Amp'}];
+  const stats: DropdownItem[] = [{label: 'Speaker', value: 'Speaker'}, {label: 'Amp', value: 'Amp'}, {label: 'Competition', value: 'TBA'}];
 
 
   const [sorted, setSorted] = useState<DataPoint[]>([]);
@@ -77,7 +75,7 @@ const rankingsPage = () => {
             <Text style={styles.title}> Team Rankings </Text>
 
             {/* dropdown to set up the query (For some reason the text of the selected item does not remain in the dropdown after selection)*/}
-            {/* <Dropdown
+            <Dropdown
               style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
               placeholderStyle={styles.placeholderStyle}
               selectedTextStyle={styles.selectedTextStyle}
@@ -88,15 +86,15 @@ const rankingsPage = () => {
               maxHeight={300}
               labelField="label"
               valueField="value"
-              placeholder={!isFocus ? 'Select team' : '...'}
+              placeholder={!isFocus ? 'Sort by: ' : '...'}
               searchPlaceholder="Search..."
               onFocus={() => setIsFocus(true)}
               onBlur={() => setIsFocus(false)}
               onChange={item => {
-                setSelectedValue(item.value);  // Update the state to the new value
-                setIsFocus(false);  // Assuming you want to unfocus the dropdown after selection
+                setSelectedStat(item.value as 'Speaker' | 'Amp' | 'TBA');  // Update the state to the new value
+                // setIsFocus(false);  // Assuming you want to unfocus the dropdown after selection
               }}
-            /> */}
+            />
 
 
             <Pressable
@@ -108,7 +106,7 @@ const rankingsPage = () => {
                 //     alert(`Please make sure you have selected a stat and a stat type.`)
                 // } else {
                   //trying hardcoded
-                    await getRanking({regional: modifiedRegional! /*, Fraction' | 'Percentage'*/, stat: 'Speaker' /*'Speaker' | 'Amp'}*/});
+                    await getRanking({regional: modifiedRegional! /*, Fraction' | 'Percentage'*/, stat: selectedStat! /*'Speaker' | 'Amp'}*/});
                     setIsFetched(true);
                 // }
               }}
@@ -132,7 +130,7 @@ const rankingsPage = () => {
                       await searchByName(textInput);
                     }
                     else {
-                      await getRanking({regional: modifiedRegional! /*, Fraction' | 'Percentage'*/, stat: 'Speaker' /*'Speaker' | 'Amp'}*/})
+                      await getRanking({regional: modifiedRegional! /*, Fraction' | 'Percentage'*/, stat: selectedStat /*'Speaker' | 'Amp'}*/})
                     }
 
                     //ITS PROBABLY NOT A BAD IDEA TO MAKE THESE ONE BUTTON. Or, when we implement the dropdown, just make the above function activate on form field change (i.e. textinput changes or query dropdown changes)
@@ -157,10 +155,11 @@ const rankingsPage = () => {
                 //   {data.key}: {data.percentage}, {data.fraction}
                 // </Text>
                 <TeamDisplay title={data.key}>
-                  <Text>Fraction: {data.fraction}</Text>
-                  <Text>Percent: {data.percentage}</Text>
+                  <Text>Speaker Accuracy: {data.speaker}</Text>
+                  <Text>Amp Accuracy: {data.amp}</Text>
                   <Text>Rank: {data.rank}</Text>
                 </TeamDisplay>
+                //I need to find a way to close the accordian when a new search is made. 
               ))
             ) : (
               <Text style={styles.subtitle}>No data available</Text>

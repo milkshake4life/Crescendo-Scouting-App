@@ -112,7 +112,7 @@ const RegionalPage = () => {
               }}
             />
 
-              {/*Button to test querying*/}
+              {/*Button to rankings page*/}
             <Pressable
               style={styles.buttonOne}
               onPress={() => {
@@ -122,9 +122,8 @@ const RegionalPage = () => {
                 //fetchQueriedTeams({regional:'Orange-County', statType: 'Fraction', stat: 'Speaker'});
               }}
             >
-              <Text style={styles.buttonText}>QUERY!</Text>
+              <Text style={styles.buttonText}>Rankings</Text>
             </Pressable>  
-
 
             <Pressable
               style={styles.buttonOne}
