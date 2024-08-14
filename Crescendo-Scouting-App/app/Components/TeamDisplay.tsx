@@ -13,6 +13,7 @@ const TeamDisplay = ({ title, children }) => {
     //         >
     //         <Image style = {styles.backButtonIcon} source={require('./../assets/images/back_arrow.png')} />
     // </Pressable>
+    // need to change this back to false after new query is made (to close open accordians)
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleOpen = () => {

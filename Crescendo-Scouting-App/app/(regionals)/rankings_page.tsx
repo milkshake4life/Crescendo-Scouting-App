@@ -31,7 +31,12 @@ const rankingsPage = () => {
   const stats: DropdownItem[] = [{label: 'Speaker', value: 'Speaker'}, {label: 'Amp', value: 'Amp'}, {label: 'Competition', value: 'TBA'}];
 
 
+  //sorted shouldn't be modified
   const [sorted, setSorted] = useState<DataPoint[]>([]);
+
+  //displayed is the modified array
+  const [displayed, setDisplayed] = useState<DataPoint[]>([]);
+
   const [isFetched, setIsFetched] = useState<boolean>(false);
 
   const [textInput, setTextInput] = useState<string>("");
@@ -41,10 +46,11 @@ const rankingsPage = () => {
   //And then users can select what to sort by in the dropdown (competition, speaker, amp) and search for individual teams using a search bar. 
   const getRanking = async (q: DatabaseQuery) => {
     await setSorted(fetchQueriedTeams(q));
+    await setDisplayed(sorted)
   }
 
   const searchByName = async (teamString: string) => {
-    await setSorted(searchTeams(sorted, teamString));
+    await setDisplayed(searchTeams(sorted, teamString));
   }
 
   // useEffect(() => {
@@ -149,8 +155,8 @@ const rankingsPage = () => {
               <Text style={styles.buttonText}>Test API call</Text>
             </Pressable>
 
-            {sorted.length > 0 && isFetched ? (
-              sorted?.map((data) => (
+            {displayed.length > 0 && isFetched ? (
+              displayed?.map((data) => (
                 // <Text style={styles.subtitle}>
                 //   {data.key}: {data.percentage}, {data.fraction}
                 // </Text>
