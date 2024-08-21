@@ -109,7 +109,7 @@ export const fetchQueriedTeams = (q: DatabaseQuery, /*floor: number*/): DataPoin
       //amp data:
       amp_fraction = data.child(pathToFraction + "/Amp").val() + "/" + data.child(pathToFraction + "/Amp" + " Total").val();
       amp_percentage = data.child(pathToPercent + "/Amp").val() + "%";
-      console.log(`team ${data.key}'s speaker stats obtained`);
+      console.log(`team ${data.key}'s amp stats obtained`);
 
       //TODO:
       //climb data:

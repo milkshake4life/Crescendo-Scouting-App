@@ -94,6 +94,7 @@ const rankingsPage = () => {
               valueField="value"
               placeholder={!isFocus ? 'Sort by: ' : '...'}
               searchPlaceholder="Search..."
+              value= {selectedStat}
               onFocus={() => setIsFocus(true)}
               onBlur={() => setIsFocus(false)}
               onChange={item => {
