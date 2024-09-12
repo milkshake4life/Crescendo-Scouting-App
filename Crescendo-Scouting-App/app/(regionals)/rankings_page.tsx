@@ -9,6 +9,14 @@ import { DropdownItem } from "./[regional]";
 import TeamDisplay from "../Components/TeamDisplay";
 //import { TeamContextProvider } from "../../Contexts/team-content";
 
+//TODO:
+//1. List of tasks for ui to complete (things to style/ things that are done and need styling)
+//2. Fix useEffect() for initial info pull
+//3. Fix display issue (setDisplayed() event flow?)
+//4. Fix accordian issue
+//5. move tba call to after match 
+
+
 
 const rankingsPage = () => {
   const {regional} = useGlobalSearchParams<{ regional:string } > ();
@@ -35,7 +43,7 @@ const rankingsPage = () => {
   const [sorted, setSorted] = useState<DataPoint[]>([]);
 
   //displayed is the modified array
-  const [displayed, setDisplayed] = useState<DataPoint[]>([]);
+  // const [displayed, setDisplayed] = useState<DataPoint[]>([]);
 
   const [isFetched, setIsFetched] = useState<boolean>(false);
 
@@ -44,27 +52,21 @@ const rankingsPage = () => {
   
   //eventually this will be moved to a useeffect so that we always have information to display. By default we will display competition rankings (no idea how we are going to get those)
   //And then users can select what to sort by in the dropdown (competition, speaker, amp) and search for individual teams using a search bar. 
-  const getRanking = async (q: DatabaseQuery) => {
-    await setSorted(fetchQueriedTeams(q));
-    await setDisplayed(sorted)
+  const getRanking = (q: DatabaseQuery) => {
+    setSorted(fetchQueriedTeams(q)); 
+    setIsFetched(true);
   }
 
-  const searchByName = async (teamString: string) => {
-    await setDisplayed(searchTeams(sorted, teamString));
+  const searchByName = (teamString: string) => {
+    // setDisplayed(searchTeams(sorted, teamString));
+    setSorted((searchTeams(sorted, teamString)));
   }
 
-  // useEffect(() => {
+  useEffect(() => {
 
-  //   const getRanking = async (q: DatabaseQuery) => {
-  //     try {
-  //       setSorted(fetchQueriedTeams(q, 5));
-  //     } catch (error) {
-  //       console.error(error)
-  //     }
+    getRanking({regional: modifiedRegional, stat: "TBA"});
 
-  //   }
-    
-  // }, []);
+  }, []);
 
 
   // const renderRankings = () => {
@@ -156,8 +158,8 @@ const rankingsPage = () => {
               <Text style={styles.buttonText}>Test API call</Text>
             </Pressable>
 
-            {displayed.length > 0 && isFetched ? (
-              displayed?.map((data) => (
+            {sorted.length > 0 && isFetched ? (
+              sorted?.map((data) => (
                 // <Text style={styles.subtitle}>
                 //   {data.key}: {data.percentage}, {data.fraction}
                 // </Text>
