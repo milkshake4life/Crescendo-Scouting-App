@@ -12,7 +12,6 @@ import AccordionHandler from "../Components/accordionHandler";
 
 //TODO:
 //1. List of tasks for ui to complete (things to style/ things that are done and need styling)
-//2. Fix search bar issue. 
 
 
 const rankingsPage = () => {
@@ -101,11 +100,13 @@ const rankingsPage = () => {
               onChange={item => {
                 setSelectedStat(item.value as 'Speaker' | 'Amp' | 'TBA');  // Update the state to the new value
                 // setIsFocus(false);  // Assuming you want to unfocus the dropdown after selection
+                //need to use the raw values here to get around setstate call order
+                getRanking({regional: modifiedRegional! /*, Fraction' | 'Percentage'*/, stat: (item.value as 'Speaker' | 'Amp' | 'TBA')! /*'Speaker' | 'Amp'}*/});
               }}
             />
 
 
-            <Pressable
+            {/* <Pressable
               style={styles.buttonOne}
               onPress={async () => {
                 //testing DatabaseQuery interface as a parameter. Better readability than just passing everything in
@@ -114,14 +115,14 @@ const rankingsPage = () => {
                 //     alert(`Please make sure you have selected a stat and a stat type.`)
                 // } else {
                   //trying hardcoded
-                    getRanking({regional: modifiedRegional! /*, Fraction' | 'Percentage'*/, stat: selectedStat! /*'Speaker' | 'Amp'}*/});
+                    getRanking({regional: modifiedRegional! /*, Fraction' | 'Percentage' /, stat: selectedStat! /*'Speaker' | 'Amp'/}});
                     //setIsFetched(true);
                     // setDisplayed(sorted);
                 // }
               }}
             >
               <Text style={styles.buttonText}>QUERY!</Text>
-            </Pressable>
+            </Pressable> */}
 
             <TextInput
               onChangeText={setTextInput}
