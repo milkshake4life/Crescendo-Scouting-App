@@ -40,7 +40,7 @@ const rankingsPage = () => {
   const [sorted, setSorted] = useState<DataPoint[]>([]);
 
   //displayed is the modified array
-  // const [displayed, setDisplayed] = useState<DataPoint[]>([]);
+  const [displayed, setDisplayed] = useState<DataPoint[]>([]);
 
   const [isFetched, setIsFetched] = useState<boolean>(false);
 
@@ -51,12 +51,14 @@ const rankingsPage = () => {
   //And then users can select what to sort by in the dropdown (competition, speaker, amp) and search for individual teams using a search bar. 
   const getRanking = (q: DatabaseQuery) => {
     setSorted(fetchQueriedTeams(q)); 
+    setDisplayed(fetchQueriedTeams(q));
+    //setdisplay can't be called here because sorted is still equal to zero, and state updates are batched. 
     setIsFetched(true);
   }
 
   const searchByName = (teamString: string) => {
     // setDisplayed(searchTeams(sorted, teamString));
-    setSorted((searchTeams(sorted, teamString)));
+    setDisplayed((searchTeams(sorted, teamString)));
   }
 
   useEffect(() => {
@@ -112,8 +114,9 @@ const rankingsPage = () => {
                 //     alert(`Please make sure you have selected a stat and a stat type.`)
                 // } else {
                   //trying hardcoded
-                    await getRanking({regional: modifiedRegional! /*, Fraction' | 'Percentage'*/, stat: selectedStat! /*'Speaker' | 'Amp'}*/});
-                    setIsFetched(true);
+                    getRanking({regional: modifiedRegional! /*, Fraction' | 'Percentage'*/, stat: selectedStat! /*'Speaker' | 'Amp'}*/});
+                    //setIsFetched(true);
+                    // setDisplayed(sorted);
                 // }
               }}
             >
@@ -170,8 +173,8 @@ const rankingsPage = () => {
             ) : (
               <Text style={styles.subtitle}>No data available</Text>
             )} */}
-            {sorted.length > 0 && isFetched ? (
-              <AccordionHandler teams={sorted} />
+            {displayed.length > 0 && isFetched ? (
+              <AccordionHandler teams={displayed} />
             ) : (
               <Text style={styles.subtitle}>No data available</Text>
             )}
