@@ -3,9 +3,16 @@ import { Link, router, useLocalSearchParams } from "expo-router";
 import { Pressable, Button, Image, Text, View, StyleSheet, LayoutAnimation, TouchableOpacity } from "react-native";
 import { useFonts } from 'expo-font';
 import { DataPoint } from "../(regionals)/rankings";
-import { useState } from "react";
+import { ReactElement, ReactNode, useState } from "react";
   
-const TeamDisplay = ({ title, children }) => {
+interface displayProps {
+  title: string,
+  children: any, 
+  isOpen: boolean
+  toggleOpen: Function
+}
+
+const TeamDisplay = ({ title, children, isOpen, toggleOpen }) => {
 //need to make a drop down with team name as the title and then data underneath. 
     // <Pressable 
     //         style={styles.backButton}
@@ -14,24 +21,42 @@ const TeamDisplay = ({ title, children }) => {
     //         <Image style = {styles.backButtonIcon} source={require('./../assets/images/back_arrow.png')} />
     // </Pressable>
     // need to change this back to false after new query is made (to close open accordians)
-    const [isOpen, setIsOpen] = useState(false);
+    // const [isOpen, setIsOpen] = useState(false);
 
-    const toggleOpen = () => {
-      setIsOpen(value => !value);
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    }
+    // const toggleOpen = () => {
+    //   setIsOpen(value => !value);
+    //   LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    // }
+    //const [isOpen, setIsOpen] = useState(false);
+
+    // const toggleOpen = () => {
+    //   LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    //   setIsOpen(prevState => !prevState);
+    // };
+
+  return (
+    <>
+      <TouchableOpacity onPress={toggleOpen} /*style={styles}*/ activeOpacity={0.6}>
+        <Text /*style={styles.accordionTitle}*/>{title}</Text>
+      </TouchableOpacity>
+      <View style={[styles.list, !isOpen ? styles.hidden : undefined]}>
+        {children}
+      </View>
+    </>
+  );
+};
   
-    return (
-      <>
-        <TouchableOpacity onPress={toggleOpen} activeOpacity={0.6}>
-          <Text>{title}</Text>
-        </TouchableOpacity>
-        <View style={[styles.list, !isOpen ? styles.hidden : undefined]}>
-          {children}
-        </View>
-      </>
-    );
-  };
+  //   return (
+  //     // <>
+  //     //   {/* <TouchableOpacity onPress={() => {props.toggleOpen}} activeOpacity={0.6}>
+  //     //     <Text>{props.title}</Text>
+  //     //   </TouchableOpacity>
+  //     //   <View style={[styles.list, !props.isOpen ? styles.hidden : undefined]}>
+  //     //     {props.children}
+  //     //   </View> */}
+  //     // </>
+  //   );
+  // };
 
 const styles = StyleSheet.create({
     hidden: {

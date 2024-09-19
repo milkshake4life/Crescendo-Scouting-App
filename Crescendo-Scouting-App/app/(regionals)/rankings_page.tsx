@@ -7,15 +7,12 @@ import { Dropdown } from "react-native-element-dropdown";
 import { useEffect, useState } from "react";
 import { DropdownItem } from "./[regional]";
 import TeamDisplay from "../Components/TeamDisplay";
+import AccordionHandler from "../Components/accordionHandler";
 //import { TeamContextProvider } from "../../Contexts/team-content";
 
 //TODO:
 //1. List of tasks for ui to complete (things to style/ things that are done and need styling)
-//2. Fix useEffect() for initial info pull
-//3. Fix display issue (setDisplayed() event flow?)
-//4. Fix accordian issue
-//5. move tba call to after match 
-
+//2. Fix search bar issue. 
 
 
 const rankingsPage = () => {
@@ -148,31 +145,37 @@ const rankingsPage = () => {
               <Text style={styles.buttonText}>SEARCH!</Text>
             </Pressable>
 
-            <Pressable
-              style={styles.buttonOne}
-              onPress={async () => {
-                  await updateTBAranking(modifiedRegional);
-                  console.log("done");
-                }}
-            > 
-              <Text style={styles.buttonText}>Test API call</Text>
-            </Pressable>
-
-            {sorted.length > 0 && isFetched ? (
+            {/* {sorted.length > 0 && isFetched ? (
               sorted?.map((data) => (
                 // <Text style={styles.subtitle}>
                 //   {data.key}: {data.percentage}, {data.fraction}
                 // </Text>
                 <TeamDisplay title={data.key}>
-                  <Text>Speaker Accuracy: {data.speaker}</Text>
-                  <Text>Amp Accuracy: {data.amp}</Text>
-                  <Text>Rank: {data.rank}</Text>
+                  <View>
+                      <Text>Speaker Accuracy: {data.speaker}</Text>
+                      <Text>Amp Accuracy: {data.amp}</Text>
+                      <Text>Rank: {data.rank}</Text>
+                  </View>
                 </TeamDisplay>
+                // <accordionHandler teams=teams/>
                 //I need to find a way to close the accordian when a new search is made. 
               ))
             ) : (
               <Text style={styles.subtitle}>No data available</Text>
+            )} */}
+            {/* {sorted.length > 0 && isFetched ? (
+              <View>
+              <AccordionHandler teams={sorted}/>
+              </View>
+            ) : (
+              <Text style={styles.subtitle}>No data available</Text>
+            )} */}
+            {sorted.length > 0 && isFetched ? (
+              <AccordionHandler teams={sorted} />
+            ) : (
+              <Text style={styles.subtitle}>No data available</Text>
             )}
+            
         </>
 
         </ScrollView>

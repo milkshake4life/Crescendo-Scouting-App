@@ -1,7 +1,8 @@
 import { Link, router, useGlobalSearchParams } from "expo-router";
 import { Pressable, Button, Text, View, StyleSheet, Image } from "react-native";
 import BackButton from "../../../../Components/backButton";
-
+import { updateTBAranking } from "../../../rankings";
+import { update } from "@firebase/database";
 
 const matchInfo = () => {
   const { regional } = useGlobalSearchParams<{ regional: string }>();
@@ -12,7 +13,11 @@ const matchInfo = () => {
       <Text style={styles.title}>Thank you!</Text>
       <Pressable
             style={styles.buttonOne}
-            onPress={() => router.push(``)}
+            onPress={() => {
+              updateTBAranking(regional)
+              router.push(``)
+            }}
+            
             >
                 <Text style={styles.buttonText}>Submit</Text>
             </Pressable>
