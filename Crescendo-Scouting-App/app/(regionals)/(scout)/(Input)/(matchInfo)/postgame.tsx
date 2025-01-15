@@ -6,8 +6,43 @@ import Slider from '@react-native-community/slider';
 import { router, useGlobalSearchParams } from 'expo-router'
 import { ref, set } from "@firebase/database";
 import { database } from "../../../../../firebaseConfig";
+import {Dropdown} from 'react-native-element-dropdown';
 
+interface DropdownItem {
+  label: string;
+  value: string;
+}
 
+const disabledInfo = [
+  { label: 'Intake', value: '1'},
+  { label: 'Outtake', value: '2'},
+  { label: 'Robot', value: '3'},
+
+]
+
+const [selectedDisabledValue, setSelectedDisabledValue] = useState<string | null>(null);
+
+const [dropdownFocus, setDropdownFocus] = useState<{
+  [key: string]: boolean;
+}>({});
+
+const [dropdownHeight, setDropdownHeight] = useState<number>(0);
+
+const handleFocus = (dropdownKey: string) => {
+  setDropdownFocus((prevFocus) => ({
+    ...prevFocus,
+    [dropdownKey]: true,
+  }));
+};
+
+const handleBlur = (dropdownKey: string) => {
+  setDropdownFocus((prevFocus) => ({
+    ...prevFocus,
+    [dropdownKey]: false,
+  }));
+};
+
+const [isFocus, setIsFocus] = useState(false);
 
 interface SliderWithNumbersProps {
   value: number;
@@ -160,6 +195,7 @@ const MatchInfo: React.FC = () => {
 
         {/* Checkbox with margin */}
         {/* Defense */}
+        <Text style={styles.subtitle}>Defense Robot</Text>
           <CheckBox
             title="Defense"
             checked={isDefenseChecked}
@@ -168,12 +204,32 @@ const MatchInfo: React.FC = () => {
           />
 
           {/* Disabled */}
-          <CheckBox
-            title="Disabled"
-            checked={isDisabledChecked}
-            onPress={() => setIsDisabledChecked(!isDisabledChecked)}
-            containerStyle={styles.checkboxContainer}
-          />
+          <Text style={styles.subtitle}>Robot Disabled</Text>
+            <CheckBox
+              title="Disabled"
+              checked={isDisabledChecked}
+              onPress={() => setIsDisabledChecked(!isDisabledChecked)}
+              containerStyle={styles.checkboxContainer}
+            />
+            {/* <Dropdown
+              style={[styles.dropdown, isFocus && { borderColor: 'blue', position: 'relative', bottom: dropdownHeight + 10, }]}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              iconStyle={styles.iconStyle}
+              data={disabledInfo}
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder={!isFocus ? 'Select item' : '...'}
+              value={selectedDisabledValue || '1'}
+              onFocus={() => handleFocus('disabledData')}
+              onBlur={() => handleBlur('disabledData')}
+              onChange={(item: DropdownItem) => {
+                setSelectedDisabledValue(item.value);
+                // handleSendScoringData();
+                setIsFocus(false);
+              }}
+            /> */}
 
 
 
@@ -291,6 +347,27 @@ const styles = StyleSheet.create({
   },
   checkboxContainer: {
     marginVertical: 20,
+  },
+  dropdown: {
+    height: 50,
+    width: '90%', // or some other appropriate width
+    borderColor: 'gray',
+    borderWidth: 0.5,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    // Add margin for some spacing if needed
+    marginTop: 10,
+    marginBottom: 30,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
   },
 
 });

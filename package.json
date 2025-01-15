@@ -5,6 +5,7 @@
     "expo-router": "^3.4.8",
     "react-native-draggable-flatlist": "^4.0.1",
     "react-native-elements": "^3.4.3",
-    "react-native-vector-icons": "^10.0.3"
+    "react-native-vector-icons": "^10.0.3",
+    "expo": "latest"
   }
 }
